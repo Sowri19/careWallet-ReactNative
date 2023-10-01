@@ -1,4 +1,4 @@
-const Insurance = require("./Insurance"); // Import the Insurance model
+const Insurance = require("../models/insuranceModel"); // Import the Insurance model
 
 class InsuranceController {
   static async createInsurance(

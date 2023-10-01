@@ -15,14 +15,14 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Importing the routes
-const userRoutes = require("./api/routes/userRoutes");
-const videoRoutes = require("./api/routes/videoRoutes");
-const therapistRoutes = require("./api/routes/therapistRoutes");
+const patientRoutes = require("./api/routes/patientRoutes");
+const doctorRoutes = require("./api/routes/doctorRoutes");
+const insuranceRoutes = require("./api/routes/insuranceRoutes");
 
 // Use the userRoutes for user-related endpoints
-app.use("/api/users", userRoutes);
-app.use("/api/videos", videoRoutes);
-app.use("/api/therapists", therapistRoutes);
+app.use("/patients", patientRoutes);
+app.use("/doctors", doctorRoutes);
+app.use("/insurances", insuranceRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {

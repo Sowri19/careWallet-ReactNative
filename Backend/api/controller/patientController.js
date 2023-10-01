@@ -1,4 +1,4 @@
-const Patient = require("./Patient"); // Import the Patient model
+const Patient = require("../models/patientModel"); // Import the Patient model
 
 class PatientController {
   static async createPatient(
