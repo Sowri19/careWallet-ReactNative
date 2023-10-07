@@ -3,7 +3,7 @@ const PatientController = require("../controller/patientController");
 
 const router = express.Router();
 
-router.post("/patients", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       firstName,
@@ -29,7 +29,7 @@ router.post("/patients", async (req, res) => {
   }
 });
 
-router.get("/patients/:patientID", async (req, res) => {
+router.get("/:patientID", async (req, res) => {
   try {
     const { patientID } = req.params;
     const patient = await PatientController.getPatientByID(patientID);

@@ -1,3 +1,6 @@
+const admin = require("firebase-admin");
+const db = admin.firestore();
+
 class Doctor {
   constructor(doctorID, doctorName, companyName, address, phoneNumber, email) {
     this.doctorID = doctorID;
@@ -8,7 +11,6 @@ class Doctor {
     this.email = email;
   }
 
-  // Add a new doctor to the Firestore collection
   async save() {
     try {
       const doctorRef = await db
@@ -44,7 +46,7 @@ class Doctor {
           doctorData.email
         );
       } else {
-        return null; // Doctor not found
+        return null;
       }
     } catch (error) {
       throw new Error("Error fetching doctor document: " + error.message);

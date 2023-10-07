@@ -3,7 +3,7 @@ const DoctorController = require("../controller/doctorController");
 
 const router = express.Router();
 
-router.post("/doctors", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { doctorID, doctorName, companyName, address, phoneNumber, email } =
       req.body;
@@ -21,7 +21,7 @@ router.post("/doctors", async (req, res) => {
   }
 });
 
-router.get("/doctors/:doctorID", async (req, res) => {
+router.get("/:doctorID", async (req, res) => {
   try {
     const { doctorID } = req.params;
     const doctor = await DoctorController.getDoctorByID(doctorID);

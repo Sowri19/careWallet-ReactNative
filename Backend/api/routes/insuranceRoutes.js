@@ -3,7 +3,7 @@ const InsuranceController = require("../controller/insuranceController");
 
 const router = express.Router();
 
-router.post("/insurance", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const {
       insuranceID,
@@ -31,7 +31,7 @@ router.post("/insurance", async (req, res) => {
   }
 });
 
-router.get("/insurance/:insuranceID", async (req, res) => {
+router.get("/:insuranceID", async (req, res) => {
   try {
     const { insuranceID } = req.params;
     const insurance = await InsuranceController.getInsuranceByID(insuranceID);

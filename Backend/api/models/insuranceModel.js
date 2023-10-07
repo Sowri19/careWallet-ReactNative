@@ -1,70 +1,72 @@
 const admin = require("firebase-admin");
 const db = admin.firestore();
-const { v4: uuidv4 } = require("uuid");
-
-class Patient {
+class Insurance {
   constructor(
-    firstName,
-    lastName,
-    address,
-    phoneNumber,
-    email,
-    dob,
-    insuranceID
+    insuranceID,
+    insuranceCompany,
+    startDate,
+    endDate,
+    memberName,
+    insuranceType,
+    memberDOB,
+    relationshipToPolicyholder
   ) {
-    this.patientID = uuidv4(); // Auto-generate UUID
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.address = address;
-    this.phoneNumber = phoneNumber;
-    this.email = email;
-    this.dob = dob;
     this.insuranceID = insuranceID;
+    this.insuranceCompany = insuranceCompany;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.memberName = memberName;
+    this.insuranceType = insuranceType;
+    this.memberDOB = memberDOB;
+    this.relationshipToPolicyholder = relationshipToPolicyholder;
   }
 
-  // Add a new patient to the Firestore collection
+  // Add insurance information to the Firestore collection
   async save() {
     try {
-      const patientRef = await db.collection("patients").doc(this.patientID);
-      await patientRef.set({
-        patientID: this.patientID, // Save the patientID as a separate field
-        firstName: this.firstName,
-        lastName: this.lastName,
-        address: this.address,
-        phoneNumber: this.phoneNumber,
-        email: this.email,
-        dob: this.dob,
+      const insuranceRef = await db
+        .collection("insurance")
+        .doc(this.insuranceID);
+      await insuranceRef.set({
         insuranceID: this.insuranceID,
+        insuranceCompany: this.insuranceCompany,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        memberName: this.memberName,
+        insuranceType: this.insuranceType,
+        memberDOB: this.memberDOB,
+        relationshipToPolicyholder: this.relationshipToPolicyholder,
       });
     } catch (error) {
-      throw new Error("Error saving patient document: " + error.message);
+      throw new Error("Error saving insurance document: " + error.message);
     }
   }
 
-  // Fetch a patient by their patientID from the Firestore collection
-  static async getPatientByID(patientID) {
+  // Fetch insurance information by insuranceID from the Firestore collection
+  static async getInsuranceByID(insuranceID) {
     try {
-      const patientRef = await db.collection("patients").doc(patientID);
-      const patientSnapshot = await patientRef.get();
+      const insuranceRef = await db.collection("insurance").doc(insuranceID);
+      const insuranceSnapshot = await insuranceRef.get();
 
-      if (patientSnapshot.exists) {
-        const patientData = patientSnapshot.data();
-        return new Patient(
-          patientData.firstName,
-          patientData.lastName,
-          patientData.address,
-          patientData.phoneNumber,
-          patientData.email,
-          patientData.dob,
-          patientData.insuranceID
+      if (insuranceSnapshot.exists) {
+        const insuranceData = insuranceSnapshot.data();
+        return new Insurance(
+          insuranceData.insuranceID,
+          insuranceData.insuranceCompany,
+          insuranceData.startDate,
+          insuranceData.endDate,
+          insuranceData.memberName,
+          insuranceData.insuranceType,
+          insuranceData.memberDOB,
+          insuranceData.relationshipToPolicyholder
         );
       } else {
-        return null; // Patient not found
+        return null; // Insurance information not found
       }
     } catch (error) {
-      throw new Error("Error fetching patient document: " + error.message);
+      throw new Error("Error fetching insurance document: " + error.message);
     }
   }
 }
 
-module.exports = Patient;
+module.exports = Insurance;
