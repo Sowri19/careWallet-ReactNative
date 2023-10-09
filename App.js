@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import LogIn from './src/screens/LogIn';
+import RegisterPageOne from './src/screens/RegisterPageOne';
+import RegisterPageTwo from './src/screens/RegisterPageTwo';
+import InsuranceSignUpOne from './src/screens/InsuranceSignupOne';
+import InsuranceSignUpTwo from './src/screens/InsuranceSignupTwo';
+import Verification from './src/screens/Verification';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Log in" component={LogIn} />
+        <Stack.Screen name="Register" component={RegisterPageOne} />
+        <Stack.Screen name="Register " component={RegisterPageTwo} />
+        <Stack.Screen name="Page 5" component={InsuranceSignUpOne} />
+        <Stack.Screen name="Page 6" component={InsuranceSignUpTwo} />
+        <Stack.Screen name="Verification" component={Verification} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
