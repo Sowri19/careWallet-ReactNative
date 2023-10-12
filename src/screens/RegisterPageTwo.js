@@ -4,18 +4,47 @@ import {
   Text,
   TextInput,
   Image,
-  Button,
+  Platform,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView
+  SafeAreaView,
+  Pressable
 } from 'react-native';
 import InputField from '../components/InputField';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 const RegisterPageTwo = ({ navigation }) => {
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [zipcode, setZipcode] = React.useState('');
   const [dateOfBirth, setDateOfBirth] = React.useState('');
+
+  const [memberDOB, setMemberDOB] = useState(new Date());
+  const [showDOBPicker, setShowDOBPicker] = useState(false);
+
+  const toggleDOBpicker = () => {
+    setShowDOBPicker(!showDOBPicker);
+  };
+
+  const onChangeDOB = ({ type }, selectedDate) => {
+    if (type == "set") {
+      const currentDate = selectedDate;
+      setMemberDOB(currentDate);
+
+      if (Platform.OS === "android") {
+        toggleDOBpicker();
+        setDateOfBirth(currentDate.toDateString());
+      }
+    } else {
+      toggleDOBpicker();
+    }
+  };
+
+  const confirmIOSDOB = () => {
+    setDateOfBirth(memberDOB.toDateString());
+    toggleDOBpicker();
+  };
 
   const checkifDetailsFilled = address !== '' || city !== '' || zipcode !== '';
 
@@ -33,7 +62,7 @@ const RegisterPageTwo = ({ navigation }) => {
         <InputField
           inputName={'Address'}
           placeholderValue={'Enter your street address'}
-          placeholderColor={'grey'}
+          placeholderColor={'darkblue'}
           onChangeEvent={(newText) => {
             setAddress(newText);
           }}
@@ -44,7 +73,7 @@ const RegisterPageTwo = ({ navigation }) => {
         <InputField
           inputName={'City'}
           placeholderValue={'Enter your city'}
-          placeholderColor={'grey'}
+          placeholderColor={'darkblue'}
           onChangeEvent={(newText) => {
             setCity(newText);
           }}
@@ -56,7 +85,7 @@ const RegisterPageTwo = ({ navigation }) => {
           <Text style={styles.inputText}>Zipcode</Text>
           <TextInput
             placeholder="Enter your zipcode"
-            placeholderTextColor={'grey'}
+            placeholderTextColor={'darkblue'}
             onChangeText={(newNumber) => {
               setZipcode(newNumber);
             }}
@@ -65,17 +94,59 @@ const RegisterPageTwo = ({ navigation }) => {
             style={styles.input}
           />
         </View>
-        <InputField
-          inputName={'Date of Birth'}
-          placeholderValue={'Enter your date of birth'}
-          placeholderColor={'grey'}
-          onChangeEvent={(newText) => {
-            setDateOfBirth(newText);
-          }}
-          inputValue={dateOfBirth}
-          inputTextStyle={styles.inputText}
-          inputStyle={styles.input}
-        />
+
+        <View>
+            <Text style={styles.inputText}>Member's Date of Birth</Text>
+
+            {showDOBPicker && (
+              <DateTimePicker
+                mode="date"
+                display="spinner"
+                value={memberDOB}
+                onChange={onChangeDOB}
+                style={styles.datePicker}
+              />
+            )}
+
+            {showDOBPicker && Platform.OS === "ios" && (
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-around" }}
+              >
+                <TouchableOpacity
+                  style={[
+                    styles.datePickerButton,
+                    { backgroundColor: "#11182711" },
+                  ]}
+                  onPress={toggleDOBpicker}
+                >
+                  <Text style={[styles.datePickerText, { color: "darkblue" }]}>
+                    Cancel
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={[styles.datePickerButton]}
+                  onPress={confirmIOSDOB}
+                >
+                  <Text style={[styles.datePickerText]}>Confirm</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {!showDOBPicker && (
+              <Pressable onPress={toggleDOBpicker}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter Member's Date of Birth"
+                  value={dateOfBirth}
+                  onChangeText={setDateOfBirth}
+                  placeholderTextColor="darkblue"
+                  editable={false}
+                  onPressIn={toggleDOBpicker}
+                />
+              </Pressable>
+            )}
+          </View>
 
         <TouchableOpacity
           isabled={!checkifDetailsFilled}
@@ -108,7 +179,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 20,
-    borderColor: 'grey'
+    borderColor: 'darkblue'
   },
   registerFields: {
     flex: 1,
@@ -192,6 +263,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  datePicker: {
+    height: 120,
+    width: 250
+  },
+  datePickerButton: {
+    alignItems: 'center',
+    backgroundColor: '#00008B',
+    height: 40,
+    marginTop: 6,
+    marginBottom: 12,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    padding: 10,
+  },
+  datePickerText: {
+    fontSize: 15,
+    color: 'white'
+  }
 });
 
 export default RegisterPageTwo;

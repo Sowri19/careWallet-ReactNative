@@ -42,7 +42,7 @@ const RegisterPageOne = ({ navigation }) => {
         <InputField
           inputName={'Name'}
           placeholderValue={'Enter your name'}
-          placeholderColor={'grey'}
+          placeholderColor={'darkblue'}
           onChangeEvent={(newText) => {
             setName(newText);
           }}
@@ -53,7 +53,7 @@ const RegisterPageOne = ({ navigation }) => {
         <InputField
           inputName={'Email'}
           placeholderValue={'Enter your email'}
-          placeholderColor={'grey'}
+          placeholderColor={'darkblue'}
           onChangeEvent={(newText) => {
             setEmail(newText);
           }}
@@ -66,7 +66,7 @@ const RegisterPageOne = ({ navigation }) => {
           <View style={styles.passwordSection}>
             <TextInput
               placeholder="Enter Password"
-              placeholderTextColor={'grey'}
+              placeholderTextColor={'darkblue'}
               onChangeText={(newText) => {
                 setNewPassword(newText);
               }}
@@ -93,7 +93,7 @@ const RegisterPageOne = ({ navigation }) => {
           <View style={styles.passwordSection}>
             <TextInput
               placeholder="Confirm Password"
-              placeholderTextColor={'grey'}
+              placeholderTextColor={'darkblue'}
               onChangeText={(newText) => {
                 setConfirmPassword(newText);
               }}

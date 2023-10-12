@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,29 +8,31 @@ import {
   Pressable,
   StyleSheet,
   SafeAreaView,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import InputField from '../components/InputField';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import InputField from "../components/InputField";
+import CheckBox from "react-native-check-box";
 
 const LogIn = ({ navigation }) => {
-  const [loginID, setLoginID] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [loginID, setLoginID] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const [passwordVisible, setPasswordVisbility] = React.useState(false);
+  const [rememberMe, setRememberMe] = React.useState(false);
 
-  const checkifDetailsFilled = loginID !== '' && password !== '';
+  const checkifDetailsFilled = loginID !== "" && password !== "";
 
   return (
     <SafeAreaView style={styles.screenWrapper}>
       <View style={styles.loginFields}>
         <Image
-          source={require('../utilities/CareWalletLogo.png')}
+          source={require("../utilities/CareWalletLogo.png")}
           style={styles.image}
         />
         <Text style={styles.welcomeText}>Welcome!</Text>
         <InputField
-          inputName={'Email or Insurance # or Govt ID'}
-          placeholderValue={'Enter Info of Choice'}
-          placeholderColor={'darkblue'}
+          inputName={"Email or Insurance # or Govt ID"}
+          placeholderValue={"Enter Info of Choice"}
+          placeholderColor={"darkblue"}
           onChangeEvent={(newText) => {
             setLoginID(newText);
           }}
@@ -43,7 +45,7 @@ const LogIn = ({ navigation }) => {
           <View style={styles.passwordSection}>
             <TextInput
               placeholder="Enter Password"
-              placeholderTextColor={'darkblue'}
+              placeholderTextColor={"darkblue"}
               onChangeText={(newText) => {
                 setPassword(newText);
               }}
@@ -57,7 +59,7 @@ const LogIn = ({ navigation }) => {
               }}
             >
               <Ionicons
-                name={passwordVisible ? 'eye-off' : 'eye'}
+                name={passwordVisible ? "eye-off" : "eye"}
                 size={24}
                 color="gray"
                 style={styles.eyeIcon}
@@ -66,10 +68,20 @@ const LogIn = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.rememberMe}>
-          <Text style={styles.belowInputText}>Remember me</Text>
+          <Pressable style={styles.rememberMeCheckbox}>
+          <CheckBox
+            isChecked = {rememberMe}
+            onClick={() => setRememberMe(!rememberMe)}
+            checkedCheckBoxColor="darkblue"
+            uncheckedCheckBoxColor="darkblue"
+          />
+          <Text style={styles.belowInputText}>
+              Remember me
+          </Text>
+          </Pressable>
           <Text
             style={styles.belowInputText}
-            onPress={() => console.log('forgot password')}
+            onPress={() => console.log("forgot password")}
           >
             Forgot Password?
           </Text>
@@ -78,7 +90,7 @@ const LogIn = ({ navigation }) => {
           isabled={!checkifDetailsFilled}
           style={styles.button}
           onPress={() => {
-            console.log(loginID + ' ' + password);
+            console.log(loginID + " " + password);
           }}
         >
           <Text style={styles.loginButtonText}>Login</Text>
@@ -86,7 +98,7 @@ const LogIn = ({ navigation }) => {
         <View style={styles.registerSection}>
           <Text style={styles.belowInputText}>Don't have an account? </Text>
           <Text
-            onPress={() => navigation.navigate('Register')}
+            onPress={() => navigation.navigate("Register")}
             style={styles.registerText}
           >
             Register
@@ -100,37 +112,37 @@ const LogIn = ({ navigation }) => {
 const styles = StyleSheet.create({
   screenWrapper: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
     marginTop: 30,
     marginBottom: 30,
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 20,
-    borderColor: 'grey'
+    borderColor: "grey",
   },
   loginFields: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+    flexDirection: "column",
+    justifyContent: "space-between",
   },
   image: {
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
     width: 250,
     height: 100,
   },
   welcomeText: {
     fontSize: 30,
-    color: 'darkblue',
+    color: "darkblue",
   },
   signinText: {
     fontSize: 40,
-    fontWeight: 'bold',
-    color: 'darkblue',
+    fontWeight: "bold",
+    color: "darkblue",
   },
   inputText: {
     fontSize: 20,
-    color: 'darkblue',
+    color: "darkblue",
   },
   input: {
     height: 60,
@@ -139,11 +151,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 5,
     paddingLeft: 10,
-    borderColor: 'darkblue',
+    borderColor: "darkblue",
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#00008B',
+    alignItems: "center",
+    backgroundColor: "#00008B",
     height: 60,
     marginTop: 12,
     marginBottom: 12,
@@ -153,18 +165,18 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     fontSize: 20,
-    color: 'white',
+    color: "white",
     padding: 10,
   },
   passwordSection: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 60,
     marginTop: 12,
     marginBottom: 12,
     borderWidth: 0.5,
     borderRadius: 5,
     paddingLeft: 10,
-    borderColor: 'darkblue',
+    borderColor: "darkblue",
   },
   passwordInput: {
     flex: 1,
@@ -173,21 +185,27 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   rememberMe: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  rememberMeCheckbox: {
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems: "center"
   },
   belowInputText: {
     fontSize: 15,
-    color: 'darkblue',
+    color: "darkblue",
   },
   registerText: {
     fontSize: 15,
-    color: 'darkblue',
-    fontWeight: 'bold',
+    color: "darkblue",
+    fontWeight: "bold",
   },
   registerSection: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
 });
 
