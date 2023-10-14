@@ -12,16 +12,20 @@ import {
 } from 'react-native';
 import InputField from '../components/InputField';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import axios from "axios";
 
 
-const RegisterPageTwo = ({ navigation }) => {
+const RegisterPageTwo = ({ navigation, route }) => {
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [zipcode, setZipcode] = React.useState('');
   const [dateOfBirth, setDateOfBirth] = React.useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [memberDOB, setMemberDOB] = useState(new Date());
   const [showDOBPicker, setShowDOBPicker] = useState(false);
+
+  const { formData, sharedData } = route.params;
 
   const toggleDOBpicker = () => {
     setShowDOBPicker(!showDOBPicker);
@@ -48,6 +52,45 @@ const RegisterPageTwo = ({ navigation }) => {
 
   const checkifDetailsFilled = address !== '' || city !== '' || zipcode !== '';
 
+  const onSubmitFormHandler = async (event) => {
+    // if (!fullName.trim() || !email.trim()) {
+    //   alert("Name or Email is invalid");
+    //   return;
+    // }
+
+    const updatedFormData = {
+      ...formData,
+      address,
+      city,
+      zipcode,
+      dateOfBirth
+    }
+
+    console.log(updatedFormData)
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(``, {
+        
+      });
+
+      if (response.status === 201) {
+        alert(` You have created: ${JSON.stringify(response.data)}`);
+        setIsLoading(false);
+        setAddress("");
+        setCity("");
+        setDateOfBirth("");
+      } else {
+        throw new Error("An error has occurred");
+      }
+    } catch (error) {
+      alert("An error has occurred");
+      setIsLoading(false);
+    }
+  };
+
+
   return (
     <SafeAreaView behavior="padding" style={styles.screenWrapper}>
       <View style={styles.registerFields}>
@@ -69,6 +112,7 @@ const RegisterPageTwo = ({ navigation }) => {
           inputValue={address}
           inputTextStyle={styles.inputText}
           inputStyle={styles.input}
+          on
         />
         <InputField
           inputName={'City'}
@@ -151,7 +195,8 @@ const RegisterPageTwo = ({ navigation }) => {
         <TouchableOpacity
           isabled={!checkifDetailsFilled}
           style={styles.button}
-          onPress={() => navigation.navigate('Page 5')}
+          onPress={onSubmitFormHandler}
+          disabled={isLoading}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>

@@ -12,6 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import InputField from '../components/InputField';
 
+
 const RegisterPageOne = ({ navigation }) => {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
@@ -21,12 +22,24 @@ const RegisterPageOne = ({ navigation }) => {
   const [confirmPasswordVisible, setConfirmPasswordVisibility] =
     React.useState(false);
 
+  const [sharedData, setSharedData] = useState('Shared data to be passed');
+
   const checkifDetailsFilled =
     name !== '' &&
     email !== '' &&
     newPassword !== '' &&
     confirmPassword !== '' &&
     newPassword !== confirmPassword;
+  
+  const handleNext = () => {
+    const formData = {
+      name,
+      email,
+      newPassword
+    };
+
+    navigation.navigate('RegisterPageTwo',{formData, sharedData})
+  }
 
   return (
     <SafeAreaView style={styles.screenWrapper}>
@@ -119,9 +132,7 @@ const RegisterPageOne = ({ navigation }) => {
         <TouchableOpacity
           isabled={!checkifDetailsFilled}
           style={styles.button}
-          onPress={() => {
-            navigation.navigate('Register ');
-          }}
+          onPress={handleNext}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
