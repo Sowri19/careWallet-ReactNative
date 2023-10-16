@@ -68,26 +68,27 @@ const RegisterPageTwo = ({ navigation, route }) => {
 
     console.log(updatedFormData)
 
-    setIsLoading(true);
+    // setIsLoading(true);
 
-    try {
-      const response = await axios.post(``, {
+    // try {
+    //   const response = await axios.post(``, {
         
-      });
+    //   });
 
-      if (response.status === 201) {
-        alert(` You have created: ${JSON.stringify(response.data)}`);
-        setIsLoading(false);
-        setAddress("");
-        setCity("");
-        setDateOfBirth("");
-      } else {
-        throw new Error("An error has occurred");
-      }
-    } catch (error) {
-      alert("An error has occurred");
-      setIsLoading(false);
-    }
+    //   if (response.status === 201) {
+    //     alert(` You have created: ${JSON.stringify(response.data)}`);
+    //     setIsLoading(false);
+    //     setAddress("");
+    //     setCity("");
+    //     setDateOfBirth("");
+    //   } else {
+    //     throw new Error("An error has occurred");
+    //   }
+    // } catch (error) {
+    //   alert("An error has occurred");
+    //   setIsLoading(false);
+    // }
+    navigation.navigate('InsuranceSignUpOne')
   };
 
 

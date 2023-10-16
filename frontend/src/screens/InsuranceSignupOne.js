@@ -17,7 +17,22 @@ const InsuranceSignUpOne = ({ navigation }) => {
   const [memberId, setMemberId] = React.useState('');
   const [groupNumber, setGroupNumber] = React.useState('');
 
+  const [sharedData, setSharedData] = useState('Shared data to be passed');
+
+
   const checkifDetailsFilled = insuranceName !== '' || policyHolder !== '' || memberId !== '' || groupNumber !== '';
+
+  const handleNext = () => {
+    const formData = {
+      insuranceName,
+      policyHolder,
+      memberId,
+      groupNumber
+    };
+
+    navigation.navigate('InsuranceSignUpTwo',{formData, sharedData})
+  }
+
 
   return (
     <SafeAreaView behavior="padding" style={styles.screenWrapper}>
@@ -80,7 +95,7 @@ const InsuranceSignUpOne = ({ navigation }) => {
         <TouchableOpacity
           isabled={!checkifDetailsFilled}
           style={styles.button}
-          onPress={() => navigation.navigate('Page 6')}
+          onPress={handleNext}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>

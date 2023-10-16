@@ -13,7 +13,7 @@ import {
 import InputField from "../components/InputField";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-const InsuranceSignUpTwo = ({ navigation }) => {
+const InsuranceSignUpTwo = ({ navigation, route }) => {
   const [insuranceType, setInsuranceType] = React.useState("");
   const [dateOfBirth, setDateOfBirth] = React.useState("");
   const [dateForEffectiveDate, setDateForEffectiveDate] = React.useState("");
@@ -24,6 +24,8 @@ const InsuranceSignUpTwo = ({ navigation }) => {
 
   const [effectiveDate, setEffectiveDate] = React.useState(new Date());
   const [showEffectiveDatePicker, setEffectiveDatePicker] = useState(false);
+
+  const { formData, sharedData } = route.params;
 
   const toggleDOBpicker = () => {
     setShowDOBPicker(!showDOBPicker);
@@ -69,6 +71,41 @@ const InsuranceSignUpTwo = ({ navigation }) => {
   const confirmIOSEffectiveDate = () => {
     setDateForEffectiveDate(effectiveDate.toDateString());
     toggleEffectiveDatePicker();
+  };
+
+  const onSubmitFormHandler = async (event) => {
+
+    const updatedFormData = {
+      ...formData,
+      insuranceType,
+      dateOfBirth,
+      dateForEffectiveDate,
+      relationship
+    }
+
+    console.log(updatedFormData)
+
+    // setIsLoading(true);
+
+    // try {
+    //   const response = await axios.post(``, {
+        
+    //   });
+
+    //   if (response.status === 201) {
+    //     alert(` You have created: ${JSON.stringify(response.data)}`);
+    //     setIsLoading(false);
+    //     setAddress("");
+    //     setCity("");
+    //     setDateOfBirth("");
+    //   } else {
+    //     throw new Error("An error has occurred");
+    //   }
+    // } catch (error) {
+    //   alert("An error has occurred");
+    //   setIsLoading(false);
+    // }
+    navigation.navigate('Verification')
   };
 
   const checkifDetailsFilled = insuranceType !== "" || relationship !== "";
@@ -217,7 +254,7 @@ const InsuranceSignUpTwo = ({ navigation }) => {
         <TouchableOpacity
           // isabled={!checkifDetailsFilled}
           style={styles.button}
-          onPress={() => navigation.navigate("Verification")}
+          onPress={onSubmitFormHandler}
         >
           <Text style={styles.buttonText}>Next</Text>
         </TouchableOpacity>
