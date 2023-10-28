@@ -12,14 +12,14 @@ class Patient {
     dob,
     insuranceID
   ) {
-    this.patientID = uuidv4(); // Auto-generate UUID
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.address = address;
-    this.phoneNumber = phoneNumber;
-    this.email = email;
-    this.dob = dob;
-    this.insuranceID = insuranceID;
+    this.patientID = uuidv4();
+    this.firstName = firstName || "";
+    this.lastName = lastName || "";
+    this.address = address || "";
+    this.phoneNumber = phoneNumber || "";
+    this.email = email || "";
+    this.dob = dob || "";
+    this.insuranceID = insuranceID || "";
   }
 
   // Add a new patient to the Firestore collection

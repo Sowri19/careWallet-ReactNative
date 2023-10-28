@@ -21,6 +21,24 @@ const LogIn = ({ navigation }) => {
 
   const checkifDetailsFilled = loginID !== "" && password !== "";
 
+  const loginUser = async () => {
+    try {
+      const response = await axios.post("/path/to/server/endpoint", {
+        email: loginID,
+        password: password,
+      });
+
+      if (response.data.success) {
+        await firebase.auth().signInWithEmailAndPassword(loginID, password);
+
+        navigation.navigate("NextScreen");
+      } else {
+        console.log("Authentication failed on the server.");
+      }
+    } catch (error) {
+      console.log("An error occurred:", error);
+    }
+  };
   return (
     <SafeAreaView style={styles.screenWrapper}>
       <View style={styles.loginFields}>
@@ -69,15 +87,13 @@ const LogIn = ({ navigation }) => {
         </View>
         <View style={styles.rememberMe}>
           <Pressable style={styles.rememberMeCheckbox}>
-          <CheckBox
-            isChecked = {rememberMe}
-            onClick={() => setRememberMe(!rememberMe)}
-            checkedCheckBoxColor="darkblue"
-            uncheckedCheckBoxColor="darkblue"
-          />
-          <Text style={styles.belowInputText}>
-              Remember me
-          </Text>
+            <CheckBox
+              isChecked={rememberMe}
+              onClick={() => setRememberMe(!rememberMe)}
+              checkedCheckBoxColor="darkblue"
+              uncheckedCheckBoxColor="darkblue"
+            />
+            <Text style={styles.belowInputText}>Remember me</Text>
           </Pressable>
           <Text
             style={styles.belowInputText}
@@ -87,11 +103,9 @@ const LogIn = ({ navigation }) => {
           </Text>
         </View>
         <TouchableOpacity
-          isabled={!checkifDetailsFilled}
+          disabled={!checkifDetailsFilled}
           style={styles.button}
-          onPress={() => {
-            console.log(loginID + " " + password);
-          }}
+          onPress={loginUser}
         >
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
@@ -187,12 +201,12 @@ const styles = StyleSheet.create({
   rememberMe: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   rememberMeCheckbox: {
-    flexDirection:"row",
-    justifyContent:"space-between",
-    alignItems: "center"
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   belowInputText: {
     fontSize: 15,

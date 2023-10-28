@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
 import {
   View,
   Text,
@@ -7,45 +8,61 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  KeyboardAvoidingView,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import InputField from '../components/InputField';
-
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import InputField from "../components/InputField";
 
 const RegisterPageOne = ({ navigation }) => {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [newPassword, setNewPassword] = React.useState('');
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [newPassword, setNewPassword] = React.useState("");
   const [newPasswordVisible, setNewPasswordVisibility] = React.useState(false);
-  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState("");
   const [confirmPasswordVisible, setConfirmPasswordVisibility] =
     React.useState(false);
 
-  const [sharedData, setSharedData] = useState('Shared data to be passed');
+  const [sharedData, setSharedData] = useState("Shared data to be passed");
 
   const checkifDetailsFilled =
-    name !== '' &&
-    email !== '' &&
-    newPassword !== '' &&
-    confirmPassword !== '' &&
+    name !== "" &&
+    email !== "" &&
+    newPassword !== "" &&
+    confirmPassword !== "" &&
     newPassword !== confirmPassword;
-  
-  const handleNext = () => {
+
+  const handleNext = async () => {
     const formData = {
       name,
       email,
-      newPassword
+      newPassword,
     };
 
-    navigation.navigate('RegisterPageTwo',{formData, sharedData})
-  }
+    try {
+      // Send a POST request to the API to add the data
+      const response = await axios.post(
+        "http://localhost:3000/patients",
+        formData
+      );
+
+      // Check the response for success or handle errors as needed
+      if (response.status === 200) {
+        console.log("Data added successfully!");
+        navigation.navigate("RegisterPageTwo", { formData, sharedData });
+      } else {
+        console.error("Failed to add data to the API.");
+        // Handle the error as needed, e.g., show an error message to the user.
+      }
+    } catch (error) {
+      console.error("An error occurred while making the API request:", error);
+      // Handle the error as needed, e.g., show an error message to the user.
+    }
+  };
 
   return (
     <SafeAreaView style={styles.screenWrapper}>
       <View style={styles.registerFields}>
         <Image
-          source={require('../utilities/CareWalletLogo.png')}
+          source={require("../utilities/CareWalletLogo.png")}
           style={styles.image}
         />
         <Text style={styles.welcomeText}>Welcome!</Text>
@@ -53,9 +70,9 @@ const RegisterPageOne = ({ navigation }) => {
           <Text style={styles.pageTitle}>Sign Up</Text>
         </View>
         <InputField
-          inputName={'Name'}
-          placeholderValue={'Enter your name'}
-          placeholderColor={'darkblue'}
+          inputName={"Name"}
+          placeholderValue={"Enter your name"}
+          placeholderColor={"darkblue"}
           onChangeEvent={(newText) => {
             setName(newText);
           }}
@@ -64,9 +81,9 @@ const RegisterPageOne = ({ navigation }) => {
           inputStyle={styles.input}
         />
         <InputField
-          inputName={'Email'}
-          placeholderValue={'Enter your email'}
-          placeholderColor={'darkblue'}
+          inputName={"Email"}
+          placeholderValue={"Enter your email"}
+          placeholderColor={"darkblue"}
           onChangeEvent={(newText) => {
             setEmail(newText);
           }}
@@ -79,7 +96,7 @@ const RegisterPageOne = ({ navigation }) => {
           <View style={styles.passwordSection}>
             <TextInput
               placeholder="Enter Password"
-              placeholderTextColor={'darkblue'}
+              placeholderTextColor={"darkblue"}
               onChangeText={(newText) => {
                 setNewPassword(newText);
               }}
@@ -93,7 +110,7 @@ const RegisterPageOne = ({ navigation }) => {
               }}
             >
               <Ionicons
-                name={newPasswordVisible ? 'eye-off' : 'eye'}
+                name={newPasswordVisible ? "eye-off" : "eye"}
                 size={24}
                 color="gray"
                 style={styles.eyeIcon}
@@ -106,7 +123,7 @@ const RegisterPageOne = ({ navigation }) => {
           <View style={styles.passwordSection}>
             <TextInput
               placeholder="Confirm Password"
-              placeholderTextColor={'darkblue'}
+              placeholderTextColor={"darkblue"}
               onChangeText={(newText) => {
                 setConfirmPassword(newText);
               }}
@@ -120,7 +137,7 @@ const RegisterPageOne = ({ navigation }) => {
               }}
             >
               <Ionicons
-                name={confirmPasswordVisible ? 'eye-off' : 'eye'}
+                name={confirmPasswordVisible ? "eye-off" : "eye"}
                 size={24}
                 color="gray"
                 style={styles.eyeIcon}
@@ -130,7 +147,7 @@ const RegisterPageOne = ({ navigation }) => {
         </View>
 
         <TouchableOpacity
-          isabled={!checkifDetailsFilled}
+          disabled={!checkifDetailsFilled}
           style={styles.button}
           onPress={handleNext}
         >
@@ -139,7 +156,7 @@ const RegisterPageOne = ({ navigation }) => {
         <View style={styles.registerSection}>
           <Text style={styles.belowInputText}>Already have an account? </Text>
           <Text
-            onPress={() => navigation.navigate('Log in')}
+            onPress={() => navigation.navigate("Log in")}
             style={styles.registerText}
           >
             Login
@@ -153,39 +170,39 @@ const RegisterPageOne = ({ navigation }) => {
 const styles = StyleSheet.create({
   screenWrapper: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 20,
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 20,
-    borderColor: 'grey'
+    borderColor: "grey",
   },
   registerFields: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     marginTop: 0,
-    marginBottom:60
+    marginBottom: 60,
   },
   image: {
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
     width: 250,
     height: 100,
   },
   welcomeText: {
     fontSize: 30,
-    color: 'darkblue',
+    color: "darkblue",
   },
   pageTitle: {
     fontSize: 40,
-    fontWeight: 'bold',
-    color: 'darkblue',
+    fontWeight: "bold",
+    color: "darkblue",
   },
   inputText: {
     fontSize: 20,
-    color: 'darkblue',
+    color: "darkblue",
   },
   input: {
     height: 60,
@@ -194,11 +211,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 5,
     paddingLeft: 10,
-    borderColor: 'darkblue',
+    borderColor: "darkblue",
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#00008B',
+    alignItems: "center",
+    backgroundColor: "#00008B",
     height: 60,
     marginTop: 12,
     marginBottom: 12,
@@ -208,18 +225,18 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    color: 'white',
+    color: "white",
     padding: 10,
   },
   passwordSection: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 60,
     marginTop: 12,
     marginBottom: 12,
     borderWidth: 0.5,
     borderRadius: 5,
     paddingLeft: 10,
-    borderColor: 'darkblue',
+    borderColor: "darkblue",
   },
   passwordInput: {
     flex: 1,
@@ -228,21 +245,21 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   rememberMe: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   belowInputText: {
     fontSize: 15,
-    color: 'darkblue',
+    color: "darkblue",
   },
   registerText: {
     fontSize: 15,
-    color: 'darkblue',
-    fontWeight: 'bold',
+    color: "darkblue",
+    fontWeight: "bold",
   },
   registerSection: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
 });
 
