@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,18 +8,17 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
-  Pressable
-} from 'react-native';
-import InputField from '../components/InputField';
-import DateTimePicker from '@react-native-community/datetimepicker';
+  Pressable,
+} from "react-native";
+import InputField from "../components/InputField";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
 
-
 const RegisterPageTwo = ({ navigation, route }) => {
-  const [address, setAddress] = React.useState('');
-  const [city, setCity] = React.useState('');
-  const [zipcode, setZipcode] = React.useState('');
-  const [dateOfBirth, setDateOfBirth] = React.useState('');
+  const [address, setAddress] = React.useState("");
+  const [city, setCity] = React.useState("");
+  const [zipcode, setZipcode] = React.useState("");
+  const [dateOfBirth, setDateOfBirth] = React.useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const [memberDOB, setMemberDOB] = useState(new Date());
@@ -50,53 +49,52 @@ const RegisterPageTwo = ({ navigation, route }) => {
     toggleDOBpicker();
   };
 
-  const checkifDetailsFilled = address !== '' || city !== '' || zipcode !== '';
+  const checkifDetailsFilled = address !== "" || city !== "" || zipcode !== "";
 
   const onSubmitFormHandler = async (event) => {
-    // if (!fullName.trim() || !email.trim()) {
-    //   alert("Name or Email is invalid");
-    //   return;
-    // }
-
     const updatedFormData = {
       ...formData,
       address,
       city,
       zipcode,
-      dateOfBirth
+      dateOfBirth,
+    };
+
+    console.log(updatedFormData);
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(`http://localhost:3000/patients`, {
+        firstName: updatedFormData.name,
+        lastName: "",
+        address: updatedFormData.address,
+        phoneNumber: "",
+        email: updatedFormData.email,
+        dob: updatedFormData.dateOfBirth,
+      });
+
+      if (response.status === 201) {
+        alert(` You have created: ${JSON.stringify(response.data)}`);
+        setIsLoading(false);
+        setAddress("");
+        setCity("");
+        setDateOfBirth("");
+      } else {
+        throw new Error("An error has occurred");
+      }
+    } catch (error) {
+      alert("An error has occurred");
+      setIsLoading(false);
     }
-
-    console.log(updatedFormData)
-
-    // setIsLoading(true);
-
-    // try {
-    //   const response = await axios.post(``, {
-        
-    //   });
-
-    //   if (response.status === 201) {
-    //     alert(` You have created: ${JSON.stringify(response.data)}`);
-    //     setIsLoading(false);
-    //     setAddress("");
-    //     setCity("");
-    //     setDateOfBirth("");
-    //   } else {
-    //     throw new Error("An error has occurred");
-    //   }
-    // } catch (error) {
-    //   alert("An error has occurred");
-    //   setIsLoading(false);
-    // }
-    navigation.navigate('InsuranceSignUpOne')
+    navigation.navigate("InsuranceSignUpOne");
   };
-
 
   return (
     <SafeAreaView behavior="padding" style={styles.screenWrapper}>
       <View style={styles.registerFields}>
         <Image
-          source={require('../utilities/CareWalletLogo.png')}
+          source={require("../utilities/CareWalletLogo.png")}
           style={styles.image}
         />
         <Text style={styles.welcomeText}>Page 2</Text>
@@ -104,9 +102,9 @@ const RegisterPageTwo = ({ navigation, route }) => {
           <Text style={styles.pageTitle}>Sign Up</Text>
         </View>
         <InputField
-          inputName={'Address'}
-          placeholderValue={'Enter your street address'}
-          placeholderColor={'darkblue'}
+          inputName={"Address"}
+          placeholderValue={"Enter your street address"}
+          placeholderColor={"darkblue"}
           onChangeEvent={(newText) => {
             setAddress(newText);
           }}
@@ -116,9 +114,9 @@ const RegisterPageTwo = ({ navigation, route }) => {
           on
         />
         <InputField
-          inputName={'City'}
-          placeholderValue={'Enter your city'}
-          placeholderColor={'darkblue'}
+          inputName={"City"}
+          placeholderValue={"Enter your city"}
+          placeholderColor={"darkblue"}
           onChangeEvent={(newText) => {
             setCity(newText);
           }}
@@ -130,7 +128,7 @@ const RegisterPageTwo = ({ navigation, route }) => {
           <Text style={styles.inputText}>Zipcode</Text>
           <TextInput
             placeholder="Enter your zipcode"
-            placeholderTextColor={'darkblue'}
+            placeholderTextColor={"darkblue"}
             onChangeText={(newNumber) => {
               setZipcode(newNumber);
             }}
@@ -141,57 +139,57 @@ const RegisterPageTwo = ({ navigation, route }) => {
         </View>
 
         <View>
-            <Text style={styles.inputText}>Member's Date of Birth</Text>
+          <Text style={styles.inputText}>Member's Date of Birth</Text>
 
-            {showDOBPicker && (
-              <DateTimePicker
-                mode="date"
-                display="spinner"
-                value={memberDOB}
-                onChange={onChangeDOB}
-                style={styles.datePicker}
-              />
-            )}
+          {showDOBPicker && (
+            <DateTimePicker
+              mode="date"
+              display="spinner"
+              value={memberDOB}
+              onChange={onChangeDOB}
+              style={styles.datePicker}
+            />
+          )}
 
-            {showDOBPicker && Platform.OS === "ios" && (
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-around" }}
+          {showDOBPicker && Platform.OS === "ios" && (
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-around" }}
+            >
+              <TouchableOpacity
+                style={[
+                  styles.datePickerButton,
+                  { backgroundColor: "#11182711" },
+                ]}
+                onPress={toggleDOBpicker}
               >
-                <TouchableOpacity
-                  style={[
-                    styles.datePickerButton,
-                    { backgroundColor: "#11182711" },
-                  ]}
-                  onPress={toggleDOBpicker}
-                >
-                  <Text style={[styles.datePickerText, { color: "darkblue" }]}>
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
+                <Text style={[styles.datePickerText, { color: "darkblue" }]}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={[styles.datePickerButton]}
-                  onPress={confirmIOSDOB}
-                >
-                  <Text style={[styles.datePickerText]}>Confirm</Text>
-                </TouchableOpacity>
-              </View>
-            )}
+              <TouchableOpacity
+                style={[styles.datePickerButton]}
+                onPress={confirmIOSDOB}
+              >
+                <Text style={[styles.datePickerText]}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          )}
 
-            {!showDOBPicker && (
-              <Pressable onPress={toggleDOBpicker}>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Enter Member's Date of Birth"
-                  value={dateOfBirth}
-                  onChangeText={setDateOfBirth}
-                  placeholderTextColor="darkblue"
-                  editable={false}
-                  onPressIn={toggleDOBpicker}
-                />
-              </Pressable>
-            )}
-          </View>
+          {!showDOBPicker && (
+            <Pressable onPress={toggleDOBpicker}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Member's Date of Birth"
+                value={dateOfBirth}
+                onChangeText={setDateOfBirth}
+                placeholderTextColor="darkblue"
+                editable={false}
+                onPressIn={toggleDOBpicker}
+              />
+            </Pressable>
+          )}
+        </View>
 
         <TouchableOpacity
           isabled={!checkifDetailsFilled}
@@ -204,7 +202,7 @@ const RegisterPageTwo = ({ navigation, route }) => {
         <View style={styles.registerSection}>
           <Text style={styles.belowInputText}>Already have an account? </Text>
           <Text
-            onPress={() => navigation.navigate('Log in')}
+            onPress={() => navigation.navigate("Log in")}
             style={styles.registerText}
           >
             Login
@@ -218,39 +216,39 @@ const RegisterPageTwo = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   screenWrapper: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 20,
     marginLeft: 20,
     marginRight: 20,
     borderRadius: 20,
-    borderColor: 'darkblue'
+    borderColor: "darkblue",
   },
   registerFields: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     marginTop: 0,
-    marginBottom:60
+    marginBottom: 60,
   },
   image: {
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
     width: 250,
     height: 100,
   },
   welcomeText: {
     fontSize: 30,
-    color: 'darkblue',
+    color: "darkblue",
   },
   pageTitle: {
     fontSize: 40,
-    fontWeight: 'bold',
-    color: 'darkblue',
+    fontWeight: "bold",
+    color: "darkblue",
   },
   inputText: {
     fontSize: 20,
-    color: 'darkblue',
+    color: "darkblue",
   },
   input: {
     height: 60,
@@ -259,11 +257,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 5,
     paddingLeft: 10,
-    borderColor: 'darkblue',
+    borderColor: "darkblue",
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#00008B',
+    alignItems: "center",
+    backgroundColor: "#00008B",
     height: 60,
     marginTop: 12,
     marginBottom: 12,
@@ -273,18 +271,18 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 20,
-    color: 'white',
+    color: "white",
     padding: 10,
   },
   passwordSection: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 60,
     marginTop: 12,
     marginBottom: 12,
     borderWidth: 0.5,
     borderRadius: 5,
     paddingLeft: 10,
-    borderColor: 'darkblue',
+    borderColor: "darkblue",
   },
   passwordInput: {
     flex: 1,
@@ -293,29 +291,29 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   rememberMe: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   belowInputText: {
     fontSize: 15,
-    color: 'darkblue',
+    color: "darkblue",
   },
   registerText: {
     fontSize: 15,
-    color: 'darkblue',
-    fontWeight: 'bold',
+    color: "darkblue",
+    fontWeight: "bold",
   },
   registerSection: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
   datePicker: {
     height: 120,
-    width: 250
+    width: 250,
   },
   datePickerButton: {
-    alignItems: 'center',
-    backgroundColor: '#00008B',
+    alignItems: "center",
+    backgroundColor: "#00008B",
     height: 40,
     marginTop: 6,
     marginBottom: 12,
@@ -325,8 +323,8 @@ const styles = StyleSheet.create({
   },
   datePickerText: {
     fontSize: 15,
-    color: 'white'
-  }
+    color: "white",
+  },
 });
 
 export default RegisterPageTwo;

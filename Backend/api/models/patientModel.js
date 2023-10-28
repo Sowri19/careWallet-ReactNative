@@ -27,7 +27,7 @@ class Patient {
     try {
       const patientRef = await db.collection("patients").doc(this.patientID);
       await patientRef.set({
-        patientID: this.patientID, // Save the patientID as a separate field
+        patientID: this.patientID,
         firstName: this.firstName,
         lastName: this.lastName,
         address: this.address,
