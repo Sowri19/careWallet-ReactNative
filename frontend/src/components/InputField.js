@@ -1,5 +1,5 @@
-import React from 'react'
-import { View, Text, TextInput } from 'react-native'
+import React from "react";
+import { View, Text, TextInput } from "react-native";
 
 const InputField = (props) => {
   const {
@@ -9,22 +9,22 @@ const InputField = (props) => {
     onChangeEvent,
     inputValue,
     inputTextStyle,
-    inputStyle
-  } = props
+    inputStyle,
+  } = props;
 
   return (
     <View>
-        <Text
-        style={inputTextStyle}>{inputName}</Text>
-        <TextInput
+      <Text style={inputTextStyle}>{inputName}</Text>
+      <TextInput
         placeholder={placeholderValue}
         placeholderTextColor={placeholderColor}
         onChangeText={onChangeEvent}
         value={inputValue}
         style={inputStyle}
-        />
+      />
     </View>
-  )
-}
+  );
+};
 
-export default InputField
+export default InputField;
+// Path: frontend/src/components/SubmitButton.js
