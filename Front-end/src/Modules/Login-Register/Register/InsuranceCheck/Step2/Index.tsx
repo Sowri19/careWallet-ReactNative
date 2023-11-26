@@ -8,7 +8,7 @@ import {
   StyleSheet,
   SafeAreaView,
 } from 'react-native';
-import InputField from '../components/InputField';
+import InputField from '../../../../../Components/InputField';
 
 // Define types for your navigation props
 type Props = {

@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import InputField from "../components/InputField";
+import InputField from "../../../../Components/InputField";
 
 const RegisterPageOne = ({ navigation }) => {
   const [name, setName] = React.useState("");

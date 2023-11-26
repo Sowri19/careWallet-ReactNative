@@ -9,7 +9,7 @@ import {
   StyleSheet,
   SafeAreaView
 } from 'react-native';
-import InputField from '../components/InputField';
+import InputField from '../Components/InputField';
 import { AntDesign } from '@expo/vector-icons';
 
 const Verification = () => {

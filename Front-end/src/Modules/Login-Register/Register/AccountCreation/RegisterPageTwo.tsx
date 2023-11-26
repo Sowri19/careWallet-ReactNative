@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   Pressable,
 } from "react-native";
-import InputField from "../components/InputField";
+import InputField from "../Components/InputField";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from "axios";
 

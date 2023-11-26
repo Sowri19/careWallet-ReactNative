@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Platform, Pressable } from "react-native"; 
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import InputField from "../components/InputField";
+import InputField from "../../../../../Components/InputField";
 import {
   SafeArea,
   FieldsContainer,
@@ -14,7 +14,7 @@ import {
   TextLabel,
   BottomText,
   BottomTextContainer
-} from './Insurance/Styles';
+} from './Styles';
 
 type Props = {
   navigation: any; 
