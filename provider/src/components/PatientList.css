@@ -1,0 +1,64 @@
+/* src/components/PatientList.css */
+.patient-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .welcome-header {
+    background-color: #4caf50; /* Green background color */
+    color: white; /* White text color */
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .filter-item {
+    margin-bottom: 10px;
+  }
+  
+  .patient-table {
+    border: 1px solid black;
+    border-collapse: collapse;
+    margin-top: 20px;
+    width: 50%;
+  }
+  
+  .patient-table th,
+  .patient-table td {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: left;
+  }
+  
+  .patient-table th {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  h3 {
+    color: #4caf50;
+    margin-bottom: 10px;
+  }
+
+
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  

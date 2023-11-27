@@ -1,0 +1,30 @@
+/* src/components/Login.css */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* 100% of the viewport height */
+  }
+  
+  h2 {
+    color: #333; /* Set your desired text color */
+  }
+  
+  label {
+    margin-top: 10px; /* Adjust the margin as needed */
+  }
+  
+  input {
+    margin-bottom: 10px; /* Adjust the margin as needed */
+    padding: 5px; /* Adjust the padding as needed */
+    margin-right: 1rem;
+  }
+  
+  button {
+    background-color: #4caf50; /* Set your desired button background color */
+    color: white; /* Set your desired button text color */
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+  
