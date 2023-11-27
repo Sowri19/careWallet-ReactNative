@@ -43,4 +43,22 @@ router.get("/:patientID", async (req, res) => {
   }
 });
 
+
+// Update the /patients route to fetch all patient records
+router.get("/", async (req, res) => {
+  try {
+    // Fetch all patient records from the database
+    const allPatients = await PatientController.getAllPatients();
+
+    if (allPatients.length > 0) {
+      res.json(allPatients);
+    } else {
+      res.status(404).json({ error: "No patients found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 module.exports = router;

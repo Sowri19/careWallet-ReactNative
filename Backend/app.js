@@ -18,11 +18,13 @@ app.use(cors());
 const patientRoutes = require("./api/routes/patientRoutes");
 const doctorRoutes = require("./api/routes/doctorRoutes");
 const insuranceRoutes = require("./api/routes/insuranceRoutes");
+const visitsRoutes = require("./api/routes/visitsRoutes");
 
 // Use the userRoutes for user-related endpoints
 app.use("/patients", patientRoutes);
 app.use("/doctors", doctorRoutes);
 app.use("/insurances", insuranceRoutes);
+app.use("/visits", visitsRoutes);
 
 // Error handling middleware
 app.use((error, req, res, next) => {

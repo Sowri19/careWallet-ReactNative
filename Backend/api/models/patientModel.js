@@ -65,6 +65,45 @@ class Patient {
       throw new Error("Error fetching patient document: " + error.message);
     }
   }
+
+
+  static async getAllPatients() {
+    try {
+      const patientCollection = db.collection("patients");
+      const patientsSnapshot = await patientCollection.get();
+      const allPatients = [];
+  
+      patientsSnapshot.forEach((patientDoc) => {
+        const patientData = patientDoc.data();
+        const patient = new Patient(
+          patientData.firstName,
+          patientData.lastName,
+          patientData.address,
+          patientData.phoneNumber,
+          patientData.email,
+          patientData.dob,
+          patientData.insuranceID
+        );
+        allPatients.push(patient);
+      });
+  
+      return allPatients;
+    } catch (error) {
+      throw new Error("Error fetching all patients: " + error.message);
+    }
+  }
+
+  static async patientExists(patientID) {
+    try {
+      const patientRef = await db.collection("patients").doc(patientID.toString());
+      const patientSnapshot = await patientRef.get();
+
+      return patientSnapshot.exists;
+    } catch (error) {
+      throw new Error("Error checking patient existence: " + error.message);
+    }
+  }
+  
 }
 
 module.exports = Patient;
