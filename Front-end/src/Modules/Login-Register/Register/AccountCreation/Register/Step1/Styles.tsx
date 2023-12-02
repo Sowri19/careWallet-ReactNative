@@ -1,26 +1,24 @@
 import styled from "styled-components/native";
+import { Ionicons } from "@expo/vector-icons";
 
-const Container = styled.SafeAreaView`
+const SafeAreaContainer = styled.SafeAreaView`
   flex: 1;
   background-color: #fff;
   align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 20px;
   border-radius: 20px;
   border-color: grey;
 `;
 
-const RegisterFields = styled.View`
+const Container = styled.View`
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
   margin-top: 0;
-  margin-bottom: 60;
+  margin-bottom: 60px;
 `;
 
-const LogoImage = styled.Image`
+const StyledImage = styled.Image`
   resize-mode: stretch;
   width: 250px;
   height: 100px;
@@ -37,11 +35,22 @@ const PageTitle = styled.Text`
   color: darkblue;
 `;
 
-const MemberIdView = styled.View`
-  /* Add any additional styles for MemberIdView here */
+const InputText = styled.Text`
+  font-size: 20px;
+  color: darkblue;
 `;
 
-const NextButton = styled.TouchableOpacity`
+const StyledInput = styled.TextInput`
+  height: 60px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-width: 0.5px;
+  border-radius: 5px;
+  padding-left: 10px;
+  border-color: darkblue;
+`;
+
+const Button = styled.TouchableOpacity`
   align-items: center;
   background-color: #00008b;
   height: 60px;
@@ -58,9 +67,19 @@ const ButtonText = styled.Text`
   padding: 10px;
 `;
 
-const RegisterSection = styled.View`
+const PasswordSection = styled.View`
   flex-direction: row;
-  justify-content: center;
+  height: 60px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-width: 0.5px;
+  border-radius: 5px;
+  padding-left: 10px;
+  border-color: darkblue;
+`;
+
+const EyeIcon = styled(Ionicons)`
+  padding: 20px;
 `;
 
 const BelowInputText = styled.Text`
@@ -74,16 +93,24 @@ const RegisterText = styled.Text`
   font-weight: bold;
 `;
 
+const RegisterSection = styled.View`
+  flex-direction: row;
+  justify-content: center;
+`;
+
 export {
+  SafeAreaContainer,
   Container,
-  RegisterFields,
-  LogoImage,
+  StyledImage,
   WelcomeText,
   PageTitle,
-  MemberIdView,
-  NextButton,
+  InputText,
+  StyledInput,
+  Button,
   ButtonText,
-  RegisterSection,
+  PasswordSection,
+  EyeIcon,
   BelowInputText,
   RegisterText,
+  RegisterSection,
 };
