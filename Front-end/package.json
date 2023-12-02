@@ -12,9 +12,9 @@
   "dependencies": {
     "@firebase/auth": "^1.4.0",
     "@react-native-community/checkbox": "^0.5.16",
-    "@react-native-community/datetimepicker": "^7.6.2",
+    "@react-native-community/datetimepicker": "7.2.0",
     "@react-navigation/bottom-tabs": "^6.5.9",
-    "@react-navigation/native": "^6.1.8",
+    "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.14",
     "@react-navigation/stack": "^6.3.20",
     "@types/jest": "^29.5.10",

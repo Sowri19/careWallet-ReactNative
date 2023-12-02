@@ -18,17 +18,18 @@ import {
   StyledButton,
   ButtonText,
 } from "./Styles";
+import { ParamListBase, RouteProp } from "@react-navigation/native";
+
+type FormData = {
+  name: string;
+  email: string;
+};
 
 interface RegisterPageTwoProps {
   navigation: {
     navigate: (screen: string, params?: any) => void;
   };
-  route: {
-    params: {
-      formData: any;
-      sharedData: string;
-    };
-  };
+  route: RouteProp<ParamListBase, "RegisterPageTwo">;
 }
 
 const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
@@ -44,7 +45,10 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
   const [memberDOB, setMemberDOB] = useState<Date>(new Date());
   const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
 
-  const { formData, sharedData } = route.params;
+  const { formData, sharedData } = route.params as {
+    formData: FormData;
+    sharedData: string;
+  };
 
   const toggleDOBpicker = () => {
     setShowDOBPicker(!showDOBPicker);
