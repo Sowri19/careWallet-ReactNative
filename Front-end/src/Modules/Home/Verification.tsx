@@ -13,7 +13,7 @@ const Verification: React.FC = () => {
   return (
     <ScreenWrapper>
       <VerificationFields>
-        <StyledImage source={require("../utilities/CareWalletLogo.png")} />
+        <StyledImage source={require("../../utilities/CareWalletLogo.png")} />
         <TickIcon name="checkcircleo" />
         <ButtonArea>
           <StyledButton>

@@ -73,7 +73,9 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
   return (
     <SafeAreaContainer>
       <Container>
-        <StyledImage source={require("../utilities/CareWalletLogo.png")} />
+        <StyledImage
+          source={require("../../../../../../utilities/CareWalletLogo.png")}
+        />
         <WelcomeText>Welcome!</WelcomeText>
         <PageTitle>Sign Up</PageTitle>
 

@@ -47,7 +47,9 @@ const InsuranceSignUpOne: React.FC<Props> = ({ navigation }) => {
   return (
     <Container>
       <RegisterFields>
-        <LogoImage source={require("../utilities/CareWalletLogo.png")} />
+        <LogoImage
+          source={require("../../../../../utilities/CareWalletLogo.png")}
+        />
         <WelcomeText>Page 5</WelcomeText>
         <PageTitle>Sign Up</PageTitle>
 

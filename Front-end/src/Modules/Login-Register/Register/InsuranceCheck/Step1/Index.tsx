@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Platform, Pressable } from "react-native"; 
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { Platform, Pressable } from "react-native";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import InputField from "../../../../../Components/InputField";
 import {
   SafeArea,
@@ -13,12 +15,12 @@ import {
   CustomTextInput,
   TextLabel,
   BottomText,
-  BottomTextContainer
-} from './Styles';
+  BottomTextContainer,
+} from "./Styles";
 
 type Props = {
-  navigation: any; 
-  route: any; 
+  navigation: any;
+  route: any;
 };
 
 const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
@@ -29,7 +31,8 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
   const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
   const [effectiveDate, setEffectiveDate] = useState<Date>(new Date());
   const [dateForEffectiveDate, setDateForEffectiveDate] = useState<string>("");
-  const [showEffectiveDatePicker, setShowEffectiveDatePicker] = useState<boolean>(false);
+  const [showEffectiveDatePicker, setShowEffectiveDatePicker] =
+    useState<boolean>(false);
 
   const { formData, sharedData } = route.params; // Ensure you're using formData and sharedData correctly
 
@@ -38,16 +41,19 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
     setShowDOBPicker(Platform.OS === "ios");
     setMemberDOB(currentDate);
     if (event.type === "set") {
-      setDateOfBirth(currentDate.toISOString().split('T')[0]);
+      setDateOfBirth(currentDate.toISOString().split("T")[0]);
     }
   };
 
-  const onEffectiveDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+  const onEffectiveDateChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date
+  ) => {
     const currentDate = selectedDate || effectiveDate;
     setShowEffectiveDatePicker(Platform.OS === "ios");
     setEffectiveDate(currentDate);
     if (event.type === "set") {
-      setDateForEffectiveDate(currentDate.toISOString().split('T')[0]);
+      setDateForEffectiveDate(currentDate.toISOString().split("T")[0]);
     }
   };
 
@@ -65,7 +71,7 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
       insuranceType,
       dateOfBirth,
       dateForEffectiveDate,
-      relationship
+      relationship,
     };
     console.log(updatedFormData);
   };
@@ -75,10 +81,12 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
   return (
     <SafeArea>
       <FieldsContainer>
-        <CustomImage source={require("../utilities/CareWalletLogo.png")} />
+        <CustomImage
+          source={require("../../../../../utilities/CareWalletLogo.png")}
+        />
         <TitleText>Page 6</TitleText>
         <SubtitleText>Sign Up</SubtitleText>
-        
+
         <InputField
           inputName="Insurance Type"
           placeholderValue="Enter Insurance Type"
@@ -137,7 +145,10 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
           inputValue={relationship}
         />
 
-        <CustomButton onPress={onSubmitFormHandler} disabled={!checkIfDetailsFilled}>
+        <CustomButton
+          onPress={onSubmitFormHandler}
+          disabled={!checkIfDetailsFilled}
+        >
           <ButtonText>Next</ButtonText>
         </CustomButton>
 

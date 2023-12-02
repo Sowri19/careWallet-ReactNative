@@ -54,7 +54,7 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
   return (
     <Container>
       <LoginFields>
-        <LogoImage source={require("../utilities/CareWalletLogo.png")} />
+        <LogoImage source={require("../../../utilities/CareWalletLogo.png")} />
         <WelcomeText>Welcome!</WelcomeText>
 
         <InputField

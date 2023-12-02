@@ -113,7 +113,9 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
 
   return (
     <ScreenWrapper>
-      <StyledImage source={require("../utilities/CareWalletLogo.png")} />
+      <StyledImage
+        source={require("../../../../../../utilities/CareWalletLogo.png")}
+      />
       <WelcomeText>Page 2</WelcomeText>
       <PageTitle>Sign Up</PageTitle>
 
