@@ -1,25 +1,24 @@
 import React, { useState } from "react";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Ionicons } from "@expo/vector-icons";
 import InputField from "../../../Components/InputField";
-import axios from 'axios'; 
-import { StackNavigationProp } from '@react-navigation/stack';
+import axios from "axios";
+import { StackNavigationProp } from "@react-navigation/stack";
 import {
-    Container,
-    LoginFields,
-    LogoImage,
-    WelcomeText,
-    PasswordSection,
-    PasswordInput,
-    EyeIcon,
-    RememberMe,
-    RememberMeCheckbox,
-    BelowInputText,
-    Button,
-    ButtonText,
-    RegisterSection,
-} from './Styles';
-
+  Container,
+  LoginFields,
+  LogoImage,
+  WelcomeText,
+  PasswordSection,
+  PasswordInput,
+  EyeIcon,
+  RememberMe,
+  RememberMeCheckbox,
+  BelowInputText,
+  Button,
+  ButtonText,
+  RegisterSection,
+} from "./Styles";
 
 // Props type
 type Props = {
@@ -84,7 +83,9 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
 
         <RememberMe>
           <RememberMeCheckbox onPress={toggleRememberMe}>
-            {rememberMe && <Ionicons name="checkmark" size={24} color="#00008B" />}
+            {rememberMe && (
+              <Ionicons name="checkmark" size={24} color="#00008B" />
+            )}
             <BelowInputText>Remember me</BelowInputText>
           </RememberMeCheckbox>
           <BelowInputText onPress={() => console.log("forgot password")}>
