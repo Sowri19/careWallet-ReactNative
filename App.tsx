@@ -7,7 +7,6 @@ import InsuranceSignUpTwo from './src/Modules/Login-Register/Register/InsuranceC
 import Verification from './src/Modules/Home/Verification';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// Import statements...
 
 const Stack = createNativeStackNavigator();
 
