@@ -1,3 +1,17 @@
-dist
+# Dependency directories
+node_modules
+bower_components
+
+# Build output directories
 build
-coverage
+dist
+
+# Version control directories
+.git
+
+# Log files
+*.log
+
+# Other files that don't need formatting
+package-lock.json
+yarn.lock

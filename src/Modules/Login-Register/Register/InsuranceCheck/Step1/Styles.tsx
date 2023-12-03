@@ -1,4 +1,4 @@
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
 
 // Styled Components
 const SafeArea = styled.SafeAreaView`
@@ -30,7 +30,7 @@ const SubtitleText = styled.Text`
 
 const CustomButton = styled.TouchableOpacity`
   align-items: center;
-  background-color: #00008B;
+  background-color: #00008b;
   height: 60px;
   margin: 12px 0;
   border-width: 0.5px;
@@ -75,15 +75,15 @@ const BottomTextContainer = styled.View`
 `;
 
 export {
-    SafeArea,
-    FieldsContainer,
-    TitleText,
-    SubtitleText,
-    CustomButton,
-    ButtonText,
-    CustomImage,
-    CustomTextInput,
-    TextLabel,
-    BottomText,
-    BottomTextContainer
-}
+  SafeArea,
+  FieldsContainer,
+  TitleText,
+  SubtitleText,
+  CustomButton,
+  ButtonText,
+  CustomImage,
+  CustomTextInput,
+  TextLabel,
+  BottomText,
+  BottomTextContainer,
+};

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons';
 
 // Styled components
 const Container = styled.SafeAreaView`
@@ -66,7 +66,7 @@ const BelowInputText = styled.Text`
 
 const Button = styled.TouchableOpacity`
   align-items: center;
-  background-color: #00008B;
+  background-color: #00008b;
   height: 60px;
   margin-top: 12px;
   margin-bottom: 12px;
@@ -86,17 +86,17 @@ const RegisterSection = styled.View`
 `;
 
 export {
-    Container,
-    LoginFields,
-    LogoImage,
-    WelcomeText,
-    PasswordSection,
-    PasswordInput,
-    EyeIcon,
-    RememberMe,
-    RememberMeCheckbox,
-    BelowInputText,
-    Button,
-    ButtonText,
-    RegisterSection,
+  Container,
+  LoginFields,
+  LogoImage,
+  WelcomeText,
+  PasswordSection,
+  PasswordInput,
+  EyeIcon,
+  RememberMe,
+  RememberMeCheckbox,
+  BelowInputText,
+  Button,
+  ButtonText,
+  RegisterSection,
 };

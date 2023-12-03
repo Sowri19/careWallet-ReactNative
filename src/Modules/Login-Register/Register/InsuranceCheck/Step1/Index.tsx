@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Platform, Pressable } from "react-native";
+import React, { useState } from 'react';
+import { Platform, Pressable } from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
-import InputField from "../../../../../Components/InputField";
+} from '@react-native-community/datetimepicker';
+import InputField from '../../../../../Components/InputField';
 import {
   SafeArea,
   FieldsContainer,
@@ -16,7 +16,7 @@ import {
   TextLabel,
   BottomText,
   BottomTextContainer,
-} from "./Styles";
+} from './Styles';
 
 type Props = {
   navigation: any;
@@ -24,24 +24,24 @@ type Props = {
 };
 
 const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
-  const [insuranceType, setInsuranceType] = useState<string>("");
-  const [relationship, setRelationship] = useState<string>("");
+  const [insuranceType, setInsuranceType] = useState<string>('');
+  const [relationship, setRelationship] = useState<string>('');
   const [memberDOB, setMemberDOB] = useState<Date>(new Date());
-  const [dateOfBirth, setDateOfBirth] = useState<string>("");
+  const [dateOfBirth, setDateOfBirth] = useState<string>('');
   const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
   const [effectiveDate, setEffectiveDate] = useState<Date>(new Date());
-  const [dateForEffectiveDate, setDateForEffectiveDate] = useState<string>("");
+  const [dateForEffectiveDate, setDateForEffectiveDate] = useState<string>('');
   const [showEffectiveDatePicker, setShowEffectiveDatePicker] =
     useState<boolean>(false);
 
-  const { formData, sharedData } = route.params; // Ensure you're using formData and sharedData correctly
+  const { formData } = route.params; // Ensure you're using formData and sharedData correctly
 
   const onChangeDOB = (event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate || memberDOB;
-    setShowDOBPicker(Platform.OS === "ios");
+    setShowDOBPicker(Platform.OS === 'ios');
     setMemberDOB(currentDate);
-    if (event.type === "set") {
-      setDateOfBirth(currentDate.toISOString().split("T")[0]);
+    if (event.type === 'set') {
+      setDateOfBirth(currentDate.toISOString().split('T')[0]);
     }
   };
 
@@ -50,10 +50,10 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
     selectedDate?: Date
   ) => {
     const currentDate = selectedDate || effectiveDate;
-    setShowEffectiveDatePicker(Platform.OS === "ios");
+    setShowEffectiveDatePicker(Platform.OS === 'ios');
     setEffectiveDate(currentDate);
-    if (event.type === "set") {
-      setDateForEffectiveDate(currentDate.toISOString().split("T")[0]);
+    if (event.type === 'set') {
+      setDateForEffectiveDate(currentDate.toISOString().split('T')[0]);
     }
   };
 
@@ -76,13 +76,13 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
     console.log(updatedFormData);
   };
 
-  const checkIfDetailsFilled = insuranceType !== "" && relationship !== "";
+  const checkIfDetailsFilled = insuranceType !== '' && relationship !== '';
 
   return (
     <SafeArea>
       <FieldsContainer>
         <CustomImage
-          source={require("../../../../../utilities/CareWalletLogo.png")}
+          source={require('../../../../../utilities/CareWalletLogo.png')}
         />
         <TitleText>Page 6</TitleText>
         <SubtitleText>Sign Up</SubtitleText>
@@ -109,7 +109,7 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
         {showDOBPicker && (
           <DateTimePicker
             mode="date"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
             value={memberDOB}
             onChange={onChangeDOB}
             maximumDate={new Date()}
@@ -130,7 +130,7 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
         {showEffectiveDatePicker && (
           <DateTimePicker
             mode="date"
-            display={Platform.OS === "ios" ? "spinner" : "default"}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
             value={effectiveDate}
             onChange={onEffectiveDateChange}
             maximumDate={new Date()}
@@ -153,7 +153,7 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
         </CustomButton>
 
         <BottomTextContainer>
-          <BottomText onPress={() => navigation.navigate("Log in")}>
+          <BottomText onPress={() => navigation.navigate('Log in')}>
             Login
           </BottomText>
         </BottomTextContainer>
