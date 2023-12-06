@@ -53,7 +53,10 @@ async def visit_doctor(card_id: str, doctor_id: str):
         ) as response:
             data = await response.json()
             patient_first_name = data.get("patientFirstName")
-            print(f"Hello {patient_first_name}, you will be treated very soon.")
+            if patient_first_name:
+              print(f"Hello {patient_first_name}, you will be treated very soon.")
+            else:
+              print("Please register for CareWallet.")
 
 
 if __name__ == "__main__":
