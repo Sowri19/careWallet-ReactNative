@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 
-// Define a type for the slice state
 export interface LoginState {
   loginID: string;
   password: string;
 }
 
-// Define the initial state using that type
 const initialState: LoginState = {
   loginID: '',
   password: '',
@@ -15,7 +13,6 @@ const initialState: LoginState = {
 
 export const loginSlice = createSlice({
   name: 'loginStore',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     setLoginID: (state, action: PayloadAction<string>) => {
@@ -29,7 +26,6 @@ export const loginSlice = createSlice({
 
 export const { setLoginID, setPassword } = loginSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
 export const selectLoginData = (state: RootState) => state.loginState;
 
 export const selectLoginID = (state: RootState) => state.loginState.loginID;

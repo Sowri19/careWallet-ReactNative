@@ -19,8 +19,6 @@ import {
   RegisterSection,
 } from './Styles';
 import InputTypeOne from '../../../Components/InputTypeOne';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { setUserDataLogin } from '../../../Store/actions';
 import { useAppDispatch, useAppSelector } from '../../../ReduxStore/hooks';
 import {
   setLoginID as setIDAction,
