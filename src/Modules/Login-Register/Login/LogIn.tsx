@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Ionicons } from '@expo/vector-icons';
-import InputField from '../../../Components/InputField';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
@@ -19,7 +18,14 @@ import {
   ButtonText,
   RegisterSection,
 } from './Styles';
-import InputTypeOne from "../../../Components/InputTypeOne";
+import InputTypeOne from '../../../Components/InputTypeOne';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { setUserDataLogin } from '../../../Store/actions';
+import { useAppDispatch, useAppSelector } from '../../../ReduxStore/hooks';
+import {
+  setLoginID as setIDAction,
+  setPassword as setPassAction,
+} from '../../../ReduxStore/Slices/loginSlice';
 
 // Props type
 type Props = {
@@ -27,12 +33,19 @@ type Props = {
 };
 
 const LogIn: React.FC<Props> = ({ navigation }) => {
-  const [loginID, setLoginID] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
   const [passwordVisible, setPasswordVisibility] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const toggleRememberMe = () => setRememberMe(!rememberMe);
+  const loginID = useAppSelector((state) => state.loginState.loginID);
+  const password = useAppSelector((state) => state.loginState.password);
+  const dispatch = useAppDispatch();
   const checkifDetailsFilled = loginID !== '' && password !== '';
+  const setLoginID = (text: string) => {
+    dispatch(setIDAction(text));
+  };
+  const setPassword = (text: string) => {
+    dispatch(setPassAction(text));
+  };
 
   const loginUser = async () => {
     try {
@@ -59,10 +72,10 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
         <WelcomeText>Welcome!</WelcomeText>
 
         <InputTypeOne
-          inputName={"Email or Insurance # or Govt ID"}
+          inputName={'Email or Insurance # or Govt ID'}
           inputValue={loginID}
           onChangeEvent={(newText) => setLoginID(newText)}
-          placeHolderValue={"Enter Info of Choice"}
+          placeHolderValue={'Enter Info of Choice'}
           keyboardType={undefined}
         />
 
