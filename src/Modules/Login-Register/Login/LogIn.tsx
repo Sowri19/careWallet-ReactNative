@@ -19,6 +19,7 @@ import {
   ButtonText,
   RegisterSection,
 } from './Styles';
+import InputTypeOne from "../../../Components/InputTypeOne";
 
 // Props type
 type Props = {
@@ -57,12 +58,12 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
         <LogoImage source={require('../../../utilities/CareWalletLogo.png')} />
         <WelcomeText>Welcome!</WelcomeText>
 
-        <InputField
-          inputName="Email or Insurance # or Govt ID"
-          placeholderValue="Enter Info of Choice"
-          placeholderColor="darkblue"
-          onChangeEvent={(newText: string) => setLoginID(newText)}
+        <InputTypeOne
+          inputName={"Email or Insurance # or Govt ID"}
           inputValue={loginID}
+          onChangeEvent={(newText) => setLoginID(newText)}
+          placeHolderValue={"Enter Info of Choice"}
+          keyboardType={undefined}
         />
 
         <PasswordSection>

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
+import {FlexStyle, TextStyle, ViewStyle} from "react-native";
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -27,6 +28,27 @@ const WelcomeText = styled.Text`
   color: darkblue;
 `;
 
+const UsernameSection: ViewStyle = {
+  flexDirection: "row",
+  height: 60,
+  marginTop: 12,
+  marginBottom: 12,
+  borderWidth: 0.5,
+  borderRadius: 5,
+  paddingLeft: 10,
+  borderColor: "darkblue"
+};
+// const UsernameSection = styled.View`
+//   flex-direction: row;
+//   height: 60px;
+//   margin-top: 12px;
+//   margin-bottom: 12px;
+//   border-width: 0.5px;
+//   border-radius: 5px;
+//   padding-left: 10px;
+//   border-color: darkblue;
+// `;
+
 const PasswordSection = styled.View`
   flex-direction: row;
   height: 60px;
@@ -37,6 +59,13 @@ const PasswordSection = styled.View`
   padding-left: 10px;
   border-color: darkblue;
 `;
+
+const UsernameTextInput: TextStyle = {
+  color: "darkblue"
+};
+// const UsernameInput = styled.TextInput`
+//   flex: 1;
+// `;
 
 const PasswordInput = styled.TextInput`
   flex: 1;
@@ -56,6 +85,11 @@ const RememberMeCheckbox = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   margin-right: 8px;
+`;
+
+const AboveInputText = styled.Text`
+  font-size: 15px;
+  color: darkblue;
 `;
 
 const BelowInputText = styled.Text`
@@ -98,4 +132,6 @@ export {
   Button,
   ButtonText,
   RegisterSection,
+  UsernameSection,
+  UsernameTextInput,
 };

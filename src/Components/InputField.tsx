@@ -17,6 +17,7 @@ type InputFieldProps = {
   inputValue: string;
   inputTextStyle?: TextStyle;
   inputStyle?: ViewStyle;
+  viewStyle?: ViewStyle;
   keyboardType?: KeyboardTypeOptions; // Add this line
 };
 
@@ -29,9 +30,10 @@ const InputField: React.FC<InputFieldProps> = ({
   inputTextStyle,
   inputStyle,
   keyboardType,
+  viewStyle
 }) => {
   return (
-    <View>
+    <View style={viewStyle}>
       <Text style={inputTextStyle}>{inputName}</Text>
       <TextInput
         placeholder={placeholderValue}
