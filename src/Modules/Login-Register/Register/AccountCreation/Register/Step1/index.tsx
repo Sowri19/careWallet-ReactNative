@@ -5,15 +5,11 @@ import {
   Container,
   WelcomeText,
   PageTitle,
-  InputText,
-  StyledInput,
   Button,
   ButtonText,
   RegisterSection,
   BelowInputText,
   RegisterText,
-  PasswordSection,
-  EyeIcon,
   StyledImage,
   SafeAreaContainer,
 } from './Styles';
@@ -31,11 +27,7 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [newPassword, setNewPassword] = useState<string>('');
-  const [newPasswordVisible, setNewPasswordVisibility] =
-    useState<boolean>(false);
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [confirmPasswordVisible, setConfirmPasswordVisibility] =
-    useState<boolean>(false);
 
   const [sharedData] = useState<string>('Shared data to be passed');
 
