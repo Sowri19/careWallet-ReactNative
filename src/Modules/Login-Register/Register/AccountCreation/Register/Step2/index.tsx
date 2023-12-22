@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
-import InputField from '../../../../../../Components/InputField';
 import {
   ScreenWrapper,
   StyledImage,
@@ -19,6 +18,17 @@ import {
   ButtonText,
 } from './Styles';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
+import InputTypeOne from '../../../../../../Components/InputTypeOne';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../../../ReduxStore/hooks';
+import {
+  setAddress as setAddressAction,
+  setCity as setCityAction,
+  setState as setStateAction,
+  setDOB as setDOBAction,
+} from '../../../../../../ReduxStore/Slices/Register/stepTwo';
 
 type FormData = {
   name: string;
@@ -36,14 +46,36 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
   navigation,
   route,
 }) => {
-  const [address, setAddress] = useState<string>('');
-  const [city, setCity] = useState<string>('');
-  const [zipcode, setZipcode] = useState<string>('');
+  // const [address, setAddress] = useState<string>('');
+  // const [city, setCity] = useState<string>('');
+  // const [zipcode, setZipcode] = useState<string>('');
   const [dateOfBirth, setDateOfBirth] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const [memberDOB, setMemberDOB] = useState<Date>(new Date());
+  // const [memberDOB, setMemberDOB] = useState<Date>(new Date());
   const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const address = useAppSelector((state) => state.stepTwoState.address);
+  const city = useAppSelector((state) => state.stepTwoState.city);
+  const state = useAppSelector((state) => state.stepTwoState.state);
+  const memberDOB = useAppSelector((state) => state.stepTwoState.dob);
+  const setAddress = (text: string) => {
+    dispatch(setAddressAction(text));
+  };
+  const setCity = (text: string) => {
+    dispatch(setCityAction(text));
+  };
+  const setState = (text: string) => {
+    dispatch(setStateAction(text));
+  };
+  const setMemberDOB = (date: Date | undefined) => {
+    if (date) {
+      dispatch(setDOBAction(date));
+    } else {
+      // placeholder date
+      dispatch(setDOBAction(new Date()));
+    }
+  };
 
   const { formData } = route.params as {
     formData: FormData;
@@ -59,24 +91,28 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
     setShowDOBPicker(Platform.OS === 'ios');
     setMemberDOB(currentDate);
 
-    if (event.type === 'set') {
+    if (event.type === 'set' && currentDate) {
       setDateOfBirth(currentDate.toDateString());
     }
   };
 
   const confirmIOSDOB = () => {
-    setDateOfBirth(memberDOB.toDateString());
+    if (memberDOB) {
+      setDateOfBirth(memberDOB.toDateString());
+    } else {
+      setDateOfBirth('');
+    }
     toggleDOBpicker();
   };
 
-  const checkifDetailsFilled = address !== '' && city !== '' && zipcode !== '';
+  const checkifDetailsFilled = address !== '' && city !== '' && state !== '';
 
   const onSubmitFormHandler = async () => {
     const updatedFormData = {
       ...formData,
       address,
       city,
-      zipcode,
+      state,
       dateOfBirth,
     };
 
@@ -118,30 +154,25 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
       />
       <WelcomeText>Page 2</WelcomeText>
       <PageTitle>Sign Up</PageTitle>
-
-      <InputField
-        inputName="Address"
-        placeholderValue="Enter your street address"
-        onChangeEvent={setAddress}
+      <InputTypeOne
+        inputName={'Address'}
         inputValue={address}
+        onChangeEvent={(newText) => setAddress(newText)}
+        placeHolderValue={'Enter your street address'}
       />
-      <InputField
-        inputName="City"
-        placeholderValue="Enter your city"
-        onChangeEvent={setCity}
+      <InputTypeOne
+        inputName={'City'}
         inputValue={city}
+        onChangeEvent={(newText) => setCity(newText)}
+        placeHolderValue={'Enter your city'}
       />
-
-      <View>
-        <WelcomeText>Zipcode</WelcomeText>
-        <StyledInput
-          placeholder="Enter your zipcode"
-          onChangeText={setZipcode}
-          value={zipcode}
-          keyboardType="numeric"
-        />
-      </View>
-
+      <InputTypeOne
+        inputName={'State'}
+        inputValue={state}
+        onChangeEvent={(newText) => setState(newText)}
+        placeHolderValue={'Enter your State'}
+      />
+      // TODO: Convert this to common Date picker
       <View>
         <WelcomeText>Member's Date of Birth</WelcomeText>
         {showDOBPicker && (
@@ -174,7 +205,6 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
           </Pressable>
         )}
       </View>
-
       <StyledButton
         disabled={!checkifDetailsFilled || isLoading}
         onPress={onSubmitFormHandler}

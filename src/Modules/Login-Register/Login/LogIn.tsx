@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../../ReduxStore/hooks';
 import {
   setLoginID as setIDAction,
   setPassword as setPassAction,
-} from '../../../ReduxStore/Slices/loginSlice';
+} from '../../../ReduxStore/Slices/Login/loginSlice';
 import InputPasswordTypeOne from '../../../Components/InputPasswordTypeOne';
 
 // Props type

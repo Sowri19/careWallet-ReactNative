@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
+import type { RootState } from '../../store';
 
 export interface LoginState {
   loginID: string;
@@ -21,10 +21,14 @@ export const loginSlice = createSlice({
     setPassword: (state, action: PayloadAction<string>) => {
       state.password = action.payload;
     },
+    clearState: (state) => {
+      state.loginID = '';
+      state.password = '';
+    },
   },
 });
 
-export const { setLoginID, setPassword } = loginSlice.actions;
+export const { setLoginID, setPassword, clearState } = loginSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.loginState;
 

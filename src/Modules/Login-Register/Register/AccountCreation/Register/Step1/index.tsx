@@ -15,6 +15,15 @@ import {
 } from './Styles';
 import InputTypeOne from '../../../../../../Components/InputTypeOne';
 import InputPasswordTypeOne from '../../../../../../Components/InputPasswordTypeOne';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../../../ReduxStore/hooks';
+import {
+  setPhoneNumber as setPhoneAction,
+  setEmail as setEmailAction,
+  setNewPassword as setPasswordAction,
+} from '../../../../../../ReduxStore/Slices/Register/stepOne';
 
 // Define a type for the navigation prop
 interface RegisterPageOneProps {
@@ -24,15 +33,24 @@ interface RegisterPageOneProps {
 }
 
 const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-
+  const phoneNumber = useAppSelector((state) => state.stepOneState.phoneNumber);
+  const email = useAppSelector((state) => state.stepOneState.email);
+  const newPassword = useAppSelector((state) => state.stepOneState.newPassword);
   const [sharedData] = useState<string>('Shared data to be passed');
+  const dispatch = useAppDispatch();
+  const setPhoneNumber = (text: string) => {
+    dispatch(setPhoneAction(text));
+  };
+  const setEmail = (text: string) => {
+    dispatch(setEmailAction(text));
+  };
+  const setNewPassword = (text: string) => {
+    dispatch(setPasswordAction(text));
+  };
 
   const checkifDetailsFilled: boolean =
-    name !== '' &&
+    phoneNumber !== '' &&
     email !== '' &&
     newPassword !== '' &&
     confirmPassword !== '' &&
@@ -40,7 +58,7 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
 
   const handleNext = async (): Promise<void> => {
     const formData = {
-      name,
+      phoneNumber,
       email,
       newPassword,
     };
@@ -71,10 +89,10 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
         <PageTitle>Sign Up</PageTitle>
 
         <InputTypeOne
-          inputName={'Name'}
-          inputValue={name}
-          onChangeEvent={(newText) => setName(newText)}
-          placeHolderValue={'Enter your name'}
+          inputName={'Phone Number'}
+          inputValue={phoneNumber}
+          onChangeEvent={(newText) => setPhoneNumber(newText)}
+          placeHolderValue={'Enter your number'}
         />
 
         <InputTypeOne
