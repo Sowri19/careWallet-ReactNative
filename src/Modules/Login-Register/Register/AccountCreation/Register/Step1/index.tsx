@@ -17,7 +17,8 @@ import {
   StyledImage,
   SafeAreaContainer,
 } from './Styles';
-import InputField from '../../../../../../Components/InputField';
+import InputTypeOne from '../../../../../../Components/InputTypeOne';
+import InputPasswordTypeOne from '../../../../../../Components/InputPasswordTypeOne';
 
 // Define a type for the navigation prop
 interface RegisterPageOneProps {
@@ -77,67 +78,33 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
         <WelcomeText>Welcome!</WelcomeText>
         <PageTitle>Sign Up</PageTitle>
 
-        <InputField
-          inputName="Name"
-          placeholderValue="Enter your name"
-          placeholderColor="darkblue"
-          onChangeEvent={setName}
+        <InputTypeOne
+          inputName={'Name'}
           inputValue={name}
+          onChangeEvent={(newText) => setName(newText)}
+          placeHolderValue={'Enter your name'}
         />
 
-        <InputField
-          inputName="Email"
-          placeholderValue="Enter your email"
-          placeholderColor="darkblue"
-          onChangeEvent={setEmail}
+        <InputTypeOne
+          inputName={'Email'}
           inputValue={email}
+          onChangeEvent={(newText) => setEmail(newText)}
+          placeHolderValue={'Enter your email'}
         />
 
-        <View>
-          <InputText>Password</InputText>
-          <PasswordSection>
-            <StyledInput
-              placeholder="Enter Password"
-              placeholderTextColor="darkblue"
-              onChangeText={setNewPassword}
-              secureTextEntry={!newPasswordVisible}
-              value={newPassword}
-            />
-            <TouchableOpacity
-              onPress={() => setNewPasswordVisibility(!newPasswordVisible)}
-            >
-              <EyeIcon
-                name={newPasswordVisible ? 'eye-off' : 'eye'}
-                size={24}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </PasswordSection>
-        </View>
+        <InputPasswordTypeOne
+          inputName={'Password'}
+          inputValue={newPassword}
+          onChangeEvent={setNewPassword}
+          placeHolderValue={'Enter Password'}
+        />
 
-        <View>
-          <InputText>Confirm Password</InputText>
-          <PasswordSection>
-            <StyledInput
-              placeholder="Confirm Password"
-              placeholderTextColor="darkblue"
-              onChangeText={setConfirmPassword}
-              secureTextEntry={!confirmPasswordVisible}
-              value={confirmPassword}
-            />
-            <TouchableOpacity
-              onPress={() =>
-                setConfirmPasswordVisibility(!confirmPasswordVisible)
-              }
-            >
-              <EyeIcon
-                name={confirmPasswordVisible ? 'eye-off' : 'eye'}
-                size={24}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </PasswordSection>
-        </View>
+        <InputPasswordTypeOne
+          inputName={'Confirm Password'}
+          inputValue={confirmPassword}
+          onChangeEvent={setConfirmPassword}
+          placeHolderValue={'Confirm Password'}
+        />
 
         <Button disabled={!checkifDetailsFilled} onPress={handleNext}>
           <ButtonText>Next</ButtonText>

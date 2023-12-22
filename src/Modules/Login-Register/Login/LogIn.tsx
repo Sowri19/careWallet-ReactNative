@@ -8,9 +8,6 @@ import {
   LoginFields,
   LogoImage,
   WelcomeText,
-  PasswordSection,
-  PasswordInput,
-  EyeIcon,
   RememberMe,
   RememberMeCheckbox,
   BelowInputText,
@@ -24,6 +21,7 @@ import {
   setLoginID as setIDAction,
   setPassword as setPassAction,
 } from '../../../ReduxStore/Slices/loginSlice';
+import InputPasswordTypeOne from '../../../Components/InputPasswordTypeOne';
 
 // Props type
 type Props = {
@@ -31,7 +29,6 @@ type Props = {
 };
 
 const LogIn: React.FC<Props> = ({ navigation }) => {
-  const [passwordVisible, setPasswordVisibility] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const toggleRememberMe = () => setRememberMe(!rememberMe);
   const loginID = useAppSelector((state) => state.loginState.loginID);
@@ -46,6 +43,7 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
   };
 
   const loginUser = async () => {
+    navigation.navigate('');
     try {
       const response = await axios.post('/path/to/server/endpoint', {
         email: loginID,
@@ -72,26 +70,16 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
         <InputTypeOne
           inputName={'Email or Insurance # or Govt ID'}
           inputValue={loginID}
-          onChangeEvent={(newText) => setLoginID(newText)}
+          onChangeEvent={setLoginID}
           placeHolderValue={'Enter Info of Choice'}
-          keyboardType={undefined}
         />
 
-        <PasswordSection>
-          <PasswordInput
-            placeholder="Enter Password"
-            placeholderTextColor="darkblue"
-            onChangeText={setPassword}
-            secureTextEntry={!passwordVisible}
-            value={password}
-          />
-          <EyeIcon
-            name={passwordVisible ? 'eye-off' : 'eye'}
-            size={24}
-            color="gray"
-            onPress={() => setPasswordVisibility(!passwordVisible)}
-          />
-        </PasswordSection>
+        <InputPasswordTypeOne
+          inputName={'Enter Password'}
+          inputValue={password}
+          onChangeEvent={setPassword}
+          placeHolderValue={'Enter Password'}
+        />
 
         <RememberMe>
           <RememberMeCheckbox onPress={toggleRememberMe}>

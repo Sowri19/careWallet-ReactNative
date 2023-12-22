@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from "react";
 import { KeyboardTypeOptions } from 'react-native';
 import InputField from './InputField';
 import {
+  PasswordIcon,
+  PasswordInput,
+  PasswordSection,
   UsernameSection,
-  UsernameTextInput,
-} from '../Modules/Login-Register/Login/Styles';
+  UsernameTextInput
+} from "../Modules/Login-Register/Login/Styles";
 
 type InputOneFieldProps = {
   inputName: string;
@@ -13,7 +16,7 @@ type InputOneFieldProps = {
   placeHolderValue: string;
   keyboardType?: KeyboardTypeOptions | undefined;
 };
-const InputTypeOne: React.FC<InputOneFieldProps> = ({
+const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
   inputName,
   onChangeEvent,
   inputValue,
@@ -29,11 +32,14 @@ const InputTypeOne: React.FC<InputOneFieldProps> = ({
         placeholderValue={placeHolderValue}
         keyboardType={keyboardType}
         placeholderColor={'darkblue'}
-        inputPStyle={UsernameSection}
+        inputPStyle={PasswordSection}
+        inputStyle={PasswordInput}
+        iconStyle={PasswordIcon}
         inputTextStyle={UsernameTextInput}
+        isPassword={true}
       />
     </>
   );
 };
 
-export default InputTypeOne;
+export default InputPasswordTypeOne;

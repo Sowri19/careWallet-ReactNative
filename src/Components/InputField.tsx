@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   ViewStyle,
   KeyboardTypeOptions,
 } from 'react-native';
+import { EyeIcon } from '../Modules/Login-Register/Login/Styles';
 
 // Define a type for the component's props
 type InputFieldProps = {
@@ -17,8 +18,11 @@ type InputFieldProps = {
   inputValue: string;
   inputTextStyle?: TextStyle;
   inputStyle?: ViewStyle;
+  inputPStyle?: ViewStyle;
   viewStyle?: ViewStyle;
-  keyboardType?: KeyboardTypeOptions; // Add this line
+  isPassword?: boolean;
+  iconStyle?: ViewStyle;
+  keyboardType?: KeyboardTypeOptions | undefined; // Add this line
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -29,20 +33,36 @@ const InputField: React.FC<InputFieldProps> = ({
   inputValue,
   inputTextStyle,
   inputStyle,
+  inputPStyle,
   keyboardType,
-  viewStyle
+  viewStyle,
+  iconStyle,
+  isPassword = false,
 }) => {
+  const [passwordVisible, setPasswordVisibility] = useState<boolean>(false);
   return (
     <View style={viewStyle}>
       <Text style={inputTextStyle}>{inputName}</Text>
-      <TextInput
-        placeholder={placeholderValue}
-        placeholderTextColor={placeholderColor}
-        onChangeText={onChangeEvent}
-        value={inputValue}
-        style={inputStyle}
-        keyboardType={keyboardType} // Add this line
-      />
+      <View style={inputPStyle}>
+        <TextInput
+          placeholder={placeholderValue}
+          placeholderTextColor={placeholderColor}
+          onChangeText={onChangeEvent}
+          value={inputValue}
+          style={inputStyle}
+          secureTextEntry={isPassword && !passwordVisible}
+          keyboardType={keyboardType} // Add this line
+        />
+        {isPassword && (
+          <EyeIcon
+            name={passwordVisible ? 'eye-off' : 'eye'}
+            style={iconStyle}
+            size={24}
+            color="gray"
+            onPress={() => setPasswordVisibility(!passwordVisible)}
+          />
+        )}
+      </View>
     </View>
   );
 };

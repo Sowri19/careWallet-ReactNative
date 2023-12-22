@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
-import {FlexStyle, TextStyle, ViewStyle} from "react-native";
+import { FlexStyle, TextStyle, ViewStyle } from 'react-native';
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -29,47 +29,48 @@ const WelcomeText = styled.Text`
 `;
 
 const UsernameSection: ViewStyle = {
-  flexDirection: "row",
+  flexDirection: 'row',
   height: 60,
   marginTop: 12,
   marginBottom: 12,
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: "darkblue"
+  borderColor: 'darkblue',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  flex: 0,
 };
-// const UsernameSection = styled.View`
-//   flex-direction: row;
-//   height: 60px;
-//   margin-top: 12px;
-//   margin-bottom: 12px;
-//   border-width: 0.5px;
-//   border-radius: 5px;
-//   padding-left: 10px;
-//   border-color: darkblue;
-// `;
 
-const PasswordSection = styled.View`
-  flex-direction: row;
-  height: 60px;
-  margin-top: 12px;
-  margin-bottom: 12px;
-  border-width: 0.5px;
-  border-radius: 5px;
-  padding-left: 10px;
-  border-color: darkblue;
-`;
+const PasswordSection: ViewStyle = {
+  flexDirection: 'row',
+  height: 60,
+  marginTop: 12,
+  marginBottom: 12,
+  borderWidth: 0.5,
+  borderRadius: 5,
+  paddingLeft: 10,
+  borderColor: 'darkblue',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  flex: 0,
+  position: 'relative',
+};
 
 const UsernameTextInput: TextStyle = {
-  color: "darkblue"
+  color: 'darkblue',
 };
-// const UsernameInput = styled.TextInput`
-//   flex: 1;
-// `;
 
-const PasswordInput = styled.TextInput`
-  flex: 1;
-`;
+const PasswordInput: ViewStyle = {
+  flex: 1,
+};
+
+const PasswordIcon: ViewStyle = {
+  flex: 1,
+  position: 'absolute',
+  right: 0,
+  top: 0,
+};
 
 const EyeIcon = styled(Ionicons)`
   padding: 20px;
@@ -134,4 +135,5 @@ export {
   RegisterSection,
   UsernameSection,
   UsernameTextInput,
+  PasswordIcon,
 };
