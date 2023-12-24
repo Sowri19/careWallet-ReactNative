@@ -16,10 +16,10 @@ import {
   RegisterSection,
 } from './Styles';
 import InputTypeOne from '../../../Components/InputTypeOne';
-import { useAppDispatch, useAppSelector } from '../../../ReduxStore/hooks';
+import { useAppDispatch } from '../../../ReduxStore/hooks';
 import {
-  setLoginID as setIDAction,
-  setPassword as setPassAction,
+  LoginState,
+  setState as setLoginState,
 } from '../../../ReduxStore/Slices/Login/loginSlice';
 import InputPasswordTypeOne from '../../../Components/InputPasswordTypeOne';
 
@@ -31,18 +31,25 @@ type Props = {
 const LogIn: React.FC<Props> = ({ navigation }) => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const toggleRememberMe = () => setRememberMe(!rememberMe);
-  const loginID = useAppSelector((state) => state.loginState.loginID);
-  const password = useAppSelector((state) => state.loginState.password);
+  const [loginID, setLoginIDLocal] = useState<string>('');
+  const [password, setPasswordLocal] = useState<string>('');
   const dispatch = useAppDispatch();
   const checkifDetailsFilled = loginID !== '' && password !== '';
+  const updateLoginState = (update: LoginState) => {
+    dispatch(setLoginState(update));
+  };
   const setLoginID = (text: string) => {
-    dispatch(setIDAction(text));
+    setLoginIDLocal(text);
   };
   const setPassword = (text: string) => {
-    dispatch(setPassAction(text));
+    setPasswordLocal(text);
   };
 
   const loginUser = async () => {
+    updateLoginState({
+      loginID: loginID,
+      password: password,
+    });
     navigation.navigate('');
     try {
       const response = await axios.post('/path/to/server/endpoint', {

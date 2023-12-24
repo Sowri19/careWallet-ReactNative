@@ -15,6 +15,10 @@ export const loginSlice = createSlice({
   name: 'loginStore',
   initialState,
   reducers: {
+    setState: (state, action: PayloadAction<LoginState>) => {
+      state.loginID = action.payload.loginID;
+      state.password = action.payload.password;
+    },
     setLoginID: (state, action: PayloadAction<string>) => {
       state.loginID = action.payload;
     },
@@ -28,7 +32,8 @@ export const loginSlice = createSlice({
   },
 });
 
-export const { setLoginID, setPassword, clearState } = loginSlice.actions;
+export const { setState, setLoginID, setPassword, clearState } =
+  loginSlice.actions;
 
 export const selectLoginData = (state: RootState) => state.loginState;
 

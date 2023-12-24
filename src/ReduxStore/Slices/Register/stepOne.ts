@@ -17,6 +17,11 @@ export const stepOneSlice = createSlice({
   name: 'stepOneStore',
   initialState,
   reducers: {
+    setState: (state, action: PayloadAction<StepOneState>) => {
+      state.phoneNumber = action.payload.phoneNumber;
+      state.email = action.payload.email;
+      state.newPassword = action.payload.newPassword;
+    },
     setPhoneNumber: (state, action: PayloadAction<string>) => {
       state.phoneNumber = action.payload;
     },
@@ -34,8 +39,13 @@ export const stepOneSlice = createSlice({
   },
 });
 
-export const { setPhoneNumber, setEmail, setNewPassword, clearState } =
-  stepOneSlice.actions;
+export const {
+  setState,
+  setPhoneNumber,
+  setEmail,
+  setNewPassword,
+  clearState,
+} = stepOneSlice.actions;
 
 export const selectSteponeData = (state: RootState) => state.stepOneState;
 

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { View, TouchableOpacity } from 'react-native';
 import {
   Container,
   WelcomeText,
@@ -17,12 +15,11 @@ import InputTypeOne from '../../../../../../Components/InputTypeOne';
 import InputPasswordTypeOne from '../../../../../../Components/InputPasswordTypeOne';
 import {
   useAppDispatch,
-  useAppSelector,
+  // useAppSelector,
 } from '../../../../../../ReduxStore/hooks';
 import {
-  setPhoneNumber as setPhoneAction,
-  setEmail as setEmailAction,
-  setNewPassword as setPasswordAction,
+  setState as setStepOneState,
+  StepOneState,
 } from '../../../../../../ReduxStore/Slices/Register/stepOne';
 
 // Define a type for the navigation prop
@@ -33,20 +30,22 @@ interface RegisterPageOneProps {
 }
 
 const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
+  const [phoneNumber, setPhoneNumberLocal] = useState<string>('');
+  const [email, setEmailLocal] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const phoneNumber = useAppSelector((state) => state.stepOneState.phoneNumber);
-  const email = useAppSelector((state) => state.stepOneState.email);
-  const newPassword = useAppSelector((state) => state.stepOneState.newPassword);
-  const [sharedData] = useState<string>('Shared data to be passed');
+  const [newPassword, setNewPasslocal] = useState<string>('');
   const dispatch = useAppDispatch();
+  const updateStepOneState = (update: StepOneState) => {
+    dispatch(setStepOneState(update));
+  };
   const setPhoneNumber = (text: string) => {
-    dispatch(setPhoneAction(text));
+    setPhoneNumberLocal(text);
   };
   const setEmail = (text: string) => {
-    dispatch(setEmailAction(text));
+    setEmailLocal(text);
   };
   const setNewPassword = (text: string) => {
-    dispatch(setPasswordAction(text));
+    setNewPasslocal(text);
   };
 
   const checkifDetailsFilled: boolean =
@@ -57,27 +56,12 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
     newPassword === confirmPassword;
 
   const handleNext = async (): Promise<void> => {
-    const formData = {
-      phoneNumber,
-      email,
-      newPassword,
-    };
-
-    try {
-      const response = await axios.post(
-        'http://localhost:3000/patients',
-        formData
-      );
-
-      if (response.status === 200) {
-        console.log('Data added successfully!');
-        navigation.navigate('RegisterPageTwo', { formData, sharedData });
-      } else {
-        console.error('Failed to add data to the API.');
-      }
-    } catch (error) {
-      console.error('An error occurred while making the API request:', error);
-    }
+    updateStepOneState({
+      phoneNumber: phoneNumber,
+      email: email,
+      newPassword: newPassword,
+    });
+    navigation.navigate('RegisterPageTwo');
   };
   return (
     <SafeAreaContainer>

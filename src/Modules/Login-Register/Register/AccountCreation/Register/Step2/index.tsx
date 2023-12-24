@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
-import {
-  Platform,
-  TouchableOpacity,
-  Pressable,
-  View,
-  Alert,
-} from 'react-native';
+import { Platform, TouchableOpacity, Pressable, View } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import axios from 'axios';
 import {
-  ScreenWrapper,
   StyledImage,
   WelcomeText,
   PageTitle,
@@ -21,19 +13,13 @@ import { ParamListBase, RouteProp } from '@react-navigation/native';
 import InputTypeOne from '../../../../../../Components/InputTypeOne';
 import {
   useAppDispatch,
-  useAppSelector,
+  // useAppSelector,
 } from '../../../../../../ReduxStore/hooks';
 import {
-  setAddress as setAddressAction,
-  setCity as setCityAction,
-  setState as setStateAction,
-  setDOB as setDOBAction,
+  setState as setStepTwoState,
+  StepTwoState,
 } from '../../../../../../ReduxStore/Slices/Register/stepTwo';
-
-type FormData = {
-  name: string;
-  email: string;
-};
+import { Container, SafeAreaContainer } from '../Step1/Styles';
 
 interface RegisterPageTwoProps {
   navigation: {
@@ -44,42 +30,36 @@ interface RegisterPageTwoProps {
 
 const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
   navigation,
-  route,
 }) => {
-  // const [address, setAddress] = useState<string>('');
-  // const [city, setCity] = useState<string>('');
-  // const [zipcode, setZipcode] = useState<string>('');
-  const [dateOfBirth, setDateOfBirth] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // const [memberDOB, setMemberDOB] = useState<Date>(new Date());
+  const [address, setAddressLocal] = useState<string>('');
+  const [city, setCityLocal] = useState<string>('');
+  const [state, setStateLocal] = useState<string>('');
+  const [dateOfBirth, setDateOfBirthLocal] = useState<string>('');
+  const [dobObject, setDOBObject] = useState<Date>(new Date());
   const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const address = useAppSelector((state) => state.stepTwoState.address);
-  const city = useAppSelector((state) => state.stepTwoState.city);
-  const state = useAppSelector((state) => state.stepTwoState.state);
-  const memberDOB = useAppSelector((state) => state.stepTwoState.dob);
+  const updateState = (update: StepTwoState) => {
+    dispatch(setStepTwoState(update));
+  };
   const setAddress = (text: string) => {
-    dispatch(setAddressAction(text));
+    setAddressLocal(text);
   };
   const setCity = (text: string) => {
-    dispatch(setCityAction(text));
+    setCityLocal(text);
   };
   const setState = (text: string) => {
-    dispatch(setStateAction(text));
+    setStateLocal(text);
+  };
+  const setDateOfBirth = (text: string) => {
+    setDateOfBirthLocal(text);
   };
   const setMemberDOB = (date: Date | undefined) => {
     if (date) {
-      dispatch(setDOBAction(date));
+      setDOBObject(date);
     } else {
       // placeholder date
-      dispatch(setDOBAction(new Date()));
+      setDOBObject(new Date());
     }
-  };
-
-  const { formData } = route.params as {
-    formData: FormData;
-    sharedData: string;
   };
 
   const toggleDOBpicker = () => {
@@ -87,7 +67,7 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
   };
 
   const onChangeDOB = (event: any, selectedDate?: Date) => {
-    const currentDate = selectedDate || memberDOB;
+    const currentDate = selectedDate || new Date();
     setShowDOBPicker(Platform.OS === 'ios');
     setMemberDOB(currentDate);
 
@@ -97,8 +77,8 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
   };
 
   const confirmIOSDOB = () => {
-    if (memberDOB) {
-      setDateOfBirth(memberDOB.toDateString());
+    if (dobObject) {
+      setDateOfBirth(dobObject.toDateString());
     } else {
       setDateOfBirth('');
     }
@@ -108,110 +88,81 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({
   const checkifDetailsFilled = address !== '' && city !== '' && state !== '';
 
   const onSubmitFormHandler = async () => {
-    const updatedFormData = {
-      ...formData,
-      address,
-      city,
-      state,
-      dateOfBirth,
-    };
-
-    setIsLoading(true);
-
-    try {
-      const response = await axios.post(`http://localhost:3000/patients`, {
-        firstName: updatedFormData.name,
-        lastName: '',
-        address: updatedFormData.address,
-        phoneNumber: '',
-        email: updatedFormData.email,
-        dob: updatedFormData.dateOfBirth,
-      });
-
-      if (response.status === 201) {
-        Alert.alert(
-          'Success',
-          `You have created: ${JSON.stringify(response.data)}`
-        );
-        setIsLoading(false);
-        setAddress('');
-        setCity('');
-        setDateOfBirth('');
-      } else {
-        throw new Error('An error has occurred');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'An error has occurred');
-      setIsLoading(false);
-    }
+    updateState({
+      address: address,
+      city: city,
+      state: state,
+      dob: dateOfBirth.toString(),
+    });
     navigation.navigate('InsuranceSignUpOne');
   };
 
   return (
-    <ScreenWrapper>
-      <StyledImage
-        source={require('../../../../../../utilities/CareWalletLogo.png')}
-      />
-      <WelcomeText>Page 2</WelcomeText>
-      <PageTitle>Sign Up</PageTitle>
-      <InputTypeOne
-        inputName={'Address'}
-        inputValue={address}
-        onChangeEvent={(newText) => setAddress(newText)}
-        placeHolderValue={'Enter your street address'}
-      />
-      <InputTypeOne
-        inputName={'City'}
-        inputValue={city}
-        onChangeEvent={(newText) => setCity(newText)}
-        placeHolderValue={'Enter your city'}
-      />
-      <InputTypeOne
-        inputName={'State'}
-        inputValue={state}
-        onChangeEvent={(newText) => setState(newText)}
-        placeHolderValue={'Enter your State'}
-      />
-      // TODO: Convert this to common Date picker
-      <View>
-        <WelcomeText>Member's Date of Birth</WelcomeText>
-        {showDOBPicker && (
-          <DateTimePicker
-            mode="date"
-            display="spinner"
-            value={memberDOB}
-            onChange={onChangeDOB}
-          />
-        )}
-        {showDOBPicker && Platform.OS === 'ios' && (
-          <View
-            style={{ flexDirection: 'row', justifyContent: 'space-around' }}
-          >
-            <TouchableOpacity onPress={toggleDOBpicker}>
-              <ButtonText>Cancel</ButtonText>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={confirmIOSDOB}>
-              <ButtonText>Confirm</ButtonText>
-            </TouchableOpacity>
-          </View>
-        )}
-        {!showDOBPicker && (
-          <Pressable onPress={toggleDOBpicker}>
-            <StyledInput
-              placeholder="Enter Member's Date of Birth"
-              value={dateOfBirth}
-              editable={false}
+    <SafeAreaContainer>
+      <Container>
+        <StyledImage
+          source={require('../../../../../../utilities/CareWalletLogo.png')}
+        />
+        <WelcomeText>Page 2</WelcomeText>
+        <PageTitle>Sign Up</PageTitle>
+        <InputTypeOne
+          inputName={'Address'}
+          inputValue={address}
+          onChangeEvent={(newText) => setAddress(newText)}
+          placeHolderValue={'Enter your street address'}
+        />
+        <InputTypeOne
+          inputName={'City'}
+          inputValue={city}
+          onChangeEvent={(newText) => setCity(newText)}
+          placeHolderValue={'Enter your city'}
+        />
+        <InputTypeOne
+          inputName={'State'}
+          inputValue={state}
+          onChangeEvent={(newText) => setState(newText)}
+          placeHolderValue={'Enter your State'}
+        />
+        <View>
+          <WelcomeText>Member's Date of Birth</WelcomeText>
+          {showDOBPicker && (
+            <DateTimePicker
+              mode="date"
+              display="spinner"
+              value={dobObject}
+              onChange={onChangeDOB}
             />
-          </Pressable>
-        )}
-      </View>
-      <StyledButton
-        disabled={!checkifDetailsFilled || isLoading}
-        onPress={onSubmitFormHandler}
-      >
-        <ButtonText>Next</ButtonText>
-      </StyledButton>
-    </ScreenWrapper>
+          )}
+          {showDOBPicker && Platform.OS === 'ios' && (
+            <View
+              style={{ flexDirection: 'row', justifyContent: 'space-around' }}
+            >
+              <TouchableOpacity onPress={toggleDOBpicker}>
+                <ButtonText>Cancel</ButtonText>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={confirmIOSDOB}>
+                <ButtonText>Confirm</ButtonText>
+              </TouchableOpacity>
+            </View>
+          )}
+          {!showDOBPicker && (
+            <Pressable onPress={toggleDOBpicker}>
+              <StyledInput
+                placeholder="Enter Member's Date of Birth"
+                value={dateOfBirth}
+                editable={false}
+              />
+            </Pressable>
+          )}
+        </View>
+        <StyledButton
+          disabled={!checkifDetailsFilled}
+          onPress={onSubmitFormHandler}
+        >
+          <ButtonText>Next</ButtonText>
+        </StyledButton>
+      </Container>
+    </SafeAreaContainer>
   );
 };
 
