@@ -5,7 +5,6 @@ import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useIsFocused } from '@react-navigation/native';
 import {
-  LogoImage,
   WelcomeText,
   RememberMe,
   RememberMeCheckbox,
@@ -14,12 +13,14 @@ import {
   SignText,
 } from './Styles';
 import {
+  LogoImage,
   Button,
   ButtonText,
   FormContainerStyleOne,
   Container,
   FontBold,
   FontBoldSecond,
+  LogoImageHolder,
 } from '../../Shared/Styles/Styles';
 import InputTypeOne from '../../../Components/Fields/InputTypeOne';
 import {
@@ -110,7 +111,7 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
       loginID: loginID,
       password: password,
     });
-    navigation.navigate('');
+    // navigation.navigate('');
     try {
       const response = await axios.post('/path/to/server/endpoint', {
         email: loginID,
@@ -133,7 +134,11 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
   return (
     <Container>
       <FormContainerStyleOne>
-        <LogoImage source={require('../../../utilities/CareWalletLogo.png')} />
+        <LogoImageHolder>
+          <LogoImage
+            source={require('../../../utilities/CareWalletLogo.png')}
+          />
+        </LogoImageHolder>
         <WelcomeText>Welcome!</WelcomeText>
         <SignText>
           <FontBold>Sign In</FontBold>

@@ -6,8 +6,8 @@ import {
   BackButton,
   Button,
   ButtonText,
-  Container,
-} from '../../../../../Shared/Styles/Styles';
+  Container, LogoImageTwo
+} from "../../../../../Shared/Styles/Styles";
 import { FormContainerStyleOne } from '../../../../../Shared/Styles/Styles';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
 import InputTypeOne from '../../../../../../Components/Fields/InputTypeOne';
@@ -23,6 +23,12 @@ import {
   setState as setStepTwoState,
   StepTwoState,
 } from '../../../../../../ReduxStore/Slices/Register/stepTwo';
+import {
+  chkConfirmPassValid,
+  chkEmailValid,
+  chkPassValid,
+  chkPhoneValid
+} from "../../../../../../utilities/ValidationUtils";
 
 interface RegisterPageTwoProps {
   navigation: {
@@ -37,10 +43,13 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
   );
   const [addressErr, setAddressErr] = useState<string>('');
   const [city, setCityLocal] = useState<string>(useAppSelector(selectCity));
+  const [cityErr, setCityErr] = useState<string>('');
   const [state, setStateLocal] = useState<string>(useAppSelector(selectCity));
+  const [stateErr, setStateErr] = useState<string>('');
   const [dateOfBirth, setDateOfBirthLocal] = useState<string>(
     useAppSelector(selectDOB)
   );
+  const [dobErr, setDOBErr] = useState<string>('');
   const [dobObject, setDOBObject] = useState<Date>(new Date());
   const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
   const dispatch = useAppDispatch();
@@ -91,9 +100,15 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
     toggleDOBpicker();
   };
 
-  const checkifDetailsFilled = address !== '' && city !== '' && state !== '';
+  const chkDetails = () => {
+    let result = true;
+    return result;
+  };
 
   const handleNext = async () => {
+    if (!chkDetails()) {
+      return;
+    }
     updateState({
       address: address,
       city: city,
@@ -137,10 +152,13 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
           onChangeEvent={(newText) => setState(newText)}
           placeHolderValue={'Enter your State'}
         />
-        <Button disabled={!checkifDetailsFilled} onPress={handleNext}>
+        <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
+      <LogoImageTwo
+        source={require('../../../../../../utilities/CareWalletLogo.png')}
+      />
     </Container>
   );
 };

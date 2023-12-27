@@ -1,12 +1,5 @@
 import styled from 'styled-components/native';
 
-const LogoImage = styled.Image`
-  resize-mode: stretch;
-  width: 250px;
-  height: 100px;
-  margin-bottom: 10%;
-`;
-
 const WelcomeText = styled.Text`
   font-size: 20px;
   color: darkblue;
@@ -29,4 +22,4 @@ const RegisterSection = styled.View`
   justify-content: center;
 `;
 
-export { LogoImage, WelcomeText, BelowInputText, RegisterSection, SignText };
+export { WelcomeText, BelowInputText, RegisterSection, SignText };

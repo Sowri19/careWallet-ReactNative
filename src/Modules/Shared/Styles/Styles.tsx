@@ -25,9 +25,9 @@ export const BackButton = styled.TouchableOpacity`
   align-items: center;
   background-color: #00008b;
   height: 60px;
-  width: 30%;
-  min-width: 30%;
-  max-width: 30%;
+  width: 40%;
+  min-width: 40%;
+  max-width: 40%;
   margin-top: 10%;
   margin-bottom: 10%;
   border-width: 0.5px;
@@ -58,4 +58,28 @@ export const FontBold = styled.Text`
 
 export const FontBoldSecond = styled.Text`
   font-weight: 500;
+`;
+
+export const LogoImageHolder = styled.View`
+  flex: 1;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  max-height: 100px;
+  margin-bottom: 10%;
+`;
+
+export const LogoImage = styled.Image`
+  resize-mode: stretch;
+  width: 250px;
+  height: 100px;
+`;
+
+export const LogoImageTwo = styled.Image`
+  resize-mode: stretch;
+  width: 150px;
+  height: 50px;
+  margin-bottom: 10%;
+  position: absolute;
+  bottom: 0;
 `;

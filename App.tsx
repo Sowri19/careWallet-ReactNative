@@ -7,7 +7,7 @@ import RegisterPageOne from './src/Modules/Login-Register/Register/AccountCreati
 import RegisterPageTwo from './src/Modules/Login-Register/Register/AccountCreation/Register/Step2';
 import InsuranceSignUpOne from './src/Modules/Login-Register/Register/InsuranceCheck/Step1/Index';
 import InsuranceSignUpTwo from './src/Modules/Login-Register/Register/InsuranceCheck/Step2/Index';
-import Verification from './src/Modules/Home/Verification';
+import Verification from './src/Modules/FinishSignUp/Verification';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 

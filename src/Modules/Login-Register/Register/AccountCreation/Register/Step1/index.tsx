@@ -5,6 +5,7 @@ import {
   Container,
   BackButton,
   FormContainerStyleOne,
+  LogoImageTwo,
 } from '../../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../../Components/Fields/InputTypeOne';
 import InputPasswordTypeOne from '../../../../../../Components/Fields/InputPasswordTypeOne';
@@ -20,7 +21,12 @@ import {
   setState as setStepOneState,
   StepOneState,
 } from '../../../../../../ReduxStore/Slices/Register/stepOne';
-import { chkPassValid, chkEmailValid, chkPhoneValid, chkConfirmPassValid } from '../../../../../../utilities/ValidationUtils';
+import {
+  chkPassValid,
+  chkEmailValid,
+  chkPhoneValid,
+  chkConfirmPassValid,
+} from '../../../../../../utilities/ValidationUtils';
 
 // Define a type for the navigation prop
 interface RegisterPageOneProps {
@@ -174,6 +180,9 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
+      <LogoImageTwo
+        source={require('../../../../../../utilities/CareWalletLogo.png')}
+      />
     </Container>
   );
 };

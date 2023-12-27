@@ -4,6 +4,7 @@ import signUpReducer from '../Slices/Register/signUp';
 import stepOneReducer from '../Slices/Register/stepOne';
 import stepTwoReducer from '../Slices/Register/stepTwo';
 import insStepOneReducer from '../Slices/InsuranceCheck/stepOne';
+import insStepTwoReducer from '../Slices/InsuranceCheck/stepTwo';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     stepOneState: stepOneReducer,
     stepTwoState: stepTwoReducer,
     insStepOneState: insStepOneReducer,
+    insStepTwoState: insStepTwoReducer,
   },
 });
 

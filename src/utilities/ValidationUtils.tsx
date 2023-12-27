@@ -10,6 +10,20 @@ export const chkPassValid = (text: string) => {
   return '';
 };
 
+export const chkIDValid = (text: string) => {
+  if (text == '') {
+    return 'ID cannot be empty';
+  }
+  return '';
+};
+
+export const chkDateValid = (text: string) => {
+  if (text == '') {
+    return 'Date cannot be empty';
+  }
+  return '';
+};
+
 export const chkPhoneValid = (text: string) => {
   if (text == '') {
     return 'Phone Number cannot be empty';
@@ -55,5 +69,24 @@ export const chkNameValid = (text: string) => {
   if (!alphabeticRegex.test(text)) {
     return 'Invalid Name';
   }
+  return '';
+};
+
+export const chkInsTypeValid = (text: string) => {
+  if (text == '') {
+    return 'Insurance Type cannot be empty';
+  }
+  return '';
+};
+
+export const chkGroupValid = (text: string) => {
+  return '';
+};
+
+export const chkEffDateValid = (text: string) => {
+  return '';
+};
+
+export const chkRelPolicyValid = (text: string) => {
   return '';
 };

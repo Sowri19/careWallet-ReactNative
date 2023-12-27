@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
-  LogoImage,
   WelcomeText,
   BelowInputText,
   RegisterSection,
   SignText,
 } from './Styles';
 import {
+  LogoImage,
   Button,
   ButtonText,
   Container,
   FormContainerStyleOne,
   FontBold,
-  FontBoldSecond,
-} from '../../../Shared/Styles/Styles';
+  FontBoldSecond, LogoImageHolder
+} from "../../../Shared/Styles/Styles";
 import InputTypeOne from '../../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
@@ -97,9 +97,11 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   return (
     <Container>
       <FormContainerStyleOne>
-        <LogoImage
-          source={require('../../../../utilities/CareWalletLogo.png')}
-        />
+        <LogoImageHolder>
+          <LogoImage
+            source={require('../../../../utilities/CareWalletLogo.png')}
+          />
+        </LogoImageHolder>
         <WelcomeText>Welcome!</WelcomeText>
         <SignText>
           <FontBold>Sign Up</FontBold>

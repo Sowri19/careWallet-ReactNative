@@ -1,13 +1,4 @@
 import styled from 'styled-components/native';
-import { Ionicons } from '@expo/vector-icons';
-import { TextStyle, ViewStyle } from 'react-native';
-
-const LogoImage = styled.Image`
-  resize-mode: stretch;
-  width: 250px;
-  height: 100px;
-  margin-bottom: 10%;
-`;
 
 const WelcomeText = styled.Text`
   font-size: 20px;
@@ -46,7 +37,6 @@ const RegisterSection = styled.View`
 `;
 
 export {
-  LogoImage,
   WelcomeText,
   RememberMe,
   RememberMeCheckbox,
