@@ -1,23 +1,32 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { View, TouchableOpacity } from 'react-native';
 import {
-  Container,
-  WelcomeText,
-  PageTitle,
-  InputText,
-  StyledInput,
   Button,
   ButtonText,
-  RegisterSection,
-  BelowInputText,
-  RegisterText,
-  PasswordSection,
-  EyeIcon,
-  StyledImage,
-  SafeAreaContainer,
-} from './Styles';
-import InputField from '../../../../../../Components/InputField';
+  Container,
+  BackButton,
+  FormContainerStyleOne,
+  LogoImageTwo,
+} from '../../../../../Shared/Styles/Styles';
+import InputTypeOne from '../../../../../../Components/Fields/InputTypeOne';
+import InputPasswordTypeOne from '../../../../../../Components/Fields/InputPasswordTypeOne';
+import {
+  useAppDispatch,
+  useAppSelector,
+  // useAppSelector,
+} from '../../../../../../ReduxStore/Setup/hooks';
+import {
+  selectEmail,
+  selectNewPassword,
+  selectPhoneNumber,
+  setState as setStepOneState,
+  StepOneState,
+} from '../../../../../../ReduxStore/Slices/Register/stepOne';
+import {
+  chkPassValid,
+  chkEmailValid,
+  chkPhoneValid,
+  chkConfirmPassValid,
+} from '../../../../../../utilities/ValidationUtils';
 
 // Define a type for the navigation prop
 interface RegisterPageOneProps {
@@ -27,130 +36,154 @@ interface RegisterPageOneProps {
 }
 
 const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
-  const [newPasswordVisible, setNewPasswordVisibility] =
-    useState<boolean>(false);
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [confirmPasswordVisible, setConfirmPasswordVisibility] =
-    useState<boolean>(false);
+  const [phoneNumber, setPhoneNumberLocal] = useState<string>(
+    useAppSelector(selectPhoneNumber)
+  );
+  const [phoneErr, setPhoneErr] = useState<string>('');
+  const [email, setEmailLocal] = useState<string>(useAppSelector(selectEmail));
+  const [emailErr, setEmailErr] = useState<string>('');
+  const [confirmPassword, setConfirmPasswordLocal] = useState<string>(
+    useAppSelector(selectNewPassword)
+  );
+  const [confirmPassErr, setConfirmPassErr] = useState<string>('');
+  const [newPassword, setNewPasslocal] = useState<string>(
+    useAppSelector(selectNewPassword)
+  );
+  const [newPassErr, setNewPassErr] = useState<string>('');
+  const dispatch = useAppDispatch();
+  const updateStepOneState = (update: StepOneState) => {
+    dispatch(setStepOneState(update));
+  };
+  const setPhoneNumber = (text: string) => {
+    setPhoneNumberLocal(text);
+  };
+  const blurPhoneNumber = () => {
+    setPhoneErr(chkPhoneValid(phoneNumber));
+  };
+  const setEmail = (text: string) => {
+    setEmailLocal(text);
+  };
+  const blurEmail = () => {
+    setEmailErr(chkEmailValid(email));
+  };
+  const setNewPassword = (text: string) => {
+    setNewPasslocal(text);
+  };
+  const blurNewPass = () => {
+    setNewPassErr(chkPassValid(newPassword));
+  };
+  const setConfirmPassword = (text: string) => {
+    setConfirmPasswordLocal(text);
+  };
+  const blurConfirmPass = () => {
+    setConfirmPassErr(chkConfirmPassValid(confirmPassword, newPassword));
+  };
 
-  const [sharedData] = useState<string>('Shared data to be passed');
+  const handleBack = async (): Promise<void> => {
+    updateStepOneState({
+      phoneNumber: '',
+      email: '',
+      newPassword: '',
+    });
+    navigation.navigate('Sign Up');
+  };
 
-  const checkifDetailsFilled: boolean =
-    name !== '' &&
-    email !== '' &&
-    newPassword !== '' &&
-    confirmPassword !== '' &&
-    newPassword === confirmPassword;
+  const chkDetails = () => {
+    let result = true;
+    let error = chkPhoneValid(phoneNumber);
+    setPhoneErr(error);
+    if (error !== '') {
+      result = false;
+    }
+    error = chkEmailValid(email);
+    setEmailErr(error);
+    if (error !== '') {
+      result = false;
+    }
+    error = chkPassValid(newPassword);
+    setNewPassErr(error);
+    if (error !== '') {
+      result = false;
+    }
+    error = chkConfirmPassValid(confirmPassword, newPassword);
+    setConfirmPassErr(error);
+    if (error !== '') {
+      result = false;
+    }
+    return result;
+  };
 
   const handleNext = async (): Promise<void> => {
-    const formData = {
-      name,
-      email,
-      newPassword,
-    };
-
-    try {
-      const response = await axios.post(
-        'http://localhost:3000/patients',
-        formData
-      );
-
-      if (response.status === 200) {
-        console.log('Data added successfully!');
-        navigation.navigate('RegisterPageTwo', { formData, sharedData });
-      } else {
-        console.error('Failed to add data to the API.');
-      }
-    } catch (error) {
-      console.error('An error occurred while making the API request:', error);
+    if (!chkDetails()) {
+      return;
     }
+    updateStepOneState({
+      phoneNumber: phoneNumber,
+      email: email,
+      newPassword: newPassword,
+    });
+    navigation.navigate('RegisterPageTwo');
   };
   return (
-    <SafeAreaContainer>
-      <Container>
-        <StyledImage
-          source={require('../../../../../../utilities/CareWalletLogo.png')}
+    <Container>
+      <FormContainerStyleOne>
+        <BackButton onPress={handleBack}>
+          <ButtonText>{`< Back`}</ButtonText>
+        </BackButton>
+        <InputTypeOne
+          inputName={'Phone Number'}
+          inputValue={phoneNumber}
+          onChangeEvent={(newText) => setPhoneNumber(newText)}
+          placeHolderValue={'Enter your number'}
+          keyboardType={'number-pad'}
+          onBlur={blurPhoneNumber}
+          onEndEditing={blurPhoneNumber}
+          errorString={phoneErr}
+          onFocus={() => setPhoneErr('')}
         />
-        <WelcomeText>Welcome!</WelcomeText>
-        <PageTitle>Sign Up</PageTitle>
 
-        <InputField
-          inputName="Name"
-          placeholderValue="Enter your name"
-          placeholderColor="darkblue"
-          onChangeEvent={setName}
-          inputValue={name}
-        />
-
-        <InputField
-          inputName="Email"
-          placeholderValue="Enter your email"
-          placeholderColor="darkblue"
-          onChangeEvent={setEmail}
+        <InputTypeOne
+          inputName={'Email'}
           inputValue={email}
+          onChangeEvent={(newText) => setEmail(newText)}
+          placeHolderValue={'Enter your email'}
+          keyboardType={'email-address'}
+          onBlur={blurEmail}
+          onEndEditing={blurEmail}
+          errorString={emailErr}
+          onFocus={() => setEmailErr('')}
         />
 
-        <View>
-          <InputText>Password</InputText>
-          <PasswordSection>
-            <StyledInput
-              placeholder="Enter Password"
-              placeholderTextColor="darkblue"
-              onChangeText={setNewPassword}
-              secureTextEntry={!newPasswordVisible}
-              value={newPassword}
-            />
-            <TouchableOpacity
-              onPress={() => setNewPasswordVisibility(!newPasswordVisible)}
-            >
-              <EyeIcon
-                name={newPasswordVisible ? 'eye-off' : 'eye'}
-                size={24}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </PasswordSection>
-        </View>
+        <InputPasswordTypeOne
+          inputName={'Password'}
+          inputValue={newPassword}
+          onChangeEvent={setNewPassword}
+          placeHolderValue={'Enter Password'}
+          onBlur={blurNewPass}
+          onEndEditing={blurNewPass}
+          errorString={newPassErr}
+          onFocus={() => setNewPassErr('')}
+        />
 
-        <View>
-          <InputText>Confirm Password</InputText>
-          <PasswordSection>
-            <StyledInput
-              placeholder="Confirm Password"
-              placeholderTextColor="darkblue"
-              onChangeText={setConfirmPassword}
-              secureTextEntry={!confirmPasswordVisible}
-              value={confirmPassword}
-            />
-            <TouchableOpacity
-              onPress={() =>
-                setConfirmPasswordVisibility(!confirmPasswordVisible)
-              }
-            >
-              <EyeIcon
-                name={confirmPasswordVisible ? 'eye-off' : 'eye'}
-                size={24}
-                color="gray"
-              />
-            </TouchableOpacity>
-          </PasswordSection>
-        </View>
+        <InputPasswordTypeOne
+          inputName={'Confirm Password'}
+          inputValue={confirmPassword}
+          onChangeEvent={setConfirmPassword}
+          placeHolderValue={'Confirm Password'}
+          onBlur={blurConfirmPass}
+          onEndEditing={blurConfirmPass}
+          errorString={confirmPassErr}
+          onFocus={() => setConfirmPassErr('')}
+        />
 
-        <Button disabled={!checkifDetailsFilled} onPress={handleNext}>
+        <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
         </Button>
-
-        <RegisterSection>
-          <BelowInputText>Already have an account? </BelowInputText>
-          <RegisterText onPress={() => navigation.navigate('Log in')}>
-            Login
-          </RegisterText>
-        </RegisterSection>
-      </Container>
-    </SafeAreaContainer>
+      </FormContainerStyleOne>
+      <LogoImageTwo
+        source={require('../../../../../../utilities/CareWalletLogo.png')}
+      />
+    </Container>
   );
 };
 

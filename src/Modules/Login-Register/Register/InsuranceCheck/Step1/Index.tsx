@@ -1,165 +1,158 @@
 import React, { useState } from 'react';
-import { Platform, Pressable } from 'react-native';
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
-import InputField from '../../../../../Components/InputField';
 import {
-  SafeArea,
-  FieldsContainer,
-  TitleText,
-  SubtitleText,
-  CustomButton,
+  BackButton,
+  Button,
   ButtonText,
-  CustomImage,
-  CustomTextInput,
-  TextLabel,
-  BottomText,
-  BottomTextContainer,
-} from './Styles';
+  Container,
+  FormContainerStyleOne,
+  LogoImageTwo,
+} from '../../../../Shared/Styles/Styles';
+import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
+import {
+  setState as setInsuranceOneState,
+  InsStepOneState,
+} from '../../../../../ReduxStore/Slices/InsuranceCheck/stepOne';
+import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
+import {
+  chkDateValid,
+  chkIDValid,
+  chkNameValid,
+} from '../../../../../utilities/ValidationUtils';
 
 type Props = {
   navigation: any;
-  route: any;
 };
 
-const InsuranceSignUpTwo: React.FC<Props> = ({ navigation, route }) => {
-  const [insuranceType, setInsuranceType] = useState<string>('');
-  const [relationship, setRelationship] = useState<string>('');
-  const [memberDOB, setMemberDOB] = useState<Date>(new Date());
-  const [dateOfBirth, setDateOfBirth] = useState<string>('');
-  const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
-  const [effectiveDate, setEffectiveDate] = useState<Date>(new Date());
-  const [dateForEffectiveDate, setDateForEffectiveDate] = useState<string>('');
-  const [showEffectiveDatePicker, setShowEffectiveDatePicker] =
-    useState<boolean>(false);
+const InsuranceSignUpOne: React.FC<Props> = ({ navigation }) => {
+  const [insuranceName, setInsuranceNameLocal] = useState<string>('');
+  const [insuranceNameErr, setInsuranceNameErr] = useState<string>('');
+  const [policyHolderName, setPolicyHolderNameLocal] = useState<string>('');
+  const [policyHolderErr, setPolicyHolderErr] = useState<string>('');
+  const [memberID, setMemberIDLocal] = useState<string>('');
+  const [memberIDErr, setMemberIDErr] = useState('');
+  const [memberDOB, setMemberDOBLocal] = useState<string>('');
+  const [dobErr, setDOBErr] = useState<string>('');
+  const dispatch = useAppDispatch();
 
-  const { formData } = route.params; // Ensure you're using formData and sharedData correctly
+  const setInsuranceName = (text: string) => {
+    setInsuranceNameLocal(text);
+  };
+  const blurInsuranceName = () => {
+    setInsuranceNameErr(chkNameValid(insuranceName));
+  };
+  const setPolicyHolderName = (text: string) => {
+    setPolicyHolderNameLocal(text);
+  };
+  const blurPolicyHolder = () => {
+    setPolicyHolderErr(chkNameValid(policyHolderName));
+  };
+  const setMemberID = (text: string) => {
+    setMemberIDLocal(text);
+  };
+  const blurMemberID = () => {
+    setMemberIDErr(chkIDValid(memberID));
+  };
+  const setMemberDOB = (text: string) => {
+    setMemberDOBLocal(text);
+  };
+  const blurMemberDOB = () => {
+    setDOBErr(chkDateValid(memberDOB));
+  };
+  const updateState = (update: InsStepOneState) => {
+    dispatch(setInsuranceOneState(update));
+  };
+  const handleBack = () => {
+    updateState({
+      insuranceName: '',
+      policyHolderName: '',
+      memberId: '',
+      memberDOB: '',
+    });
+    navigation.navigate('RegisterPageTwo');
+  };
 
-  const onChangeDOB = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    const currentDate = selectedDate || memberDOB;
-    setShowDOBPicker(Platform.OS === 'ios');
-    setMemberDOB(currentDate);
-    if (event.type === 'set') {
-      setDateOfBirth(currentDate.toISOString().split('T')[0]);
+  const chkDetails = () => {
+    let result = true;
+    let error = chkNameValid(insuranceName);
+    setInsuranceNameErr(error);
+    if (error !== '') {
+      result = false;
     }
-  };
-
-  const onEffectiveDateChange = (
-    event: DateTimePickerEvent,
-    selectedDate?: Date
-  ) => {
-    const currentDate = selectedDate || effectiveDate;
-    setShowEffectiveDatePicker(Platform.OS === 'ios');
-    setEffectiveDate(currentDate);
-    if (event.type === 'set') {
-      setDateForEffectiveDate(currentDate.toISOString().split('T')[0]);
+    error = chkNameValid(policyHolderName);
+    setPolicyHolderErr(error);
+    if (error !== '') {
+      result = false;
     }
+    error = chkIDValid(memberID);
+    setMemberIDErr(error);
+    if (error !== '') {
+      result = false;
+    }
+    // error = chkDateValid(memberDOB);
+    // setDOBErr(error);
+    // if (error !== '') {
+    //   result = false;
+    // }
+    return result;
   };
-
-  const toggleDOBPicker = () => {
-    setShowDOBPicker(!showDOBPicker);
+  const handleNext = () => {
+    if (!chkDetails()) {
+      return;
+    }
+    updateState({
+      insuranceName: insuranceName,
+      policyHolderName: policyHolderName,
+      memberId: memberID,
+      memberDOB: memberDOB,
+    });
+    navigation.navigate('InsuranceSignUpTwo');
   };
-
-  const toggleEffectiveDatePicker = () => {
-    setShowEffectiveDatePicker(!showEffectiveDatePicker);
-  };
-
-  const onSubmitFormHandler = async () => {
-    const updatedFormData = {
-      ...formData,
-      insuranceType,
-      dateOfBirth,
-      dateForEffectiveDate,
-      relationship,
-    };
-    console.log(updatedFormData);
-  };
-
-  const checkIfDetailsFilled = insuranceType !== '' && relationship !== '';
-
   return (
-    <SafeArea>
-      <FieldsContainer>
-        <CustomImage
-          source={require('../../../../../utilities/CareWalletLogo.png')}
+    <Container>
+      <FormContainerStyleOne>
+        <BackButton onPress={handleBack}>
+          <ButtonText>{`< Back`}</ButtonText>
+        </BackButton>
+        <InputTypeOne
+          inputName={'Insurance Name'}
+          inputValue={insuranceName}
+          onChangeEvent={(newText) => setInsuranceName(newText)}
+          placeHolderValue={'Enter Insurance Name'}
+          onBlur={blurInsuranceName}
+          onEndEditing={blurInsuranceName}
+          errorString={insuranceNameErr}
+          onFocus={() => setInsuranceNameErr('')}
         />
-        <TitleText>Page 6</TitleText>
-        <SubtitleText>Sign Up</SubtitleText>
-
-        <InputField
-          inputName="Insurance Type"
-          placeholderValue="Enter Insurance Type"
-          placeholderColor="darkblue"
-          onChangeEvent={setInsuranceType}
-          inputValue={insuranceType}
+        <InputTypeOne
+          inputName={'Policy Holder'}
+          inputValue={policyHolderName}
+          onChangeEvent={(newText) => setPolicyHolderName(newText)}
+          placeHolderValue={'Enter Policy Holder Name'}
+          onBlur={blurPolicyHolder}
+          onEndEditing={blurPolicyHolder}
+          errorString={policyHolderErr}
+          onFocus={() => setPolicyHolderErr('')}
         />
-
-        <TextLabel>Member's Date of Birth</TextLabel>
-        <Pressable onPress={toggleDOBPicker}>
-          <CustomTextInput
-            placeholder="Enter Member's Date of Birth"
-            value={dateOfBirth}
-            onChangeText={setDateOfBirth}
-            placeholderTextColor="darkblue"
-            editable={false}
-          />
-        </Pressable>
-
-        {showDOBPicker && (
-          <DateTimePicker
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            value={memberDOB}
-            onChange={onChangeDOB}
-            maximumDate={new Date()}
-          />
-        )}
-
-        <TextLabel>Effective Date</TextLabel>
-        <Pressable onPress={toggleEffectiveDatePicker}>
-          <CustomTextInput
-            placeholder="Enter Effective Date"
-            value={dateForEffectiveDate}
-            onChangeText={setDateForEffectiveDate}
-            placeholderTextColor="darkblue"
-            editable={false}
-          />
-        </Pressable>
-
-        {showEffectiveDatePicker && (
-          <DateTimePicker
-            mode="date"
-            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-            value={effectiveDate}
-            onChange={onEffectiveDateChange}
-            maximumDate={new Date()}
-          />
-        )}
-
-        <InputField
-          inputName="Relationship to Policyholder"
-          placeholderValue="Optional"
-          placeholderColor="darkblue"
-          onChangeEvent={setRelationship}
-          inputValue={relationship}
+        <InputTypeOne
+          inputName={'Member ID'}
+          inputValue={memberID}
+          onChangeEvent={(newText) => setMemberID(newText)}
+          placeHolderValue={'Enter Member ID'}
+          onBlur={blurMemberID}
+          onEndEditing={blurMemberID}
+          errorString={memberIDErr}
+          onFocus={() => setMemberIDErr('')}
         />
 
-        <CustomButton
-          onPress={onSubmitFormHandler}
-          disabled={!checkIfDetailsFilled}
-        >
+        <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
-        </CustomButton>
-
-        <BottomTextContainer>
-          <BottomText onPress={() => navigation.navigate('Log in')}>
-            Login
-          </BottomText>
-        </BottomTextContainer>
-      </FieldsContainer>
-    </SafeArea>
+        </Button>
+      </FormContainerStyleOne>
+      <LogoImageTwo
+        source={require('../../../../../utilities/CareWalletLogo.png')}
+      />
+    </Container>
   );
 };
 
-export default InsuranceSignUpTwo;
+export default InsuranceSignUpOne;
