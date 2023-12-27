@@ -10,6 +10,7 @@ import {
   LogoImageHolder,
 } from '../Shared/Styles/Styles';
 import { AccountCreationData } from '../Shared/Interfaces/AccountCreationData';
+import { ApiObject } from '../Shared/Interfaces/ApiObject';
 import axios from 'axios';
 import { useAppSelector } from '../../ReduxStore/Setup/hooks';
 type Props = {
@@ -17,14 +18,7 @@ type Props = {
 };
 
 let apiHitInProgress = false;
-
-interface AccountCreationApi {
-  requestData: AccountCreationData;
-  successCB: (data: any) => any;
-  errorCB: (data: any) => any;
-  exceptionCB: (data: any) => any;
-}
-const accountCreationApi = async (request: AccountCreationApi) => {
+const accountCreationApi = async (request: ApiObject<AccountCreationData>) => {
   if (apiHitInProgress) {
     return;
   }
