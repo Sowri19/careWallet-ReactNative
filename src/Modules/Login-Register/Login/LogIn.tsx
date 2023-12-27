@@ -1,51 +1,111 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useIsFocused } from '@react-navigation/native';
 import {
-  Container,
-  LoginFields,
   LogoImage,
   WelcomeText,
   RememberMe,
   RememberMeCheckbox,
   BelowInputText,
+  RegisterSection,
+  SignText,
+} from './Styles';
+import {
   Button,
   ButtonText,
-  RegisterSection,
-} from './Styles';
-import InputTypeOne from '../../../Components/InputTypeOne';
-import { useAppDispatch } from '../../../ReduxStore/hooks';
+  FormContainerStyleOne,
+  Container,
+  FontBold,
+  FontBoldSecond,
+} from '../../Shared/Styles/Styles';
+import InputTypeOne from '../../../Components/Fields/InputTypeOne';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../ReduxStore/Setup/hooks';
 import {
   LoginState,
+  selectLoginID,
+  selectPassword,
   setState as setLoginState,
 } from '../../../ReduxStore/Slices/Login/loginSlice';
-import InputPasswordTypeOne from '../../../Components/InputPasswordTypeOne';
+import InputPasswordTypeOne from '../../../Components/Fields/InputPasswordTypeOne';
+import { chkPassValid } from '../../../utilities/ValidationUtils';
 
 // Props type
 type Props = {
   navigation: StackNavigationProp<any>;
 };
 
+let apiHitInProgress = false;
 const LogIn: React.FC<Props> = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const toggleRememberMe = () => setRememberMe(!rememberMe);
-  const [loginID, setLoginIDLocal] = useState<string>('');
-  const [password, setPasswordLocal] = useState<string>('');
+  const [loginID, setLoginIDLocal] = useState<string>(
+    useAppSelector(selectLoginID)
+  );
+  const [loginIDErr, setLoginIDErr] = useState<string>('');
+  const [password, setPasswordLocal] = useState<string>(
+    useAppSelector(selectPassword)
+  );
+  const [passwordErr, setPasswordErr] = useState<string>('');
   const dispatch = useAppDispatch();
-  const checkifDetailsFilled = loginID !== '' && password !== '';
   const updateLoginState = (update: LoginState) => {
     dispatch(setLoginState(update));
   };
-  const setLoginID = (text: string) => {
-    setLoginIDLocal(text);
+  const blurLoginID = () => {
+    setLoginIDErr(chkLoginIDValid(loginID));
   };
-  const setPassword = (text: string) => {
-    setPasswordLocal(text);
+  const chkLoginIDValid = (text: string) => {
+    if (text == '') {
+      return 'Login ID cannot be empty';
+    }
+    return '';
   };
+  const blurPassword = () => {
+    setPasswordErr(chkPassValid(password));
+  };
+  const chkDetails = () => {
+    let result = true;
+    let error = chkLoginIDValid(loginID);
+    setLoginIDErr(error);
+    if (error !== '') {
+      result = false;
+    }
+    error = chkPassValid(password);
+    setPasswordErr(error);
+    if (error !== '') {
+      result = false;
+    }
+    return result;
+  };
+  const reset = () => {
+    updateLoginState({
+      loginID: '',
+      password: '',
+    });
+    setPasswordLocal('');
+    setLoginIDLocal('');
+    setRememberMe(false);
+    setLoginIDErr('');
+    setPasswordErr('');
+  };
+  useEffect(() => {
+    if (isFocused) {
+      reset();
+    }
+  }, [isFocused]);
 
   const loginUser = async () => {
+    const valid = chkDetails();
+    if (!valid || apiHitInProgress) {
+      return;
+    }
+    apiHitInProgress = true;
     updateLoginState({
       loginID: loginID,
       password: password,
@@ -64,28 +124,40 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
       } else {
         console.log('Authentication failed on the server.');
       }
+      apiHitInProgress = false;
     } catch (error) {
+      apiHitInProgress = false;
       console.log('An error occurred:', error);
     }
   };
   return (
     <Container>
-      <LoginFields>
+      <FormContainerStyleOne>
         <LogoImage source={require('../../../utilities/CareWalletLogo.png')} />
         <WelcomeText>Welcome!</WelcomeText>
-
+        <SignText>
+          <FontBold>Sign In</FontBold>
+        </SignText>
         <InputTypeOne
-          inputName={'Email or Insurance # or Govt ID'}
+          inputName={'Phone #, Email, Insurance ID'}
           inputValue={loginID}
-          onChangeEvent={setLoginID}
+          onChangeEvent={setLoginIDLocal}
           placeHolderValue={'Enter Info of Choice'}
+          errorString={loginIDErr}
+          onBlur={blurLoginID}
+          onEndEditing={blurLoginID}
+          onFocus={() => setLoginIDErr('')}
         />
 
         <InputPasswordTypeOne
           inputName={'Enter Password'}
           inputValue={password}
-          onChangeEvent={setPassword}
+          onChangeEvent={setPasswordLocal}
           placeHolderValue={'Enter Password'}
+          errorString={passwordErr}
+          onBlur={blurPassword}
+          onEndEditing={blurPassword}
+          onFocus={() => setPasswordErr('')}
         />
 
         <RememberMe>
@@ -96,20 +168,20 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
             <BelowInputText>Remember me</BelowInputText>
           </RememberMeCheckbox>
           <BelowInputText onPress={() => console.log('forgot password')}>
-            Forgot Password?
+            Forgot Password ?
           </BelowInputText>
         </RememberMe>
 
-        <Button disabled={!checkifDetailsFilled} onPress={loginUser}>
+        <Button onPress={loginUser}>
           <ButtonText>Login</ButtonText>
         </Button>
 
         <RegisterSection>
-          <BelowInputText onPress={() => navigation.navigate('Register')}>
-            Don't have an account? Register
+          <BelowInputText onPress={() => navigation.navigate('Sign Up')}>
+            Don't have an account ? <FontBoldSecond>Register</FontBoldSecond>
           </BelowInputText>
         </RegisterSection>
-      </LoginFields>
+      </FormContainerStyleOne>
     </Container>
   );
 };

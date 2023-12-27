@@ -1,13 +1,17 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import loginReducer from './Slices/Login/loginSlice';
-import stepOneReducer from './Slices/Register/stepOne';
-import stepTwoReducer from './Slices/Register/stepTwo';
+import loginReducer from '../Slices/Login/loginSlice';
+import signUpReducer from '../Slices/Register/signUp';
+import stepOneReducer from '../Slices/Register/stepOne';
+import stepTwoReducer from '../Slices/Register/stepTwo';
+import insStepOneReducer from '../Slices/InsuranceCheck/stepOne';
 
 export const store = configureStore({
   reducer: {
     loginState: loginReducer,
+    signUpState: signUpReducer,
     stepOneState: stepOneReducer,
     stepTwoState: stepTwoReducer,
+    insStepOneState: insStepOneReducer,
   },
 });
 

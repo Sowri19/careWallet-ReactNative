@@ -12,7 +12,7 @@ import {
   BelowInputText,
   RegisterText,
 } from './Styles';
-import InputField from '../../../../../Components/InputField';
+import InputField from '../../../../../Components/Fields/InputField';
 
 // Define types for your navigation props
 type Props = {

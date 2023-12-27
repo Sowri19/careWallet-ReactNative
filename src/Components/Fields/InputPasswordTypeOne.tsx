@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React from 'react';
 import { KeyboardTypeOptions } from 'react-native';
 import InputField from './InputField';
 import {
-  PasswordIcon,
+  ErrorText,
+  FieldViewStyleOne,
   PasswordInput,
   PasswordSection,
-  UsernameSection,
-  UsernameTextInput
-} from "../Modules/Login-Register/Login/Styles";
+  PasswordSectionError,
+  UsernameTextInput,
+} from '../../Styles/Fields/inputTypeOneStyles';
 
 type InputOneFieldProps = {
   inputName: string;
@@ -15,6 +16,10 @@ type InputOneFieldProps = {
   inputValue: string;
   placeHolderValue: string;
   keyboardType?: KeyboardTypeOptions | undefined;
+  errorString?: string;
+  onBlur?: () => void;
+  onEndEditing?: () => void;
+  onFocus?: () => void;
 };
 const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
   inputName,
@@ -22,21 +27,34 @@ const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
   inputValue,
   placeHolderValue,
   keyboardType,
+  errorString,
+  onBlur,
+  onEndEditing,
+  onFocus,
 }) => {
+  const onChange = (text: string) => {
+    onChangeEvent(text);
+  };
+  const isError = errorString && errorString !== '';
   return (
     <>
       <InputField
+        viewStyle={FieldViewStyleOne}
         inputName={inputName}
-        onChangeEvent={onChangeEvent}
+        onChangeEvent={onChange}
         inputValue={inputValue}
         placeholderValue={placeHolderValue}
         keyboardType={keyboardType}
-        placeholderColor={'darkblue'}
-        inputPStyle={PasswordSection}
+        placeholderColor={isError ? '#8B0000' : 'darkblue'}
+        inputPStyle={isError ? PasswordSectionError : PasswordSection}
         inputStyle={PasswordInput}
-        iconStyle={PasswordIcon}
         inputTextStyle={UsernameTextInput}
         isPassword={true}
+        errorStyle={ErrorText}
+        errorString={errorString}
+        onBlurEvent={onBlur}
+        onEndEditing={onEndEditing}
+        onFocus={onFocus}
       />
     </>
   );

@@ -7,7 +7,7 @@ import {
   ViewStyle,
   KeyboardTypeOptions,
 } from 'react-native';
-import { EyeIcon } from '../Modules/Login-Register/Login/Styles';
+import { EyeIcon } from '../../Styles/Fields/inputTypeOneStyles';
 
 // Define a type for the component's props
 type InputFieldProps = {
@@ -15,6 +15,7 @@ type InputFieldProps = {
   placeholderValue?: string;
   placeholderColor?: string;
   onChangeEvent: (text: string) => void;
+  onBlurEvent?: () => void;
   inputValue: string;
   inputTextStyle?: TextStyle;
   inputStyle?: ViewStyle;
@@ -22,7 +23,11 @@ type InputFieldProps = {
   viewStyle?: ViewStyle;
   isPassword?: boolean;
   iconStyle?: ViewStyle;
-  keyboardType?: KeyboardTypeOptions | undefined; // Add this line
+  keyboardType?: KeyboardTypeOptions | undefined;
+  errorString?: string;
+  errorStyle?: TextStyle;
+  onEndEditing?: () => void;
+  onFocus?: () => void;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -38,11 +43,16 @@ const InputField: React.FC<InputFieldProps> = ({
   viewStyle,
   iconStyle,
   isPassword = false,
+  errorString,
+  errorStyle,
+  onBlurEvent,
+  onEndEditing,
+  onFocus,
 }) => {
   const [passwordVisible, setPasswordVisibility] = useState<boolean>(false);
   return (
     <View style={viewStyle}>
-      <Text style={inputTextStyle}>{inputName}</Text>
+      {inputName !== '' && <Text style={inputTextStyle}>{inputName}</Text>}
       <View style={inputPStyle}>
         <TextInput
           placeholder={placeholderValue}
@@ -51,7 +61,10 @@ const InputField: React.FC<InputFieldProps> = ({
           value={inputValue}
           style={inputStyle}
           secureTextEntry={isPassword && !passwordVisible}
-          keyboardType={keyboardType} // Add this line
+          keyboardType={keyboardType}
+          onBlur={onBlurEvent}
+          onEndEditing={onEndEditing}
+          onFocus={onFocus}
         />
         {isPassword && (
           <EyeIcon
@@ -63,6 +76,9 @@ const InputField: React.FC<InputFieldProps> = ({
           />
         )}
       </View>
+      {errorString && errorString !== '' && (
+        <Text style={errorStyle}>{errorString}</Text>
+      )}
     </View>
   );
 };

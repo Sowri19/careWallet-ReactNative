@@ -3,7 +3,7 @@ import { Platform, Pressable } from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
-import InputField from '../../../../../Components/InputField';
+import InputField from '../../../../../Components/Fields/InputField';
 import {
   SafeArea,
   FieldsContainer,
@@ -17,6 +17,14 @@ import {
   BottomText,
   BottomTextContainer,
 } from './Styles';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../../../../../ReduxStore/Setup/hooks';
+import {
+  selectInsuranceName,
+  setInsuranceName as setInsuranceNameAction,
+} from '../../../../../ReduxStore/Slices/InsuranceCheck/stepOne';
 
 type Props = {
   navigation: any;
