@@ -14,6 +14,8 @@ import {
   FormContainerStyleOne,
   LogoImage,
   LogoImageHolder,
+  BackButtonDummy,
+  ButtonDummy,
 } from '../Shared/Styles/Styles';
 import { AccountCreationData } from '../Shared/Interfaces/AccountCreationData';
 import { ApiObject } from '../Shared/Interfaces/ApiObject';
@@ -138,10 +140,12 @@ const Verification: React.FC<Props> = ({ navigation }) => {
   return (
     <Container>
       <FormContainerStyleOne>
-        {isVerified && (
+        {isVerified ? (
           <BackButton onPress={handleBack}>
             <ButtonText>{`< Back`}</ButtonText>
           </BackButton>
+        ) : (
+          <BackButtonDummy />
         )}
         <LogoImageHolder>
           <LogoImage source={require('../../utilities/CareWalletLogo.png')} />
@@ -152,6 +156,7 @@ const Verification: React.FC<Props> = ({ navigation }) => {
             <ProgressBar>
               <Animated.View style={[ProgressFill, { width }]}></Animated.View>
             </ProgressBar>
+            <ButtonDummy />
           </>
         )}
         {isVerified && (
