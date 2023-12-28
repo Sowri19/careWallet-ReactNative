@@ -1,5 +1,11 @@
-import React from 'react';
-import { TickHolder, TickIcon } from './Styles';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  ProgressBar,
+  ProgressFill,
+  TickHolder,
+  TickIcon,
+  VerificationText,
+} from './Styles';
 import {
   BackButton,
   Button,
@@ -13,6 +19,8 @@ import { AccountCreationData } from '../Shared/Interfaces/AccountCreationData';
 import { ApiObject } from '../Shared/Interfaces/ApiObject';
 import axios from 'axios';
 import { useAppSelector } from '../../ReduxStore/Setup/hooks';
+import { Animated, Easing } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 type Props = {
   navigation: any;
 };
@@ -50,6 +58,23 @@ const Verification: React.FC<Props> = ({ navigation }) => {
       insStepTwoState: state.insStepTwoState,
     };
   });
+  const [progress, setProgress] = useState<number>(0);
+  const durationOfLoader = 5;
+  const isVerified = progress >= 100;
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    setTimeout(() => {
+      startLoader();
+      setProgress(0);
+    });
+  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      startLoader();
+      setProgress(0);
+      return () => {};
+    }, [])
+  );
   const handleBack = () => {
     navigation.navigate('InsuranceSignUpTwo');
   };
@@ -85,21 +110,60 @@ const Verification: React.FC<Props> = ({ navigation }) => {
       },
     });
   };
+
+  const startLoader = () => {
+    animatedValue.setValue(0); // Reset the animated value to 0
+    animateProgress(); // Trigger the animation again
+  };
+  const animateProgress = () => {
+    Animated.timing(animatedValue, {
+      toValue: 100,
+      duration: durationOfLoader * 1000, // Set the duration for the loader to complete
+      easing: Easing.linear, // Use linear easing for a smooth increment
+      useNativeDriver: false,
+    }).start(() => {
+      setProgress(100);
+    });
+  };
+
+  useEffect(() => {
+    animateProgress();
+  }, [animatedValue]);
+
+  const width = animatedValue.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%'],
+  });
+
   return (
     <Container>
       <FormContainerStyleOne>
-        <BackButton onPress={handleBack}>
-          <ButtonText>{`< Back`}</ButtonText>
-        </BackButton>
+        {isVerified && (
+          <BackButton onPress={handleBack}>
+            <ButtonText>{`< Back`}</ButtonText>
+          </BackButton>
+        )}
         <LogoImageHolder>
           <LogoImage source={require('../../utilities/CareWalletLogo.png')} />
         </LogoImageHolder>
-        <TickHolder>
-          <TickIcon name="checkcircleo" />
-        </TickHolder>
-        <Button onPress={handleNext}>
-          <ButtonText>{`Finish >`}</ButtonText>
-        </Button>
+        {!isVerified && (
+          <>
+            <VerificationText>Verification in Progress...</VerificationText>
+            <ProgressBar>
+              <Animated.View style={[ProgressFill, { width }]}></Animated.View>
+            </ProgressBar>
+          </>
+        )}
+        {isVerified && (
+          <>
+            <TickHolder>
+              <TickIcon name="checkcircleo" />
+            </TickHolder>
+            <Button onPress={handleNext}>
+              <ButtonText>{`Finish >`}</ButtonText>
+            </Button>
+          </>
+        )}
       </FormContainerStyleOne>
     </Container>
   );

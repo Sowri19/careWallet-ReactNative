@@ -32,8 +32,8 @@ export const chkPhoneValid = (text: string) => {
   if (isNaN(intValue)) {
     return 'Invalid Phone Number';
   }
-  if (text.length < 10) {
-    return 'Atleast 10 digits required';
+  if (text.length != 10) {
+    return '10 digits required';
   }
   return '';
 };
