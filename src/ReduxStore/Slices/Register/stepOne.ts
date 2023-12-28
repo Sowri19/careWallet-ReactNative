@@ -1,60 +1,45 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../../Setup/store';
 
-export interface StepOneState {
-  phoneNumber: string;
-  email: string;
-  newPassword: string;
+export interface SignUpStepOneState {
+  firstName: string;
+  lastName: string;
 }
 
-const initialState: StepOneState = {
-  phoneNumber: '',
-  email: '',
-  newPassword: '',
+const initialState: SignUpStepOneState = {
+  firstName: '',
+  lastName: '',
 };
 
-export const stepOneSlice = createSlice({
-  name: 'stepOneStore',
+export const signUpStepOneSlice = createSlice({
+  name: 'signUpStepOneStore',
   initialState,
   reducers: {
-    setState: (state, action: PayloadAction<StepOneState>) => {
-      state.phoneNumber = action.payload.phoneNumber;
-      state.email = action.payload.email;
-      state.newPassword = action.payload.newPassword;
+    setState: (state, action: PayloadAction<SignUpStepOneState>) => {
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
     },
-    setPhoneNumber: (state, action: PayloadAction<string>) => {
-      state.phoneNumber = action.payload;
+    setFirstName: (state, action: PayloadAction<string>) => {
+      state.firstName = action.payload;
     },
-    setEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
-    },
-    setNewPassword: (state, action: PayloadAction<string>) => {
-      state.newPassword = action.payload;
+    setLastName: (state, action: PayloadAction<string>) => {
+      state.lastName = action.payload;
     },
     clearState: (state) => {
-      state.phoneNumber = '';
-      state.email = '';
-      state.newPassword = '';
+      state.firstName = '';
+      state.lastName = '';
     },
   },
 });
 
-export const {
-  setState,
-  setPhoneNumber,
-  setEmail,
-  setNewPassword,
-  clearState,
-} = stepOneSlice.actions;
+export const { setState, setFirstName, setLastName, clearState } =
+  signUpStepOneSlice.actions;
 
-export const selectSteponeData = (state: RootState) => state.stepOneState;
+export const selectSignUpStepOneData = (state: RootState) => state.signUpStepOneState;
 
-export const selectPhoneNumber = (state: RootState) =>
-  state.stepOneState.phoneNumber;
-export const selectEmail = (state: RootState) => {
-  return state.stepOneState.email;
+export const selectFirstName = (state: RootState) =>
+  state.signUpStepOneState.firstName;
+export const selectLastName = (state: RootState) => {
+  return state.signUpStepOneState.lastName;
 };
-export const selectNewPassword = (state: RootState) => {
-  return state.stepOneState.newPassword;
-};
-export default stepOneSlice.reducer;
+export default signUpStepOneSlice.reducer;

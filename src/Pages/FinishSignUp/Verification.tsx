@@ -23,6 +23,12 @@ import axios from 'axios';
 import { useAppSelector } from '../../ReduxStore/Setup/hooks';
 import { Animated, Easing } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { selectSignUpStepOneData } from '../../ReduxStore/Slices/Register/stepOne';
+import { selectSignUpStepThreeData } from '../../ReduxStore/Slices/Register/stepThree';
+import { selectSignUpStepFourData } from '../../ReduxStore/Slices/Register/stepFour';
+import { selectInsStepOneData } from '../../ReduxStore/Slices/InsuranceCheck/stepOne';
+import { selectInsStepTwoData } from '../../ReduxStore/Slices/InsuranceCheck/stepTwo';
+import { selectSignUpStepTwoData } from '../../ReduxStore/Slices/Register/stepTwo';
 type Props = {
   navigation: any;
 };
@@ -51,15 +57,12 @@ const accountCreationApi = async (request: ApiObject<AccountCreationData>) => {
 };
 
 const Verification: React.FC<Props> = ({ navigation }) => {
-  const signupStore = useAppSelector((state) => {
-    return {
-      signupState: state.signUpState,
-      stepOneState: state.stepOneState,
-      stepTwoState: state.stepTwoState,
-      insStepOneState: state.insStepOneState,
-      insStepTwoState: state.insStepTwoState,
-    };
-  });
+  const stepOneStore = useAppSelector(selectSignUpStepOneData);
+  const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
+  const stepThreeStore = useAppSelector(selectSignUpStepThreeData);
+  const stepFourStore = useAppSelector(selectSignUpStepFourData);
+  const insStepOneStore = useAppSelector(selectInsStepOneData);
+  const insStepTwoStore = useAppSelector(selectInsStepTwoData);
   const [progress, setProgress] = useState<number>(0);
   const durationOfLoader = 5;
   const isVerified = progress >= 100;
@@ -83,23 +86,24 @@ const Verification: React.FC<Props> = ({ navigation }) => {
   const handleNext = () => {
     accountCreationApi({
       requestData: {
-        firstName: signupStore.signupState.firstName,
-        lastName: signupStore.signupState.lastName,
-        phoneNumber: signupStore.stepOneState.phoneNumber,
-        email: signupStore.stepOneState.email,
-        newPassword: signupStore.stepOneState.newPassword,
-        address: signupStore.stepTwoState.address,
-        city: signupStore.stepTwoState.city,
-        state: signupStore.stepTwoState.state,
-        dob: signupStore.stepTwoState.dob,
-        insuranceName: signupStore.insStepOneState.insuranceName,
-        policyHolderName: signupStore.insStepOneState.policyHolderName,
-        memberId: signupStore.insStepOneState.memberId,
-        memberDOB: signupStore.insStepOneState.memberDOB,
-        insuranceType: signupStore.insStepTwoState.insuranceType,
-        groupNumber: signupStore.insStepTwoState.groupNumber,
-        effectiveDate: signupStore.insStepTwoState.effectiveDate,
-        relToPolicyHolder: signupStore.insStepTwoState.relToPolicyHolder,
+        firstName: stepOneStore.firstName,
+        lastName: stepOneStore.lastName,
+        dob: stepTwoStore.dob,
+        phoneNumber: stepThreeStore.phoneNumber,
+        email: stepThreeStore.email,
+        newPassword: stepThreeStore.newPassword,
+        address: stepFourStore.address,
+        city: stepFourStore.city,
+        state: stepFourStore.state,
+        zipcode: stepFourStore.zipcode,
+        insuranceName: insStepOneStore.insuranceName,
+        policyHolderName: insStepOneStore.policyHolderName,
+        memberId: insStepOneStore.memberId,
+        memberDOB: insStepOneStore.memberDOB,
+        insuranceType: insStepTwoStore.insuranceType,
+        groupNumber: insStepTwoStore.groupNumber,
+        effectiveDate: insStepTwoStore.effectiveDate,
+        relToPolicyHolder: insStepTwoStore.relToPolicyHolder,
       },
       successCB: () => {
         navigation.navigate('Home');

@@ -55,7 +55,7 @@ export const {
   clearState,
 } = insStepOneSlice.actions;
 
-export const selectStepOneData = (state: RootState) => state.insStepOneState;
+export const selectInsStepOneData = (state: RootState) => state.insStepOneState;
 
 export const selectInsuranceName = (state: RootState) =>
   state.insStepOneState.insuranceName;

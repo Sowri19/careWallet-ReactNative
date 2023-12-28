@@ -13,8 +13,9 @@ export const Container = styled.SafeAreaView`
 export const FormContainerStyleOne = styled.View`
   flex: 1;
   flex-direction: column;
-  align-content: center;
-  justify-content: center;
+  align-content: flex-start;
+  justify-content: flex-start;
+  padding-top: 10%;
   padding-bottom: 15%;
   width: 70%;
 `;
@@ -51,7 +52,7 @@ export const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   background-color: #00008b;
-  height:80px;
+  height: 80px;
   margin-top: 2%;
   margin-bottom: 12px;
   border-width: 0.5px;

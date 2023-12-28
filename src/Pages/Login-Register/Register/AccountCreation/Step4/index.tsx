@@ -1,34 +1,34 @@
 import React, { useState } from 'react';
-import { Platform, TouchableOpacity, Pressable, View } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { Platform } from 'react-native';
 import {} from './Styles';
 import {
   BackButton,
   Button,
   ButtonText,
-  Container, LogoImageTwo
-} from "../../../../../Shared/Styles/Styles";
-import { FormContainerStyleOne } from '../../../../../Shared/Styles/Styles';
+  Container,
+  LogoImageTwo,
+} from '../../../../Shared/Styles/Styles';
+import { FormContainerStyleOne } from '../../../../Shared/Styles/Styles';
 import { ParamListBase, RouteProp } from '@react-navigation/native';
-import InputTypeOne from '../../../../../../Components/Fields/InputTypeOne';
+import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
   useAppSelector,
-  // useAppSelector,
-} from '../../../../../../ReduxStore/Setup/hooks';
+} from '../../../../../ReduxStore/Setup/hooks';
 import {
   selectAddress,
   selectCity,
-  selectDOB,
-  setState as setStepTwoState,
-  StepTwoState,
-} from '../../../../../../ReduxStore/Slices/Register/stepTwo';
+  selectState,
+  selectZipcode,
+  setState as setStepFourState,
+  SignUpStepFourState,
+} from '../../../../../ReduxStore/Slices/Register/stepFour';
 import {
   chkConfirmPassValid,
   chkEmailValid,
   chkPassValid,
-  chkPhoneValid
-} from "../../../../../../utilities/ValidationUtils";
+  chkPhoneValid,
+} from '../../../../../utilities/ValidationUtils';
 
 interface RegisterPageTwoProps {
   navigation: {
@@ -44,17 +44,15 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
   const [addressErr, setAddressErr] = useState<string>('');
   const [city, setCityLocal] = useState<string>(useAppSelector(selectCity));
   const [cityErr, setCityErr] = useState<string>('');
-  const [state, setStateLocal] = useState<string>(useAppSelector(selectCity));
+  const [state, setStateLocal] = useState<string>(useAppSelector(selectState));
   const [stateErr, setStateErr] = useState<string>('');
-  const [dateOfBirth, setDateOfBirthLocal] = useState<string>(
-    useAppSelector(selectDOB)
+  const [zipcode, setZipcodeLocal] = useState<string>(
+    useAppSelector(selectZipcode)
   );
-  const [dobErr, setDOBErr] = useState<string>('');
-  const [dobObject, setDOBObject] = useState<Date>(new Date());
-  const [showDOBPicker, setShowDOBPicker] = useState<boolean>(false);
+  const [zipcodeErr, setZipcodeErr] = useState<string>('');
   const dispatch = useAppDispatch();
-  const updateState = (update: StepTwoState) => {
-    dispatch(setStepTwoState(update));
+  const updateState = (update: SignUpStepFourState) => {
+    dispatch(setStepFourState(update));
   };
   const setAddress = (text: string) => {
     setAddressLocal(text);
@@ -65,43 +63,12 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
   const setState = (text: string) => {
     setStateLocal(text);
   };
-  const setDateOfBirth = (text: string) => {
-    setDateOfBirthLocal(text);
-  };
-  const setMemberDOB = (date: Date | undefined) => {
-    if (date) {
-      setDOBObject(date);
-    } else {
-      // placeholder date
-      setDOBObject(new Date());
-    }
-  };
-
-  const toggleDOBpicker = () => {
-    setShowDOBPicker(!showDOBPicker);
-  };
-
-  const onChangeDOB = (event: any, selectedDate?: Date) => {
-    const currentDate = selectedDate || new Date();
-    setShowDOBPicker(Platform.OS === 'ios');
-    setMemberDOB(currentDate);
-
-    if (event.type === 'set' && currentDate) {
-      setDateOfBirth(currentDate.toDateString());
-    }
-  };
-
-  const confirmIOSDOB = () => {
-    if (dobObject) {
-      setDateOfBirth(dobObject.toDateString());
-    } else {
-      setDateOfBirth('');
-    }
-    toggleDOBpicker();
+  const setZipcode = (text: string) => {
+    setZipcodeLocal(text);
   };
 
   const chkDetails = () => {
-    let result = true;
+    const result = true;
     return result;
   };
 
@@ -113,7 +80,7 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
       address: address,
       city: city,
       state: state,
-      dob: dateOfBirth.toString(),
+      zipcode: zipcode,
     });
     navigation.navigate('InsuranceSignUpOne');
   };
@@ -123,7 +90,7 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
       address: '',
       city: '',
       state: '',
-      dob: '',
+      zipcode: '',
     });
     navigation.navigate('Register');
   };
@@ -152,12 +119,18 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
           onChangeEvent={(newText) => setState(newText)}
           placeHolderValue={'Enter your State'}
         />
+        <InputTypeOne
+          inputName={'Zipcode'}
+          inputValue={zipcode}
+          onChangeEvent={(newText) => setZipcode(newText)}
+          placeHolderValue={'Enter your Zipcode'}
+        />
         <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
       <LogoImageTwo
-        source={require('../../../../../../utilities/CareWalletLogo.png')}
+        source={require('../../../../../utilities/CareWalletLogo.png')}
       />
     </Container>
   );
