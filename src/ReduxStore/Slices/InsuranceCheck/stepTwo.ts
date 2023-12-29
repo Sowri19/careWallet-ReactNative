@@ -55,7 +55,7 @@ export const {
   clearState,
 } = insStepTwoSlice.actions;
 
-export const selectStepOneData = (state: RootState) => state.insStepTwoState;
+export const selectInsStepTwoData = (state: RootState) => state.insStepTwoState;
 
 export const selectInsuranceName = (state: RootState) =>
   state.insStepTwoState.insuranceType;

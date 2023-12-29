@@ -13,8 +13,9 @@ export const Container = styled.SafeAreaView`
 export const FormContainerStyleOne = styled.View`
   flex: 1;
   flex-direction: column;
-  align-content: center;
-  justify-content: center;
+  align-content: flex-start;
+  justify-content: flex-start;
+  padding-top: 10%;
   padding-bottom: 15%;
   width: 70%;
 `;
@@ -34,16 +35,37 @@ export const BackButton = styled.TouchableOpacity`
   border-radius: 10px;
 `;
 
+export const BackButtonDummy = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 40%;
+  min-width: 40%;
+  max-width: 40%;
+  margin-top: 10%;
+  margin-bottom: 10%;
+`;
+
 export const Button = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
   background-color: #00008b;
-  height: 60px;
+  height: 80px;
   margin-top: 2%;
   margin-bottom: 12px;
   border-width: 0.5px;
   border-radius: 10px;
+`;
+
+export const ButtonDummy = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  margin-top: 2%;
+  margin-bottom: 12px;
 `;
 
 export const ButtonText = styled.Text`

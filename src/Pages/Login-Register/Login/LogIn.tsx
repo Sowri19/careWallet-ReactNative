@@ -21,6 +21,7 @@ import {
   FontBold,
   FontBoldSecond,
   LogoImageHolder,
+  ButtonDummy,
 } from '../../Shared/Styles/Styles';
 import InputTypeOne from '../../../Components/Fields/InputTypeOne';
 import {
@@ -134,6 +135,7 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
   return (
     <Container>
       <FormContainerStyleOne>
+        <ButtonDummy />
         <LogoImageHolder>
           <LogoImage
             source={require('../../../utilities/CareWalletLogo.png')}

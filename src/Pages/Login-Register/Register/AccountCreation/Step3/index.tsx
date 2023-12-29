@@ -6,27 +6,27 @@ import {
   BackButton,
   FormContainerStyleOne,
   LogoImageTwo,
-} from '../../../../../Shared/Styles/Styles';
-import InputTypeOne from '../../../../../../Components/Fields/InputTypeOne';
-import InputPasswordTypeOne from '../../../../../../Components/Fields/InputPasswordTypeOne';
+} from '../../../../Shared/Styles/Styles';
+import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
+import InputPasswordTypeOne from '../../../../../Components/Fields/InputPasswordTypeOne';
 import {
   useAppDispatch,
   useAppSelector,
   // useAppSelector,
-} from '../../../../../../ReduxStore/Setup/hooks';
+} from '../../../../../ReduxStore/Setup/hooks';
 import {
   selectEmail,
   selectNewPassword,
   selectPhoneNumber,
-  setState as setStepOneState,
-  StepOneState,
-} from '../../../../../../ReduxStore/Slices/Register/stepOne';
+  setState as setStepThreeState,
+  SignUpStepThreeState,
+} from '../../../../../ReduxStore/Slices/Register/stepThree';
 import {
   chkPassValid,
   chkEmailValid,
   chkPhoneValid,
   chkConfirmPassValid,
-} from '../../../../../../utilities/ValidationUtils';
+} from '../../../../../utilities/ValidationUtils';
 
 // Define a type for the navigation prop
 interface RegisterPageOneProps {
@@ -51,8 +51,8 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
   );
   const [newPassErr, setNewPassErr] = useState<string>('');
   const dispatch = useAppDispatch();
-  const updateStepOneState = (update: StepOneState) => {
-    dispatch(setStepOneState(update));
+  const updateStepThreeState = (update: SignUpStepThreeState) => {
+    dispatch(setStepThreeState(update));
   };
   const setPhoneNumber = (text: string) => {
     setPhoneNumberLocal(text);
@@ -80,12 +80,12 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
   };
 
   const handleBack = async (): Promise<void> => {
-    updateStepOneState({
+    updateStepThreeState({
       phoneNumber: '',
       email: '',
       newPassword: '',
     });
-    navigation.navigate('Sign Up');
+    navigation.navigate('SignDOB');
   };
 
   const chkDetails = () => {
@@ -117,7 +117,7 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
     if (!chkDetails()) {
       return;
     }
-    updateStepOneState({
+    updateStepThreeState({
       phoneNumber: phoneNumber,
       email: email,
       newPassword: newPassword,
@@ -181,7 +181,7 @@ const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
         </Button>
       </FormContainerStyleOne>
       <LogoImageTwo
-        source={require('../../../../../../utilities/CareWalletLogo.png')}
+        source={require('../../../../../utilities/CareWalletLogo.png')}
       />
     </Container>
   );

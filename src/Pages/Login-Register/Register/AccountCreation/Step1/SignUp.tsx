@@ -1,33 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  WelcomeText,
-  BelowInputText,
-  RegisterSection,
-  SignText,
-} from './Styles';
+import { BelowInputText, RegisterSection, SignText } from './Styles';
 import {
   LogoImage,
   Button,
   ButtonText,
   Container,
   FormContainerStyleOne,
-  FontBold,
-  FontBoldSecond, LogoImageHolder
-} from "../../../Shared/Styles/Styles";
-import InputTypeOne from '../../../../Components/Fields/InputTypeOne';
+  FontBoldSecond,
+  LogoImageHolder, ButtonDummy,
+} from '../../../../Shared/Styles/Styles';
+import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
   useAppSelector,
-} from '../../../../ReduxStore/Setup/hooks';
+} from '../../../../../ReduxStore/Setup/hooks';
 import {
-  SignUpState,
-  setState as setSignUpAction,
+  SignUpStepOneState,
+  setState as setStepOneAction,
   selectFirstName,
   selectLastName,
-} from '../../../../ReduxStore/Slices/Register/signUp';
+} from '../../../../../ReduxStore/Slices/Register/stepOne';
 import { useIsFocused } from '@react-navigation/native';
-import { chkNameValid } from '../../../../utilities/ValidationUtils';
+import { chkNameValid } from '../../../../../utilities/ValidationUtils';
 
 type Props = {
   navigation: StackNavigationProp<any>;
@@ -40,8 +35,8 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   const [lastName, setLastName] = useState(useAppSelector(selectLastName));
   const [lastNameErr, setLastNameErr] = useState('');
   const dispatch = useAppDispatch();
-  const updateSignUpState = (update: SignUpState) => {
-    dispatch(setSignUpAction(update));
+  const updateStepOneState = (update: SignUpStepOneState) => {
+    dispatch(setStepOneAction(update));
   };
   const blurFirstNameChange = () => {
     setFirstNameErr(chkFirstNameValid(firstName));
@@ -50,7 +45,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     setLastNameErr(chkLastNameValid(lastName));
   };
   const reset = () => {
-    updateSignUpState({
+    updateStepOneState({
       firstName: firstName,
       lastName: lastName,
     });
@@ -88,26 +83,24 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     if (!chkDetails()) {
       return;
     }
-    updateSignUpState({
+    updateStepOneState({
       firstName: firstName,
       lastName: lastName,
     });
-    navigation.navigate('Register');
+    navigation.navigate('SignDOB');
   };
   return (
     <Container>
       <FormContainerStyleOne>
+        <ButtonDummy />
         <LogoImageHolder>
           <LogoImage
-            source={require('../../../../utilities/CareWalletLogo.png')}
+            source={require('../../../../../utilities/CareWalletLogo.png')}
           />
         </LogoImageHolder>
-        <WelcomeText>Welcome!</WelcomeText>
-        <SignText>
-          <FontBold>Sign Up</FontBold>
-        </SignText>
+        <SignText>What's your name ?</SignText>
         <InputTypeOne
-          inputName={"What's your name ?"}
+          inputName={''}
           inputValue={firstName}
           onChangeEvent={setFirstName}
           placeHolderValue={'First Name'}

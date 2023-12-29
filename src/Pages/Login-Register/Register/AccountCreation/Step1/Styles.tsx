@@ -7,9 +7,10 @@ const WelcomeText = styled.Text`
 `;
 
 const SignText = styled.Text`
-  font-size: 30px;
+  font-size: 15px;
   color: darkblue;
-  margin-bottom: 5px;
+  margin-bottom: 10%;
+  align-self: center;
 `;
 
 const BelowInputText = styled.Text`

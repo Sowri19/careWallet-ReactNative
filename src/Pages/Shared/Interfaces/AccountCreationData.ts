@@ -6,6 +6,7 @@ export interface AccountCreationData {
   newPassword: string;
   address: string;
   city: string;
+  zipcode: string;
   state: string;
   dob: string;
   insuranceName: string;
