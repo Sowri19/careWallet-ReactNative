@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from "react";
 import {
   View,
   Text,
@@ -28,6 +28,8 @@ type InputFieldProps = {
   errorStyle?: TextStyle;
   onEndEditing?: () => void;
   onFocus?: () => void;
+  editable?: boolean;
+  onPressIn?: () => void;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -48,6 +50,8 @@ const InputField: React.FC<InputFieldProps> = ({
   onBlurEvent,
   onEndEditing,
   onFocus,
+  editable,
+  onPressIn,
 }) => {
   const [passwordVisible, setPasswordVisibility] = useState<boolean>(false);
   return (
@@ -65,6 +69,8 @@ const InputField: React.FC<InputFieldProps> = ({
           onBlur={onBlurEvent}
           onEndEditing={onEndEditing}
           onFocus={onFocus}
+          editable={editable}
+          onPressIn={onPressIn}
         />
         {isPassword && (
           <EyeIcon

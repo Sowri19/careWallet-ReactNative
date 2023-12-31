@@ -19,6 +19,10 @@ import {
   chkInsTypeValid,
   chkRelPolicyValid,
 } from '../../../../../utilities/ValidationUtils';
+import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
+import { formatDate } from '../../../../../utilities/FormatUtils';
+import DropdownTypeOne from '../../../../../Components/Fields/DropdownTypeOne';
+import RelItems from '../../../../../utilities/RelToPolicyValues';
 
 // Define types for your navigation props
 type Props = {
@@ -33,6 +37,7 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation }) => {
   const [groupNumber, setGroupNumberLocal] = useState<string>('');
   const [groupNumberErr, setGroupNumberErr] = useState<string>('');
   const [effectiveDate, setEffectiveDateLocal] = useState<string>('');
+  const [effectiveDateObj, setEffectiveDateObj] = useState<Date>('');
   const [effectiveDateErr, setEffectiveDateErr] = useState<string>('');
   const [relToPolicyHolder, setRelToPolicyHolderLocal] = useState<string>('');
   const [relToPolicyHolderErr, setRelToPolicyHolderErr] = useState<string>('');
@@ -57,14 +62,8 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation }) => {
   const setEffectiveDate = (text: string) => {
     setEffectiveDateLocal(text);
   };
-  const blurIEffectiveDate = () => {
-    setEffectiveDateErr(chkEffDateValid(effectiveDate));
-  };
   const setRelToPolicyHolder = (text: string) => {
     setRelToPolicyHolderLocal(text);
-  };
-  const blurRelToPolicyHolder = () => {
-    setRelToPolicyHolderErr(chkRelPolicyValid(relToPolicyHolder));
   };
 
   const chkDetails = () => {
@@ -84,11 +83,11 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation }) => {
     if (error !== '') {
       result = false;
     }
-    // error = chkRelPolicyValid(memberDOB);
-    // setRelToPolicyHolderErr(error);
-    // if (error !== '') {
-    //   result = false;
-    // }
+    error = chkRelPolicyValid(relToPolicyHolder);
+    setRelToPolicyHolderErr(error);
+    if (error !== '') {
+      result = false;
+    }
     return result;
   };
 
@@ -113,6 +112,11 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation }) => {
       relToPolicyHolder: '',
     });
     navigation.navigate('InsuranceSignUpOne');
+  };
+
+  const onDropdownValueChange = (value: string, index: number) => {
+    setRelToPolicyHolder(value);
+    setRelToPolicyHolderErr(chkRelPolicyValid(value));
   };
 
   return (
@@ -141,25 +145,39 @@ const InsuranceSignUpTwo: React.FC<Props> = ({ navigation }) => {
           errorString={groupNumberErr}
           onFocus={() => setGroupNumberErr('')}
         />
-        <InputTypeOne
+
+        <DatePickerTypeOne
           inputName={'Effective Date'}
-          inputValue={effectiveDate}
-          onChangeEvent={(newText) => setEffectiveDate(newText)}
-          placeHolderValue={'Optional'}
-          onBlur={blurIEffectiveDate}
-          onEndEditing={blurIEffectiveDate}
+          inputValue={effectiveDateObj}
+          placeHolderValue={`Optional`}
           errorString={effectiveDateErr}
-          onFocus={() => setEffectiveDateErr('')}
+          onPressIn={() => {
+            setEffectiveDateErr('');
+          }}
+          onDateConfirm={(date: Date) => {
+            setEffectiveDateErr('');
+            setEffectiveDate(formatDate(date));
+            setEffectiveDateObj(date);
+          }}
+          onCancel={() => {}}
         />
-        <InputTypeOne
+        {/*<InputTypeOne*/}
+        {/*  inputName={'Relationship to PolicyHolder'}*/}
+        {/*  inputValue={relToPolicyHolder}*/}
+        {/*  onChangeEvent={(newText) => setRelToPolicyHolder(newText)}*/}
+        {/*  placeHolderValue={'Optional'}*/}
+        {/*  onBlur={blurRelToPolicyHolder}*/}
+        {/*  onEndEditing={blurRelToPolicyHolder}*/}
+        {/*  errorString={relToPolicyHolderErr}*/}
+        {/*  onFocus={() => setRelToPolicyHolderErr('')}*/}
+        {/*/>*/}
+
+        <DropdownTypeOne
+          onValueChange={onDropdownValueChange}
+          items={RelItems}
+          placeholder={'Optional'}
           inputName={'Relationship to PolicyHolder'}
-          inputValue={relToPolicyHolder}
-          onChangeEvent={(newText) => setRelToPolicyHolder(newText)}
-          placeHolderValue={'Optional'}
-          onBlur={blurRelToPolicyHolder}
-          onEndEditing={blurRelToPolicyHolder}
           errorString={relToPolicyHolderErr}
-          onFocus={() => setRelToPolicyHolderErr('')}
         />
 
         <Button onPress={handleNext}>

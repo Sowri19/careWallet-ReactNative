@@ -18,6 +18,8 @@ import {
   chkIDValid,
   chkNameValid,
 } from '../../../../../utilities/ValidationUtils';
+import DatePickerTypeOne from "../../../../../Components/Fields/DatePickerTypeOne";
+import { formatDate } from "../../../../../utilities/FormatUtils";
 
 type Props = {
   navigation: any;
@@ -31,6 +33,7 @@ const InsuranceSignUpOne: React.FC<Props> = ({ navigation }) => {
   const [memberID, setMemberIDLocal] = useState<string>('');
   const [memberIDErr, setMemberIDErr] = useState('');
   const [memberDOB, setMemberDOBLocal] = useState<string>('');
+  const [memderDOBDate, setMemberDOBDateLocal] = useState<Date>();
   const [dobErr, setDOBErr] = useState<string>('');
   const dispatch = useAppDispatch();
 
@@ -51,12 +54,6 @@ const InsuranceSignUpOne: React.FC<Props> = ({ navigation }) => {
   };
   const blurMemberID = () => {
     setMemberIDErr(chkIDValid(memberID));
-  };
-  const setMemberDOB = (text: string) => {
-    setMemberDOBLocal(text);
-  };
-  const blurMemberDOB = () => {
-    setDOBErr(chkDateValid(memberDOB));
   };
   const updateState = (update: InsStepOneState) => {
     dispatch(setInsuranceOneState(update));
@@ -107,6 +104,14 @@ const InsuranceSignUpOne: React.FC<Props> = ({ navigation }) => {
     });
     navigation.navigate('InsuranceSignUpTwo');
   };
+  const onDateConfirm = (date: Date) => {
+    setMemberDOBDateLocal(date);
+    setMemberDOBLocal(formatDate(date));
+  };
+  const onDateCancel = () => {};
+  const openDatePicker = () => {
+    setDOBErr('');
+  };
   return (
     <Container>
       <FormContainerStyleOne>
@@ -142,6 +147,14 @@ const InsuranceSignUpOne: React.FC<Props> = ({ navigation }) => {
           onEndEditing={blurMemberID}
           errorString={memberIDErr}
           onFocus={() => setMemberIDErr('')}
+        />
+        <DatePickerTypeOne
+          inputValue={memderDOBDate}
+          placeHolderValue={`mm/dd/yyyy`}
+          errorString={dobErr}
+          onPressIn={openDatePicker}
+          onDateConfirm={onDateConfirm}
+          onCancel={onDateCancel}
         />
 
         <Button onPress={handleNext}>

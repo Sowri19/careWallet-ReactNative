@@ -19,6 +19,8 @@ type InputOneFieldProps = {
   onBlur?: () => void;
   onEndEditing?: () => void;
   onFocus?: () => void;
+  editable?: boolean;
+  onPressIn?: () => void;
 };
 const InputTypeOne: React.FC<InputOneFieldProps> = ({
   inputName,
@@ -30,6 +32,8 @@ const InputTypeOne: React.FC<InputOneFieldProps> = ({
   onBlur,
   onEndEditing,
   onFocus,
+  editable,
+  onPressIn,
 }) => {
   const onChange = (text: string) => {
     onChangeEvent(text);
@@ -44,7 +48,7 @@ const InputTypeOne: React.FC<InputOneFieldProps> = ({
         inputValue={inputValue}
         placeholderValue={placeHolderValue}
         keyboardType={keyboardType}
-        placeholderColor={isError ? '#8B0000' : 'darkblue'}
+        // placeholderColor={isError ? '#8B0000' : 'darkblue'}
         inputPStyle={isError ? UsernameSectionError : UsernameSection}
         inputTextStyle={UsernameTextInput}
         errorStyle={ErrorText}
@@ -52,6 +56,8 @@ const InputTypeOne: React.FC<InputOneFieldProps> = ({
         onBlurEvent={onBlur}
         onEndEditing={onEndEditing}
         onFocus={onFocus}
+        editable={editable}
+        onPressIn={onPressIn}
       />
     </>
   );

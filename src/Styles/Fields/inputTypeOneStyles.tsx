@@ -103,3 +103,13 @@ export const ErrorText: TextStyle = {
   lineHeight: 12,
   marginBottom: 3,
 };
+
+export const DropDownInput: TextStyle = {
+  color: 'darkblue',
+  width: '100%',
+  minWidth: '100%',
+  maxWidth: '100%',
+  flex: 1,
+  flexDirection: "row",
+
+};

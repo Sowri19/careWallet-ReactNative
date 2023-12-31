@@ -76,10 +76,20 @@ export const chkInsTypeValid = (text: string) => {
   if (text == '') {
     return 'Insurance Type cannot be empty';
   }
+  const alphabeticRegex = /^[a-zA-Z]+$/;
+  if (!alphabeticRegex.test(text)) {
+    return 'Invalid Name';
+  }
   return '';
 };
 
 export const chkGroupValid = (text: string) => {
+  if (text.length > 0) {
+    const intValue = parseInt(text);
+    if (isNaN(intValue)) {
+      return 'Invalid Group Number';
+    }
+  }
   return '';
 };
 

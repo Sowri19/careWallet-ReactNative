@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StackNavigationProp } from '@react-navigation/stack';
-import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
   BackButton,
   Button,
@@ -17,13 +16,16 @@ import {
   SignUpStepTwoState,
 } from '../../../../../ReduxStore/Slices/Register/stepTwo';
 import { chkDateValid } from '../../../../../utilities/ValidationUtils';
+import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
+import { formatDate } from '../../../../../utilities/FormatUtils';
 
 type Props = {
   navigation: StackNavigationProp<any>;
 };
 
 const StepTwo: React.FC<Props> = ({ navigation }) => {
-  const [dob, setDOBLocal] = useState<string>('');
+  const [date, setDate] = useState<Date>(new Date());
+  const [dob, setDOBLocal] = useState<string>(formatDate(date));
   const [dobErr, setDOBErr] = useState<string>('');
   const dispatch = useAppDispatch();
   const updateState = (update: SignUpStepTwoState) => {
@@ -32,12 +34,9 @@ const StepTwo: React.FC<Props> = ({ navigation }) => {
   const setDOB = (text: string) => {
     setDOBLocal(text);
   };
-  const blurDOBChange = () => {
-    setDOBErr(chkDateValid(dob));
-  };
   const chkDetails = () => {
     let result = true;
-    let error = chkDateValid(dob);
+    const error = chkDateValid(dob);
     if (error !== '') {
       setDOBErr(error);
       result = false;
@@ -59,6 +58,14 @@ const StepTwo: React.FC<Props> = ({ navigation }) => {
     });
     navigation.navigate('Register');
   };
+  const onDateConfirm = (date: Date) => {
+    setDate(date);
+    setDOB(formatDate(date));
+  };
+  const onDateCancel = () => {};
+  const openDatePicker = () => {
+    setDOBErr('');
+  };
   return (
     <Container>
       <FormContainerStyleOne>
@@ -71,17 +78,14 @@ const StepTwo: React.FC<Props> = ({ navigation }) => {
           />
         </LogoImageHolder>
         <SignText>What's your Date of Birth ?</SignText>
-        <InputTypeOne
-          inputName={''}
-          inputValue={dob}
-          onChangeEvent={setDOB}
-          placeHolderValue={'Date of Birth'}
+        <DatePickerTypeOne
+          inputValue={date}
+          placeHolderValue={`Date of Birth`}
           errorString={dobErr}
-          onBlur={blurDOBChange}
-          onEndEditing={blurDOBChange}
-          onFocus={() => setDOBErr('')}
+          onPressIn={openDatePicker}
+          onDateConfirm={onDateConfirm}
+          onCancel={onDateCancel}
         />
-
         <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
         </Button>
