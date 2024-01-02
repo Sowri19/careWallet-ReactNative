@@ -7,7 +7,8 @@ import {
   ViewStyle,
   KeyboardTypeOptions,
 } from 'react-native';
-import { EyeIcon } from '../../Styles/Fields/inputTypeOneStyles';
+import { EyeIcon, LeftIcon } from '../../Styles/Fields/inputTypeOneStyles';
+import { IconStyle } from '../../Pages/Shared/Styles/Styles';
 
 // Define a type for the component's props
 type InputFieldProps = {
@@ -28,6 +29,10 @@ type InputFieldProps = {
   errorStyle?: TextStyle;
   onEndEditing?: () => void;
   onFocus?: () => void;
+  editable?: boolean;
+  onPressIn?: () => void;
+  leftIconHTML?: Element;
+  leftIconClass?: string;
 };
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -48,12 +53,18 @@ const InputField: React.FC<InputFieldProps> = ({
   onBlurEvent,
   onEndEditing,
   onFocus,
+  editable,
+  onPressIn,
+  leftIconHTML,
+  leftIconClass,
 }) => {
   const [passwordVisible, setPasswordVisibility] = useState<boolean>(false);
   return (
     <View style={viewStyle}>
       {inputName !== '' && <Text style={inputTextStyle}>{inputName}</Text>}
       <View style={inputPStyle}>
+        {leftIconHTML && <>{leftIconHTML}</>}
+        {leftIconClass && <LeftIcon name={leftIconClass} style={IconStyle} />}
         <TextInput
           placeholder={placeholderValue}
           placeholderTextColor={placeholderColor}
@@ -65,13 +76,13 @@ const InputField: React.FC<InputFieldProps> = ({
           onBlur={onBlurEvent}
           onEndEditing={onEndEditing}
           onFocus={onFocus}
+          editable={editable}
+          onPressIn={onPressIn}
         />
         {isPassword && (
           <EyeIcon
             name={passwordVisible ? 'eye-off' : 'eye'}
             style={iconStyle}
-            size={24}
-            color="gray"
             onPress={() => setPasswordVisibility(!passwordVisible)}
           />
         )}

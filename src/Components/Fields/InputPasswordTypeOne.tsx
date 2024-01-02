@@ -9,6 +9,7 @@ import {
   PasswordSectionError,
   UsernameTextInput,
 } from '../../Styles/Fields/inputTypeOneStyles';
+import { IconStyle } from '../../Pages/Shared/Styles/Styles';
 
 type InputOneFieldProps = {
   inputName: string;
@@ -20,6 +21,7 @@ type InputOneFieldProps = {
   onBlur?: () => void;
   onEndEditing?: () => void;
   onFocus?: () => void;
+  leftIconClass?: string;
 };
 const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
   inputName,
@@ -31,6 +33,7 @@ const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
   onBlur,
   onEndEditing,
   onFocus,
+  leftIconClass,
 }) => {
   const onChange = (text: string) => {
     onChangeEvent(text);
@@ -45,7 +48,7 @@ const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
         inputValue={inputValue}
         placeholderValue={placeHolderValue}
         keyboardType={keyboardType}
-        placeholderColor={isError ? '#8B0000' : 'darkblue'}
+        placeholderColor={isError ? '#f43e3e' : '#2c075a'}
         inputPStyle={isError ? PasswordSectionError : PasswordSection}
         inputStyle={PasswordInput}
         inputTextStyle={UsernameTextInput}
@@ -55,6 +58,8 @@ const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
         onBlurEvent={onBlur}
         onEndEditing={onEndEditing}
         onFocus={onFocus}
+        leftIconClass={leftIconClass}
+        iconStyle={IconStyle}
       />
     </>
   );

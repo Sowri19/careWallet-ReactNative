@@ -8,7 +8,8 @@ import {
   Container,
   FormContainerStyleOne,
   FontBoldSecond,
-  LogoImageHolder, ButtonDummy,
+  LogoImageHolder,
+  ButtonDummy,
 } from '../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
@@ -23,12 +24,9 @@ import {
 } from '../../../../../ReduxStore/Slices/Register/stepOne';
 import { useIsFocused } from '@react-navigation/native';
 import { chkNameValid } from '../../../../../utilities/ValidationUtils';
+import { PagesProps } from '../../../../../utilities/CommonTypes';
 
-type Props = {
-  navigation: StackNavigationProp<any>;
-};
-
-const SignUp: React.FC<Props> = ({ navigation }) => {
+const SignUp: React.FC<PagesProps> = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [firstName, setFirstName] = useState(useAppSelector(selectFirstName));
   const [firstNameErr, setFirstNameErr] = useState('');

@@ -36,14 +36,10 @@ import {
 } from '../../../ReduxStore/Slices/Login/loginSlice';
 import InputPasswordTypeOne from '../../../Components/Fields/InputPasswordTypeOne';
 import { chkPassValid } from '../../../utilities/ValidationUtils';
-
-// Props type
-type Props = {
-  navigation: StackNavigationProp<any>;
-};
+import { PagesProps } from '../../../utilities/CommonTypes';
 
 let apiHitInProgress = false;
-const LogIn: React.FC<Props> = ({ navigation }) => {
+const LogIn: React.FC<PagesProps> = ({ navigation }) => {
   const isFocused = useIsFocused();
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const toggleRememberMe = () => setRememberMe(!rememberMe);
@@ -174,7 +170,11 @@ const LogIn: React.FC<Props> = ({ navigation }) => {
             )}
             <BelowInputText>Remember me</BelowInputText>
           </RememberMeCheckbox>
-          <BelowInputText onPress={() => console.log('forgot password')}>
+          <BelowInputText
+            onPress={() => {
+              navigation.navigate('ForgotStepOne');
+            }}
+          >
             Forgot Password ?
           </BelowInputText>
         </RememberMe>

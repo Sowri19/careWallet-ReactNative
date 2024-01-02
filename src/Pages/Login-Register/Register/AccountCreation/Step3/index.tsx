@@ -27,15 +27,9 @@ import {
   chkPhoneValid,
   chkConfirmPassValid,
 } from '../../../../../utilities/ValidationUtils';
+import { PagesProps } from '../../../../../utilities/CommonTypes';
 
-// Define a type for the navigation prop
-interface RegisterPageOneProps {
-  navigation: {
-    navigate: (screen: string, params?: any) => void;
-  };
-}
-
-const RegisterPageOne: React.FC<RegisterPageOneProps> = ({ navigation }) => {
+const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
   const [phoneNumber, setPhoneNumberLocal] = useState<string>(
     useAppSelector(selectPhoneNumber)
   );

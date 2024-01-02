@@ -18,7 +18,7 @@ export const UsernameSection: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: 'darkblue',
+  borderColor: '#2c075a',
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -34,7 +34,7 @@ export const UsernameSectionError: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: '#8B0000',
+  borderColor: '#f43e3e',
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -50,7 +50,7 @@ export const PasswordSection: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: 'darkblue',
+  borderColor: '#2c075a',
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -67,14 +67,14 @@ export const PasswordSectionError: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: '#8B0000',
+  borderColor: '#f43e3e',
   maxWidth: '100%',
   overflow: 'hidden',
   flex: 0,
   position: 'relative',
 };
 export const UsernameTextInput: TextStyle = {
-  color: 'darkblue',
+  color: '#2c075a',
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -96,10 +96,25 @@ export const EyeIcon = styled(Ionicons)`
   top: 0;
 `;
 
+export const LeftIcon = styled(Ionicons)`
+  padding: 16px;
+  padding-left: 2px;
+  padding-right: 8px;
+`;
+
 export const ErrorText: TextStyle = {
-  color: '#8B0000',
+  color: '#f43e3e',
   fontSize: 12,
   marginTop: 5,
   lineHeight: 12,
   marginBottom: 3,
+};
+
+export const DropDownInput: TextStyle = {
+  color: '#2c075a',
+  width: '100%',
+  minWidth: '100%',
+  maxWidth: '100%',
+  flex: 1,
+  flexDirection: 'row',
 };

@@ -6,6 +6,7 @@ import signUpStepThreeReducer from '../Slices/Register/stepThree';
 import signUpStepFourReducer from '../Slices/Register/stepFour';
 import insStepOneReducer from '../Slices/InsuranceCheck/stepOne';
 import insStepTwoReducer from '../Slices/InsuranceCheck/stepTwo';
+import forgotReducer from '../Slices/ForgotPassword/forgotSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     signUpStepFourState: signUpStepFourReducer,
     insStepOneState: insStepOneReducer,
     insStepTwoState: insStepTwoReducer,
+    forgotState: forgotReducer,
   },
 });
 

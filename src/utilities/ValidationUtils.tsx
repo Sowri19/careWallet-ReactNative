@@ -76,10 +76,20 @@ export const chkInsTypeValid = (text: string) => {
   if (text == '') {
     return 'Insurance Type cannot be empty';
   }
+  const alphabeticRegex = /^[a-zA-Z]+$/;
+  if (!alphabeticRegex.test(text)) {
+    return 'Invalid Name';
+  }
   return '';
 };
 
 export const chkGroupValid = (text: string) => {
+  if (text.length > 0) {
+    const intValue = parseInt(text);
+    if (isNaN(intValue)) {
+      return 'Invalid Group Number';
+    }
+  }
   return '';
 };
 
@@ -88,5 +98,33 @@ export const chkEffDateValid = (text: string) => {
 };
 
 export const chkRelPolicyValid = (text: string) => {
+  return '';
+};
+
+export const chkAddressValid = (text: string) => {
+  if (text === '') {
+    return `Address cannot be empty`;
+  }
+  return '';
+};
+
+export const chkCityValid = (text: string) => {
+  if (text === '') {
+    return `City cannot be empty`;
+  }
+  return '';
+};
+
+export const chkStateValid = (text: string) => {
+  if (text === '') {
+    return `State cannot be empty`;
+  }
+  return '';
+};
+
+export const chkZipcodeValid = (text: string) => {
+  if (text === '') {
+    return `Zipcode cannot be empty`;
+  }
   return '';
 };
