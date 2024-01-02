@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
 import {
   BackButton,
   Button,
@@ -18,12 +17,9 @@ import {
 import { chkDateValid } from '../../../../../utilities/ValidationUtils';
 import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
 import { formatDate } from '../../../../../utilities/FormatUtils';
+import { PagesProps } from '../../../../../utilities/CommonTypes';
 
-type Props = {
-  navigation: StackNavigationProp<any>;
-};
-
-const StepTwo: React.FC<Props> = ({ navigation }) => {
+const StepTwo: React.FC<PagesProps> = ({ navigation }) => {
   const [date, setDate] = useState<Date>(new Date());
   const [dob, setDOBLocal] = useState<string>(formatDate(date));
   const [dobErr, setDOBErr] = useState<string>('');

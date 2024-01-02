@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { TextStyle } from "react-native";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -24,7 +25,7 @@ export const BackButton = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #00008b;
+  background-color: #2c075a;
   height: 60px;
   width: 40%;
   min-width: 40%;
@@ -51,8 +52,8 @@ export const Button = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: #00008b;
-  height: 80px;
+  background-color: #2c075a;
+  height: 60px;
   margin-top: 2%;
   margin-bottom: 12px;
   border-width: 0.5px;
@@ -82,6 +83,10 @@ export const FontBoldSecond = styled.Text`
   font-weight: 500;
 `;
 
+export const FontBoldOne = styled.Text`
+  font-weight: 600;
+`;
+
 export const LogoImageHolder = styled.View`
   flex: 1;
   flex-direction: row;
@@ -104,4 +109,22 @@ export const LogoImageTwo = styled.Image`
   margin-bottom: 10%;
   position: absolute;
   bottom: 0;
+`;
+
+export const StandardColor: TextStyle = {
+  color: '#2c075a',
+};
+
+export const IconStyle: TextStyle = {
+  ...StandardColor,
+  fontSize: 24,
+};
+
+export const ForgotHeaderText = styled.Text`
+  width: 100%;
+  text-align: center;
+  color: #2c075a;
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 5%;
 `;

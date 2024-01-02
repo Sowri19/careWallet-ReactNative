@@ -100,3 +100,31 @@ export const chkEffDateValid = (text: string) => {
 export const chkRelPolicyValid = (text: string) => {
   return '';
 };
+
+export const chkAddressValid = (text: string) => {
+  if (text === '') {
+    return `Address cannot be empty`;
+  }
+  return '';
+};
+
+export const chkCityValid = (text: string) => {
+  if (text === '') {
+    return `City cannot be empty`;
+  }
+  return '';
+};
+
+export const chkStateValid = (text: string) => {
+  if (text === '') {
+    return `State cannot be empty`;
+  }
+  return '';
+};
+
+export const chkZipcodeValid = (text: string) => {
+  if (text === '') {
+    return `Zipcode cannot be empty`;
+  }
+  return '';
+};

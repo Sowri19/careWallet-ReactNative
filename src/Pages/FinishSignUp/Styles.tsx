@@ -20,7 +20,7 @@ export const TickHolder = styled.View`
 export const ProgressBar = styled.View`
   height: 40px;
   width: 100%;
-  border-color: darkblue;
+  border-color: #2c075a;
   border-width: 1px;
   border-radius: 20px;
   overflow: hidden;
@@ -30,7 +30,7 @@ export const ProgressBar = styled.View`
 
 export const ProgressFill: ViewStyle = {
   height: '100%',
-  backgroundColor: 'darkblue',
+  backgroundColor: '#2c075a',
 };
 
 export const VerificationText = styled.Text`

@@ -18,14 +18,11 @@ import {
   chkIDValid,
   chkNameValid,
 } from '../../../../../utilities/ValidationUtils';
-import DatePickerTypeOne from "../../../../../Components/Fields/DatePickerTypeOne";
-import { formatDate } from "../../../../../utilities/FormatUtils";
+import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
+import { formatDate } from '../../../../../utilities/FormatUtils';
+import { PagesProps } from '../../../../../utilities/CommonTypes';
 
-type Props = {
-  navigation: any;
-};
-
-const InsuranceSignUpOne: React.FC<Props> = ({ navigation }) => {
+const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
   const [insuranceName, setInsuranceNameLocal] = useState<string>('');
   const [insuranceNameErr, setInsuranceNameErr] = useState<string>('');
   const [policyHolderName, setPolicyHolderNameLocal] = useState<string>('');

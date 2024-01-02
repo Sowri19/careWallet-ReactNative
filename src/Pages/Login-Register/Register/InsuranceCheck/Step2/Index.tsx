@@ -23,21 +23,15 @@ import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOn
 import { formatDate } from '../../../../../utilities/FormatUtils';
 import DropdownTypeOne from '../../../../../Components/Fields/DropdownTypeOne';
 import RelItems from '../../../../../utilities/RelToPolicyValues';
+import { PagesProps } from '../../../../../utilities/CommonTypes';
 
-// Define types for your navigation props
-type Props = {
-  navigation: {
-    navigate: (screen: string, params?: Record<string, unknown>) => void;
-  };
-};
-
-const InsuranceSignUpTwo: React.FC<Props> = ({ navigation }) => {
+const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
   const [insuranceType, setInsuranceTypeLocal] = useState<string>('');
   const [insuranceTypeErr, setInsuranceTypeErr] = useState<string>('');
   const [groupNumber, setGroupNumberLocal] = useState<string>('');
   const [groupNumberErr, setGroupNumberErr] = useState<string>('');
   const [effectiveDate, setEffectiveDateLocal] = useState<string>('');
-  const [effectiveDateObj, setEffectiveDateObj] = useState<Date>('');
+  const [effectiveDateObj, setEffectiveDateObj] = useState<Date>();
   const [effectiveDateErr, setEffectiveDateErr] = useState<string>('');
   const [relToPolicyHolder, setRelToPolicyHolderLocal] = useState<string>('');
   const [relToPolicyHolderErr, setRelToPolicyHolderErr] = useState<string>('');

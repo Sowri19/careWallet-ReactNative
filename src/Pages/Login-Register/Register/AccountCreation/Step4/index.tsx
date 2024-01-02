@@ -9,7 +9,6 @@ import {
   LogoImageTwo,
 } from '../../../../Shared/Styles/Styles';
 import { FormContainerStyleOne } from '../../../../Shared/Styles/Styles';
-import { ParamListBase, RouteProp } from '@react-navigation/native';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
@@ -23,21 +22,35 @@ import {
   setState as setStepFourState,
   SignUpStepFourState,
 } from '../../../../../ReduxStore/Slices/Register/stepFour';
+import SearchDropdownTypeOne from '../../../../../Components/Fields/SearchDropdownTypeOne';
 import {
-  chkConfirmPassValid,
-  chkEmailValid,
-  chkPassValid,
-  chkPhoneValid,
+  chkAddressValid,
+  chkCityValid,
+  chkStateValid,
+  chkZipcodeValid,
 } from '../../../../../utilities/ValidationUtils';
+import { PagesProps } from '../../../../../utilities/CommonTypes';
 
-interface RegisterPageTwoProps {
-  navigation: {
-    navigate: (screen: string, params?: any) => void;
-  };
-  route: RouteProp<ParamListBase, 'RegisterPageTwo'>;
-}
+const intialData = [
+  {
+    label: 'Item 1',
+    value: 'item1',
+  },
+  {
+    label: 'Item 2',
+    value: 'item2',
+  },
+  {
+    label: 'Item 3',
+    value: 'item3',
+  },
+  {
+    label: 'Item 4',
+    value: 'item4',
+  },
+];
 
-const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
+const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
   const [address, setAddressLocal] = useState<string>(
     useAppSelector(selectAddress)
   );
@@ -68,7 +81,27 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
   };
 
   const chkDetails = () => {
-    const result = true;
+    let result = true;
+    let error = chkAddressValid(address);
+    if (error) {
+      setAddressErr(error);
+      result = false;
+    }
+    error = chkCityValid(city);
+    if (error) {
+      setCityErr(error);
+      result = false;
+    }
+    error = chkStateValid(state);
+    if (error) {
+      setStateErr(error);
+      result = false;
+    }
+    error = chkZipcodeValid(zipcode);
+    if (error) {
+      setZipcodeErr(error);
+      result = false;
+    }
     return result;
   };
 
@@ -94,34 +127,52 @@ const RegisterPageTwo: React.FC<RegisterPageTwoProps> = ({ navigation }) => {
     });
     navigation.navigate('Register');
   };
-
+  const searchApi = ``;
+  const searchApiCallback = (data: any) => {
+    return intialData;
+  };
   return (
     <Container>
       <FormContainerStyleOne>
         <BackButton onPress={handleBack}>
           <ButtonText>{`< Back`}</ButtonText>
         </BackButton>
-        <InputTypeOne
-          inputName={'Address'}
+        <SearchDropdownTypeOne
           inputValue={address}
-          onChangeEvent={(newText) => setAddress(newText)}
-          placeHolderValue={'Enter your street address'}
+          inputPlaceHolder={'Enter your street address'}
+          inputErr={addressErr}
+          setInputValue={(item) => {
+            setAddress(item.value);
+            setCity(item.value);
+            setState(item.value);
+            setZipcode(item.value);
+          }}
+          initialList={intialData}
+          inputName={'Address'}
+          searchPlaceHolder={'Search Address..'}
+          searchApiProps={{
+            searchApi: searchApi,
+            searchApiCallback: searchApiCallback,
+          }}
         />
         <InputTypeOne
           inputName={'City'}
           inputValue={city}
+          errorString={cityErr}
           onChangeEvent={(newText) => setCity(newText)}
           placeHolderValue={'Enter your city'}
         />
         <InputTypeOne
           inputName={'State'}
           inputValue={state}
+          errorString={stateErr}
           onChangeEvent={(newText) => setState(newText)}
           placeHolderValue={'Enter your State'}
         />
         <InputTypeOne
           inputName={'Zipcode'}
           inputValue={zipcode}
+          errorString={zipcodeErr}
           onChangeEvent={(newText) => setZipcode(newText)}
           placeHolderValue={'Enter your Zipcode'}
         />

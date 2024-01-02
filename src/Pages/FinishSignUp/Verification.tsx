@@ -29,9 +29,7 @@ import { selectSignUpStepFourData } from '../../ReduxStore/Slices/Register/stepF
 import { selectInsStepOneData } from '../../ReduxStore/Slices/InsuranceCheck/stepOne';
 import { selectInsStepTwoData } from '../../ReduxStore/Slices/InsuranceCheck/stepTwo';
 import { selectSignUpStepTwoData } from '../../ReduxStore/Slices/Register/stepTwo';
-type Props = {
-  navigation: any;
-};
+import { PagesProps } from '../../utilities/CommonTypes';
 
 let apiHitInProgress = false;
 const accountCreationApi = async (request: ApiObject<AccountCreationData>) => {
@@ -56,7 +54,7 @@ const accountCreationApi = async (request: ApiObject<AccountCreationData>) => {
   }
 };
 
-const Verification: React.FC<Props> = ({ navigation }) => {
+const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepOneStore = useAppSelector(selectSignUpStepOneData);
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
   const stepThreeStore = useAppSelector(selectSignUpStepThreeData);

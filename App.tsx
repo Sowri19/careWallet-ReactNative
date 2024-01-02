@@ -9,8 +9,11 @@ import RegisterPageTwo from './src/Pages/Login-Register/Register/AccountCreation
 import InsuranceSignUpOne from './src/Pages/Login-Register/Register/InsuranceCheck/Step1/Index';
 import InsuranceSignUpTwo from './src/Pages/Login-Register/Register/InsuranceCheck/Step2/Index';
 import Verification from './src/Pages/FinishSignUp/Verification';
+import ForgotPassStepOne from './src/Pages/Login-Register/ForgotPassword/Step1/Step1';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ForgotNewPassword from './src/Pages/Login-Register/ForgotPassword/Step3/NewPassword';
+import ForgotOTP from './src/Pages/Login-Register/ForgotPassword/Step2/Step2';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +23,9 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Log in" component={LogIn} />
+          <Stack.Screen name="ForgotStepOne" component={ForgotPassStepOne} />
+          <Stack.Screen name="ForgotOTP" component={ForgotOTP} />
+          <Stack.Screen name="ForgotNewPass" component={ForgotNewPassword} />
           <Stack.Screen name="Sign Up" component={SignUp} />
           <Stack.Screen name="SignDOB" component={SignDOB} />
           <Stack.Screen name="Register" component={RegisterPageOne} />

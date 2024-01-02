@@ -1,5 +1,5 @@
 export const formatDate = (date: Date) => {
-  let month = `${date.getMonth()}`;
+  let month = `${date.getMonth() + 1}`;
   if (month.length == 1) {
     month = `0${month}`;
   }
