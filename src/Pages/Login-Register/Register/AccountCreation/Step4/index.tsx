@@ -115,7 +115,7 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
       state: state,
       zipcode: zipcode,
     });
-    navigation.navigate('InsuranceSignUpOne');
+    navigation.navigate('IDVerification');
   };
 
   const handleBack = async () => {
