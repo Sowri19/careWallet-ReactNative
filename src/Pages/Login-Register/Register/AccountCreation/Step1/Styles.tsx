@@ -1,21 +1,16 @@
 import styled from 'styled-components/native';
-
-const WelcomeText = styled.Text`
-  font-size: 20px;
-  color: #2c075a;
-  margin-bottom: 5%;
-`;
+import { stylePrimaryColor } from '../../../../../Styles/AppWideConstants/Styles';
 
 const SignText = styled.Text`
   font-size: 15px;
-  color: #2c075a;
+  color: ${stylePrimaryColor};
   margin-bottom: 10%;
   align-self: center;
 `;
 
 const BelowInputText = styled.Text`
   font-size: 15px;
-  color: #2c075a;
+  color: ${stylePrimaryColor};
 `;
 
 const RegisterSection = styled.View`
@@ -23,4 +18,4 @@ const RegisterSection = styled.View`
   justify-content: center;
 `;
 
-export { WelcomeText, BelowInputText, RegisterSection, SignText };
+export { BelowInputText, RegisterSection, SignText };

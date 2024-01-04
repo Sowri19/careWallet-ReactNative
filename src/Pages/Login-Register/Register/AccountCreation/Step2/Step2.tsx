@@ -3,12 +3,12 @@ import {
   BackButton,
   Button,
   ButtonText,
-  Container,
+  Container, FontBoldSecond,
   FormContainerStyleOne,
   LogoImage,
-  LogoImageHolder,
-} from '../../../../Shared/Styles/Styles';
-import { SignText } from '../Step1/Styles';
+  LogoImageHolder
+} from "../../../../../Shared/Styles/Styles";
+import { BelowInputText, RegisterSection, SignText } from "../Step1/Styles";
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
   setState as setStateAction,
@@ -40,6 +40,7 @@ const StepTwo: React.FC<PagesProps> = ({ navigation }) => {
     return result;
   };
   const handleBack = () => {
+    console.log('Shashi');
     updateState({
       dob: '',
     });
@@ -70,7 +71,7 @@ const StepTwo: React.FC<PagesProps> = ({ navigation }) => {
         </BackButton>
         <LogoImageHolder>
           <LogoImage
-            source={require('../../../../../utilities/CareWalletLogo.png')}
+            source={require('../../../../../Shared/Media/Images/Welcome-to-CareWallet-Text-and-Logo.png')}
           />
         </LogoImageHolder>
         <SignText>What's your Date of Birth ?</SignText>
@@ -85,6 +86,12 @@ const StepTwo: React.FC<PagesProps> = ({ navigation }) => {
         <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
         </Button>
+
+        <RegisterSection>
+          <BelowInputText onPress={() => navigation.navigate('Log in')}>
+            Already have an account ? <FontBoldSecond>Login</FontBoldSecond>
+          </BelowInputText>
+        </RegisterSection>
       </FormContainerStyleOne>
     </Container>
   );

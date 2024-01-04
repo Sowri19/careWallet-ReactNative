@@ -10,7 +10,7 @@ import {
   FontBoldSecond,
   LogoImageHolder,
   ButtonDummy,
-} from '../../../../Shared/Styles/Styles';
+} from '../../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
@@ -93,7 +93,7 @@ const SignUp: React.FC<PagesProps> = ({ navigation }) => {
         <ButtonDummy />
         <LogoImageHolder>
           <LogoImage
-            source={require('../../../../../utilities/CareWalletLogo.png')}
+            source={require('../../../../../Shared/Media/Images/Welcome-to-CareWallet-Text-and-Logo.png')}
           />
         </LogoImageHolder>
         <SignText>What's your name ?</SignText>

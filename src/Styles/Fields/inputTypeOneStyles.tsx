@@ -1,6 +1,12 @@
 import { TextStyle, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
+import {
+  styleErrorColor,
+  styleFontSize16,
+  stylePrimaryColor,
+  styleStandardButtonHeight
+} from "../AppWideConstants/Styles";
 
 export const FieldViewStyleOne: ViewStyle = {
   position: 'relative',
@@ -12,13 +18,13 @@ export const FieldViewStyleOne: ViewStyle = {
 
 export const UsernameSection: ViewStyle = {
   flexDirection: 'row',
-  height: 60,
+  height: styleStandardButtonHeight,
   marginTop: 12,
   marginBottom: 20,
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: '#2c075a',
+  borderColor: stylePrimaryColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -34,7 +40,7 @@ export const UsernameSectionError: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: '#f43e3e',
+  borderColor: styleErrorColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -50,7 +56,7 @@ export const PasswordSection: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: '#2c075a',
+  borderColor: stylePrimaryColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -74,10 +80,11 @@ export const PasswordSectionError: ViewStyle = {
   position: 'relative',
 };
 export const UsernameTextInput: TextStyle = {
-  color: '#2c075a',
+  color: stylePrimaryColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
+  fontSize: styleFontSize16,
 };
 
 export const PasswordInput: ViewStyle = {
@@ -103,7 +110,7 @@ export const LeftIcon = styled(Ionicons)`
 `;
 
 export const ErrorText: TextStyle = {
-  color: '#f43e3e',
+  color: styleErrorColor,
   fontSize: 12,
   marginTop: 5,
   lineHeight: 12,
@@ -111,10 +118,20 @@ export const ErrorText: TextStyle = {
 };
 
 export const DropDownInput: TextStyle = {
-  color: '#2c075a',
+  color: stylePrimaryColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
   flex: 1,
   flexDirection: 'row',
 };
+
+export const CountryCode = styled.Text`
+  color: ${stylePrimaryColor};
+  font-size: ${styleFontSize16}px;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  line-height: 60px;
+  margin-right: 5px;
+`;

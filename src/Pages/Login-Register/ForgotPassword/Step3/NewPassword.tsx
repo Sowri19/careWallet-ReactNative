@@ -5,10 +5,14 @@ import {
   Button,
   ButtonText,
   Container,
-  FontBoldSecond, ForgotHeaderText,
+  FontBoldSecond,
+  ForgotHeaderText,
   FormContainerStyleOne,
-  LogoImage, LogoImageHolder
-} from "../../../Shared/Styles/Styles";
+  LogoImage,
+  LogoImageHolder,
+  LogoImageHolderBottomTwo,
+  LogoImageThree,
+} from '../../../../Shared/Styles/Styles';
 import InputPasswordTypeOne from '../../../../Components/Fields/InputPasswordTypeOne';
 import {
   chkConfirmPassValid,
@@ -26,13 +30,20 @@ import {
   selectUsername,
   setNewPassword as setStateAction,
 } from '../../../../ReduxStore/Slices/ForgotPassword/forgotSlice';
+import axios from 'axios';
 
-const updatePassApiHit = (apiObj: {
+const updatePassApiHit = async (apiObj: {
   newPassword: string;
   username: string;
   isEmail: boolean;
   callback: (data: any) => void;
-}) => {};
+}) => {
+  const { callback } = apiObj;
+  //TODO: Trigger forgot password api
+  // const response = axios.get(``);
+  // callback(response);
+  callback({});
+};
 
 const ForgotNewPassword: React.FC<PagesProps> = ({ navigation }) => {
   const [newPassword, setNewPasswordLocal] = useState<string>('');
@@ -79,7 +90,9 @@ const ForgotNewPassword: React.FC<PagesProps> = ({ navigation }) => {
       username,
       newPassword,
       isEmail,
-      callback: (data: any) => {},
+      callback: (data: any) => {
+        navigation.navigate('ForgotPassComplete');
+      },
     });
   };
   return (
@@ -88,7 +101,7 @@ const ForgotNewPassword: React.FC<PagesProps> = ({ navigation }) => {
         <BackButtonDummy />
         <LogoImageHolder>
           <LogoImage
-            source={require('../../../../utilities/CareWalletLogo.png')}
+            source={require('../../../../Shared/Media/Images/update_new_password_icon.png')}
           />
         </LogoImageHolder>
         <ForgotHeaderText>New Password</ForgotHeaderText>
@@ -125,6 +138,11 @@ const ForgotNewPassword: React.FC<PagesProps> = ({ navigation }) => {
           </BelowInputText>
         </RegisterSection>
       </FormContainerStyleOne>
+      <LogoImageHolderBottomTwo>
+        <LogoImageThree
+          source={require('../../../../Shared/Media/Images/CareWallet-Logo-Transparent.png')}
+        />
+      </LogoImageHolderBottomTwo>
     </Container>
   );
 };

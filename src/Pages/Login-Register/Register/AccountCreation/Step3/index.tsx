@@ -5,8 +5,8 @@ import {
   Container,
   BackButton,
   FormContainerStyleOne,
-  LogoImageTwo,
-} from '../../../../Shared/Styles/Styles';
+  LogoImageTwo, LogoImageHolder, LogoImageHolderBottomOne
+} from "../../../../../Shared/Styles/Styles";
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import InputPasswordTypeOne from '../../../../../Components/Fields/InputPasswordTypeOne';
 import {
@@ -174,9 +174,11 @@ const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
-      <LogoImageTwo
-        source={require('../../../../../utilities/CareWalletLogo.png')}
-      />
+      <LogoImageHolderBottomOne>
+        <LogoImageTwo
+          source={require('../../../../../Shared/Media/Images/CareWallet-Text-and-Logo.png')}
+        />
+      </LogoImageHolderBottomOne>
     </Container>
   );
 };

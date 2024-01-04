@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
 import { AntDesign } from '@expo/vector-icons';
 import { ViewStyle } from 'react-native';
+import { styleAcceptColor, styleFontWeightBold500, stylePrimaryColor } from "../../Styles/AppWideConstants/Styles";
 
 export const TickIcon = styled(AntDesign)`
   font-size: 100px;
-  color: green;
+  color: ${styleAcceptColor};
   line-height: 100px;
 `;
 
@@ -20,7 +21,7 @@ export const TickHolder = styled.View`
 export const ProgressBar = styled.View`
   height: 40px;
   width: 100%;
-  border-color: #2c075a;
+  border-color: ${stylePrimaryColor};
   border-width: 1px;
   border-radius: 20px;
   overflow: hidden;
@@ -30,13 +31,13 @@ export const ProgressBar = styled.View`
 
 export const ProgressFill: ViewStyle = {
   height: '100%',
-  backgroundColor: '#2c075a',
+  backgroundColor: stylePrimaryColor,
 };
 
 export const VerificationText = styled.Text`
-  color: green;
+  color: ${styleAcceptColor};
   font-size: 20px;
-  font-weight: 500;
+  font-weight: ${styleFontWeightBold500};
   line-height: 20px;
   margin-top: 40px;
   align-self: center;

@@ -6,7 +6,7 @@ import {
   LogoImageTwo,
   ButtonText,
   Container,
-} from '../../../../Shared/Styles/Styles';
+} from '../../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
@@ -179,7 +179,7 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
         </Button>
       </FormContainerStyleOne>
       <LogoImageTwo
-        source={require('../../../../../utilities/CareWalletLogo.png')}
+        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
       />
     </Container>
   );

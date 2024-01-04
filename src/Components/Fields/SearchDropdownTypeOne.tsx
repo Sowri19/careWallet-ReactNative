@@ -10,6 +10,7 @@ import {
 } from '../../Styles/Fields/SearchDropdownStyles';
 import { Text } from 'react-native';
 import axios from 'axios';
+import { stylePrimaryColor } from "../../Styles/AppWideConstants/Styles";
 
 type Item = {
   label: string;
@@ -86,7 +87,7 @@ const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
         searchPlaceholder={searchPlaceHolder}
         search
         placeholderStyle={DropdownPlaceHolder}
-        activeColor={'#2c075a'}
+        activeColor={stylePrimaryColor}
         onChangeText={inputSearch}
         containerStyle={SearchBox}
         renderRightIcon={() => {

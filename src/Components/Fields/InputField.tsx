@@ -8,7 +8,7 @@ import {
   KeyboardTypeOptions,
 } from 'react-native';
 import { EyeIcon, LeftIcon } from '../../Styles/Fields/inputTypeOneStyles';
-import { IconStyle } from '../../Pages/Shared/Styles/Styles';
+import { IconStyle } from '../../Shared/Styles/Styles';
 
 // Define a type for the component's props
 type InputFieldProps = {
@@ -63,8 +63,8 @@ const InputField: React.FC<InputFieldProps> = ({
     <View style={viewStyle}>
       {inputName !== '' && <Text style={inputTextStyle}>{inputName}</Text>}
       <View style={inputPStyle}>
-        {leftIconHTML && <>{leftIconHTML}</>}
         {leftIconClass && <LeftIcon name={leftIconClass} style={IconStyle} />}
+        {leftIconHTML && <>{leftIconHTML}</>}
         <TextInput
           placeholder={placeholderValue}
           placeholderTextColor={placeholderColor}
