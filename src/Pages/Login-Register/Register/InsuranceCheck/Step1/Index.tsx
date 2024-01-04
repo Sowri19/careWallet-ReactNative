@@ -6,7 +6,7 @@ import {
   Container,
   FormContainerStyleOne,
   LogoImageTwo,
-} from '../../../../Shared/Styles/Styles';
+} from '../../../../../Shared/Styles/Styles';
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
   setState as setInsuranceOneState,
@@ -159,7 +159,7 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
         </Button>
       </FormContainerStyleOne>
       <LogoImageTwo
-        source={require('../../../../../utilities/CareWalletLogo.png')}
+        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
       />
     </Container>
   );

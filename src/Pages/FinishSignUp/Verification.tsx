@@ -16,12 +16,14 @@ import {
   LogoImageHolder,
   BackButtonDummy,
   ButtonDummy,
-} from '../Shared/Styles/Styles';
-import { AccountCreationData } from '../Shared/Interfaces/AccountCreationData';
-import { ApiObject } from '../Shared/Interfaces/ApiObject';
+  PageContentHolder,
+  PageContentHolderCenter,
+} from '../../Shared/Styles/Styles';
+import { AccountCreationData } from '../../Shared/Interfaces/AccountCreationData';
+import { ApiObject } from '../../Shared/Interfaces/ApiObject';
 import axios from 'axios';
 import { useAppSelector } from '../../ReduxStore/Setup/hooks';
-import { Animated, Easing } from 'react-native';
+import { Animated, Easing, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { selectSignUpStepOneData } from '../../ReduxStore/Slices/Register/stepOne';
 import { selectSignUpStepThreeData } from '../../ReduxStore/Slices/Register/stepThree';
@@ -149,28 +151,34 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
         ) : (
           <BackButtonDummy />
         )}
-        <LogoImageHolder>
-          <LogoImage source={require('../../utilities/CareWalletLogo.png')} />
-        </LogoImageHolder>
-        {!isVerified && (
-          <>
-            <VerificationText>Verification in Progress...</VerificationText>
-            <ProgressBar>
-              <Animated.View style={[ProgressFill, { width }]}></Animated.View>
-            </ProgressBar>
-            <ButtonDummy />
-          </>
-        )}
-        {isVerified && (
-          <>
-            <TickHolder>
-              <TickIcon name="checkcircleo" />
-            </TickHolder>
-            <Button onPress={handleNext}>
-              <ButtonText>{`Finish >`}</ButtonText>
-            </Button>
-          </>
-        )}
+        <View style={PageContentHolderCenter}>
+          <LogoImageHolder>
+            <LogoImage
+              source={require('../../Shared/Media/Images/CareWallet.Logo.Patient.png')}
+            />
+          </LogoImageHolder>
+          {!isVerified && (
+            <>
+              <VerificationText>Verification in Progress...</VerificationText>
+              <ProgressBar>
+                <Animated.View
+                  style={[ProgressFill, { width }]}
+                ></Animated.View>
+              </ProgressBar>
+              <ButtonDummy />
+            </>
+          )}
+          {isVerified && (
+            <>
+              <TickHolder>
+                <TickIcon name="checkcircleo" />
+              </TickHolder>
+              <Button onPress={handleNext}>
+                <ButtonText>{`Finish >`}</ButtonText>
+              </Button>
+            </>
+          )}
+        </View>
       </FormContainerStyleOne>
     </Container>
   );

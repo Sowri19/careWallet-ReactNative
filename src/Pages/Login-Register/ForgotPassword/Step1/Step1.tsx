@@ -7,8 +7,8 @@ import {
   FontBoldOne, ForgotHeaderText,
   FormContainerStyleOne,
   LogoImage,
-  LogoImageHolder
-} from "../../../Shared/Styles/Styles";
+  LogoImageHolder, LogoImageHolderBottomTwo, LogoImageHolderBottomOne, LogoImageThree, LogoImageTwo
+} from "../../../../Shared/Styles/Styles";
 import InputTypeOne from '../../../../Components/Fields/InputTypeOne';
 import {
   BelowInputTextForgot,
@@ -22,6 +22,7 @@ import {
 import { setStepOne as setStateAction } from '../../../../ReduxStore/Slices/ForgotPassword/forgotSlice';
 import { useAppDispatch } from '../../../../ReduxStore/Setup/hooks';
 import { PagesProps } from '../../../../utilities/CommonTypes';
+import { extractNumbersFromString } from "../../../../utilities/FormatUtils";
 
 const resetApihit = async (params: { username: string }) => {};
 
@@ -41,7 +42,7 @@ const ForgotPassStepOne: React.FC<PagesProps> = ({ navigation }) => {
     if (isEmail) {
       error = chkEmailValid(username);
     } else {
-      error = chkPhoneValid(username);
+      error = chkPhoneValid(extractNumbersFromString(username));
     }
     if (error) {
       setUsernameErr(error);
@@ -62,12 +63,13 @@ const ForgotPassStepOne: React.FC<PagesProps> = ({ navigation }) => {
     if (!chkDetails()) {
       return;
     }
+    const localUsername = extractNumbersFromString(username);
     updateState({
-      username,
+      username: localUsername,
       isEmail,
     });
     resetApihit({
-      username,
+      username: localUsername,
     });
     navigation.navigate('ForgotOTP');
     // navigation.navigate('ForgotNewPass');
@@ -75,6 +77,7 @@ const ForgotPassStepOne: React.FC<PagesProps> = ({ navigation }) => {
   const switchUsername = (isEmail: boolean) => {
     setIsEmail(isEmail);
     setUsernameErr('');
+    setUsernameLocal('');
   };
   return (
     <Container>
@@ -84,7 +87,7 @@ const ForgotPassStepOne: React.FC<PagesProps> = ({ navigation }) => {
         </BackButton>
         <LogoImageHolder>
           <LogoImage
-            source={require('../../../../utilities/CareWalletLogo.png')}
+            source={require('../../../../Shared/Media/Images/forget_password_icon.png')}
           />
         </LogoImageHolder>
         <ForgotHeaderText>Forgot Password?</ForgotHeaderText>
@@ -98,6 +101,7 @@ const ForgotPassStepOne: React.FC<PagesProps> = ({ navigation }) => {
           onBlur={blurUsername}
           onEndEditing={blurUsername}
           onFocus={() => setUsernameErr('')}
+          fieldStyle={isEmail ? undefined : 'phone'}
         />
         <Button onPress={resetPasswordAction}>
           <ButtonText>Reset Password</ButtonText>
@@ -124,6 +128,11 @@ const ForgotPassStepOne: React.FC<PagesProps> = ({ navigation }) => {
           )}
         </RegisterSectionForgot>
       </FormContainerStyleOne>
+      <LogoImageHolderBottomTwo>
+        <LogoImageThree
+          source={require('../../../../Shared/Media/Images/CareWallet-Logo-Transparent.png')}
+        />
+      </LogoImageHolderBottomTwo>
     </Container>
   );
 };

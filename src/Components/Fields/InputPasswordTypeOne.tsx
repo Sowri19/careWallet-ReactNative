@@ -9,7 +9,11 @@ import {
   PasswordSectionError,
   UsernameTextInput,
 } from '../../Styles/Fields/inputTypeOneStyles';
-import { IconStyle } from '../../Pages/Shared/Styles/Styles';
+import { IconStyle } from '../../Shared/Styles/Styles';
+import {
+  styleErrorColor,
+  stylePrimaryColor,
+} from '../../Styles/AppWideConstants/Styles';
 
 type InputOneFieldProps = {
   inputName: string;
@@ -48,7 +52,7 @@ const InputPasswordTypeOne: React.FC<InputOneFieldProps> = ({
         inputValue={inputValue}
         placeholderValue={placeHolderValue}
         keyboardType={keyboardType}
-        placeholderColor={isError ? '#f43e3e' : '#2c075a'}
+        placeholderColor={isError ? styleErrorColor : stylePrimaryColor}
         inputPStyle={isError ? PasswordSectionError : PasswordSection}
         inputStyle={PasswordInput}
         inputTextStyle={UsernameTextInput}

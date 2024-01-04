@@ -1,14 +1,15 @@
 import styled from 'styled-components/native';
+import { stylePrimaryColor } from "../../../Styles/AppWideConstants/Styles";
 
 const WelcomeText = styled.Text`
   font-size: 20px;
-  color: #2c075a;
+  color: ${stylePrimaryColor};
   margin-bottom: 5%;
 `;
 
 const SignText = styled.Text`
   font-size: 30px;
-  color: #2c075a;
+  color: ${stylePrimaryColor};
   margin-bottom: 5px;
 `;
 
@@ -28,7 +29,7 @@ const RememberMeCheckbox = styled.TouchableOpacity`
 
 const BelowInputText = styled.Text`
   font-size: 15px;
-  color: #2c075a;
+  color: ${stylePrimaryColor};
 `;
 
 const RegisterSection = styled.View`

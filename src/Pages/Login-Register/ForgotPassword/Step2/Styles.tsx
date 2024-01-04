@@ -1,22 +1,52 @@
 import styled from 'styled-components/native';
-import { TextStyle } from 'react-native';
+import {
+  styleErrorColor,
+  styleFontSize14,
+  styleFontWeightBold500,
+  stylePrimaryColor,
+} from '../../../../Styles/AppWideConstants/Styles';
 
-export const OtpInputContainer = styled.View`
+export const SubHeaderOne = styled.Text`
+  font-size: ${styleFontSize14};
   width: 100%;
-  position: relative;
-  height: 80px;
-  flex-direction: row;
-  justify-content: space-between;
+  text-align: center;
+  color: ${stylePrimaryColor};
+  margin-bottom: 3%;
 `;
 
-export const OtpInputStyle: TextStyle = {
-  width: '20%',
-  height: '80%',
-  borderColor: '#2c075a',
-  borderWidth: 0.5,
-  borderRadius: 4,
+export const SubHeaderBoldOne = styled.Text`
+  font-size: ${styleFontSize14};
+  width: 100%;
+  text-align: center;
+  color: ${stylePrimaryColor};
+  margin-bottom: 5%;
+  font-weight: ${styleFontWeightBold500};
+`;
+export const SubHeaderBoldLoading = styled.Text`
+  font-size: ${styleFontSize14};
+  text-align: center;
+  color: ${stylePrimaryColor};
+  font-weight: ${styleFontWeightBold500};
+`;
+
+export const SubHeaderBoldErrorOne = styled.Text`
+  font-size: ${styleFontSize14};
+  width: 100%;
+  text-align: center;
+  color: ${styleErrorColor};
+  margin-bottom: 5%;
+  font-weight: ${styleFontWeightBold500};
+`;
+
+import { ViewStyle } from 'react-native';
+
+export const LoadingContainer: ViewStyle = {
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'row',
+  marginBottom: '10%',
 };
-
-export const subHeaderOne = styled.Text`
-  font-size:;
-`;
+export const ActivityIndicatorStyle: ViewStyle = {
+  marginLeft: '1%',
+  borderRadius: 40,
+};

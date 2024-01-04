@@ -7,8 +7,8 @@ import {
   ButtonText,
   Container,
   LogoImageTwo,
-} from '../../../../Shared/Styles/Styles';
-import { FormContainerStyleOne } from '../../../../Shared/Styles/Styles';
+} from '../../../../../Shared/Styles/Styles';
+import { FormContainerStyleOne } from '../../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
@@ -127,8 +127,11 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
     });
     navigation.navigate('Register');
   };
-  const searchApi = ``;
+  const searchApi = `https://lnaojbkzej.execute-api.us-east-1.amazonaws.com/dev/geocoding?search=${encodeURIComponent(
+    address
+  )}`;
   const searchApiCallback = (data: any) => {
+    console.log(data);
     return intialData;
   };
   return (
@@ -181,7 +184,7 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
         </Button>
       </FormContainerStyleOne>
       <LogoImageTwo
-        source={require('../../../../../utilities/CareWalletLogo.png')}
+        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
       />
     </Container>
   );

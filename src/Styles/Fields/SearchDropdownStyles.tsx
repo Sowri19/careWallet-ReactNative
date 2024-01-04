@@ -1,9 +1,10 @@
 import { TextStyle, ViewStyle } from "react-native";
+import { styleErrorColor, stylePrimaryColor } from "../AppWideConstants/Styles";
 
 export const SearchBox: ViewStyle = {
   zIndex: 999,
   position: 'relative',
-  borderColor: '#2c075a',
+  borderColor: stylePrimaryColor,
   borderWidth: 0.5,
   borderRadius: 5,
   shadowColor: '#000',
@@ -21,7 +22,7 @@ export const DropdownSection: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: '#2c075a',
+  borderColor: stylePrimaryColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -35,7 +36,7 @@ export const DropdownSectionError: ViewStyle = {
   borderWidth: 0.5,
   borderRadius: 5,
   paddingLeft: 10,
-  borderColor: '#f43e3e',
+  borderColor: styleErrorColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
@@ -48,14 +49,14 @@ export const DropdownPlaceHolder: TextStyle = {
 };
 
 export const LabelText: TextStyle = {
-  color: '#2c075a',
+  color: stylePrimaryColor,
   width: '100%',
   minWidth: '100%',
   maxWidth: '100%',
 };
 
 export const ErrorText: TextStyle = {
-  color: '#f43e3e',
+  color: styleErrorColor,
   fontSize: 12,
   marginTop: 5,
   lineHeight: 12,
