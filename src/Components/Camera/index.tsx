@@ -1,33 +1,34 @@
-import React, { useState, useEffect, useRef } from 'react';
+// CustomCamera.tsx
+import React, { useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
-import { Image } from 'react-native';
+import { Text } from 'react-native';
+import { CameraView, CameraStyled, CameraButton, OverlayImage } from './styles';
+import { ButtonText, LogoImageTwo } from '../../Shared/Styles/Styles';
+import { useDispatch, useSelector } from 'react-redux'; // Import the necessary functions
 import {
-  CameraView,
-  CameraStyled,
-  ButtonText,
-  Text,
-  OverlayContainer,
-  CameraButton,
-  CenterFaceButton,
-  ButtonText1,
-} from './styles';
-import { CustomCameraProps } from '../../utilities/CommonTypes';
+  setCameraPermission,
+  setPictureImageUri,
+} from '../../ReduxStore/Slices/CameraSlice/CameraSlice';
+import { RootState } from '../../ReduxStore/Setup/store';
+import { CustomCameraProps } from '../../Shared/Interfaces/Camera';
 
-const CustomCamera = ({
+const CustomCamera: React.FC<CustomCameraProps> = ({
   onPictureTaken,
   initialCameraType,
 }: CustomCameraProps) => {
-  const [hasCameraPermission, setHasCameraPermission] = useState<
-    boolean | null
-  >(null);
+  const dispatch = useDispatch();
+  const hasCameraPermission = useSelector(
+    (state: RootState) => state.camera.hasCameraPermission
+  );
+
   const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
     (async () => {
       const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === 'granted');
+      dispatch(setCameraPermission(cameraStatus.status === 'granted'));
     })();
-  }, []);
+  }, [dispatch]);
 
   if (hasCameraPermission === null) {
     return <></>;
@@ -40,12 +41,16 @@ const CustomCamera = ({
   const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
+      dispatch(setPictureImageUri(photo.uri));
       onPictureTaken(photo);
     }
   };
 
   return (
-    <OverlayContainer>
+    <>
+      <LogoImageTwo
+        source={require('../../Shared/Media/Images/CareWalletTextandLogo.png')}
+      />
       <CameraView>
         <CameraStyled
           ref={cameraRef}
@@ -54,26 +59,13 @@ const CustomCamera = ({
         />
       </CameraView>
 
-      <CenterFaceButton onPress={takePicture}>
-        <ButtonText1>Center your Face</ButtonText1>
-      </CenterFaceButton>
       <CameraButton onPress={takePicture}>
         <ButtonText>Next</ButtonText>
       </CameraButton>
-      <Image
-        source={require('../../utilities/FacialRecognitionOverlay.png')}
-        style={{
-          position: 'absolute',
-          top: '30%',
-          left: '22.5%',
-          width: 250,
-          height: 250,
-          marginLeft: -50,
-          marginTop: -50,
-          zIndex: 1,
-        }}
+      <OverlayImage
+        source={require('../../Shared/Media/Images/FacialRekog.png')}
       />
-    </OverlayContainer>
+    </>
   );
 };
 
