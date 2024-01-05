@@ -1,18 +1,16 @@
 import React from 'react';
 import * as FileSystem from 'expo-file-system';
-import CustomCamera from '../../../../../Components/Camera/index'; // Adjust the import path as needed
-import { Container } from './styles';
+import CustomCamera from '../../../../../Components/Camera/index';
 import { Photo } from '../../../../../utilities/CommonTypes';
+import { Container } from '../../../../../Shared/Styles/Styles';
 
 const IDVerification = () => {
   const handlePictureTaken = async (photo: Photo) => {
     console.log(photo.uri);
 
     try {
-      // Define the path where the image will be saved
-      const fileUri = FileSystem.documentDirectory + 'photo.jpg'; // You can change 'photo.jpg' to a dynamic name if needed
+      const fileUri = FileSystem.documentDirectory + 'photo.jpg';
 
-      // Move the temporary image file to the permanent file path
       await FileSystem.moveAsync({
         from: photo.uri,
         to: fileUri,
