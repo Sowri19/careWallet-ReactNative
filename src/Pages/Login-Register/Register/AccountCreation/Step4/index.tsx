@@ -29,26 +29,16 @@ import {
   chkStateValid,
   chkZipcodeValid,
 } from '../../../../../utilities/ValidationUtils';
-import { PagesProps } from '../../../../../utilities/CommonTypes';
+import {
+  PagesProps,
+  SearchDropdownItem,
+} from '../../../../../utilities/CommonTypes';
+import {
+  constructSearchAddressFromString,
+  formatSearchAddressToString,
+} from '../../../../../utilities/FormatUtils';
 
-const intialData = [
-  {
-    label: 'Item 1',
-    value: 'item1',
-  },
-  {
-    label: 'Item 2',
-    value: 'item2',
-  },
-  {
-    label: 'Item 3',
-    value: 'item3',
-  },
-  {
-    label: 'Item 4',
-    value: 'item4',
-  },
-];
+const intialData = [];
 
 const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
   const [address, setAddressLocal] = useState<string>(
@@ -127,12 +117,27 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
     });
     navigation.navigate('Register');
   };
-  const searchApi = `https://lnaojbkzej.execute-api.us-east-1.amazonaws.com/dev/geocoding?search=${encodeURIComponent(
-    address
-  )}`;
-  const searchApiCallback = (data: any) => {
-    console.log(data);
-    return intialData;
+  const searchApi = `https://2e523o8yy4.execute-api.us-east-1.amazonaws.com/dev/googleapi?search=`;
+  const searchApiCallback = (response: any) => {
+    // const { data } = response;
+    const { data = {} } = response;
+    const { addresses = [] } = data;
+    const results: SearchDropdownItem[] = addresses.map((item: any) => {
+      const { label, value, fullLabel } = formatSearchAddressToString(item);
+      return {
+        label,
+        fullLabel,
+        value,
+        address: {
+          country: item.country,
+          locality: item.locality,
+          postal_code: item.postal_code,
+          state: item.state,
+          street_address: item.street_address,
+        },
+      };
+    });
+    return results;
   };
   return (
     <Container>
@@ -145,10 +150,15 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
           inputPlaceHolder={'Enter your street address'}
           inputErr={addressErr}
           setInputValue={(item) => {
-            setAddress(item.value);
-            setCity(item.value);
-            setState(item.value);
-            setZipcode(item.value);
+            setTimeout(() => {
+              const { street_address, locality, state, postal_code } =
+                item.address;
+              // constructSearchAddressFromString(item.value);
+              setAddress(street_address);
+              setCity(locality);
+              setState(state);
+              setZipcode(postal_code);
+            });
           }}
           initialList={intialData}
           inputName={'Address'}
@@ -157,6 +167,7 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
             searchApi: searchApi,
             searchApiCallback: searchApiCallback,
           }}
+          // renderInputSearch={renderInputSearch}
         />
         <InputTypeOne
           inputName={'City'}

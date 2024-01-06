@@ -8,6 +8,10 @@ import {
   DropDownInput,
 } from '../../Styles/Fields/inputTypeOneStyles';
 import { Text, Platform } from 'react-native';
+import {
+  SearchInput,
+  SearchInputError,
+} from '../../Styles/Fields/SearchDropdownStyles';
 
 type DropdownTypeOneProps = {
   onValueChange: (value: string, index: number) => void;
@@ -32,6 +36,7 @@ const DropdownTypeOne: React.FC<DropdownTypeOneProps> = ({
     pickerStyle = {
       inputIOSContainer: errorString ? UsernameSectionError : UsernameSection,
       inputIOS: DropDownInput,
+      placeholder: errorString ? SearchInputError : SearchInput,
     };
   } else if (Platform.OS === 'android') {
     pickerStyle = {
@@ -39,6 +44,7 @@ const DropdownTypeOne: React.FC<DropdownTypeOneProps> = ({
         ? UsernameSectionError
         : UsernameSection,
       inputAndroid: DropDownInput,
+      placeholder: errorString ? SearchInputError : SearchInput,
     };
   }
   return (

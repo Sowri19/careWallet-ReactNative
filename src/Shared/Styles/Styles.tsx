@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { TextStyle, ViewStyle } from "react-native";
+import { TextStyle, ViewStyle } from 'react-native';
 import {
   styleErrorColor,
   styleFontWeightBold400,
@@ -11,6 +11,8 @@ import {
   styleStandardButtonHeight,
   styleWhiteColor,
 } from '../../Styles/AppWideConstants/Styles';
+import React from 'react';
+import withBoxShadow from '../../Components/HOCs/ButtonShadowTypeOne';
 
 export const Container = styled.SafeAreaView`
   background-color: ${styleWhiteColor};
@@ -41,7 +43,7 @@ export const FormContainerStyleTwo = styled.View`
   z-index: 1;
 `;
 
-export const BackButton = styled.TouchableOpacity`
+const BackButtonNormal = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -57,6 +59,8 @@ export const BackButton = styled.TouchableOpacity`
   z-index: 1;
 `;
 
+export const BackButton = withBoxShadow(BackButtonNormal);
+
 export const BackButtonDummy = styled.View`
   flex-direction: row;
   justify-content: center;
@@ -69,7 +73,7 @@ export const BackButtonDummy = styled.View`
   margin-bottom: 10%;
 `;
 
-export const Button = styled.TouchableOpacity`
+const ButtonNormal = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -81,6 +85,8 @@ export const Button = styled.TouchableOpacity`
   border-radius: 10px;
   z-index: 2;
 `;
+
+export const Button = withBoxShadow(ButtonNormal);
 
 export const ButtonDummy = styled.View`
   flex-direction: row;

@@ -14,7 +14,7 @@ import {
 } from '../../../../../ReduxStore/Slices/InsuranceCheck/stepOne';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
-  chkDateValid,
+  chk18DateValid,
   chkIDValid,
   chkNameValid,
 } from '../../../../../utilities/ValidationUtils';
@@ -82,11 +82,11 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
     if (error !== '') {
       result = false;
     }
-    // error = chkDateValid(memberDOB);
-    // setDOBErr(error);
-    // if (error !== '') {
-    //   result = false;
-    // }
+    error = chk18DateValid(memderDOBDate);
+    setDOBErr(error);
+    if (error !== '') {
+      result = false;
+    }
     return result;
   };
   const handleNext = () => {
@@ -147,7 +147,7 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
         />
         <DatePickerTypeOne
           inputValue={memderDOBDate}
-          placeHolderValue={`mm/dd/yyyy`}
+          placeHolderValue={`MM/DD/YYYY`}
           errorString={dobErr}
           onPressIn={openDatePicker}
           onDateConfirm={onDateConfirm}

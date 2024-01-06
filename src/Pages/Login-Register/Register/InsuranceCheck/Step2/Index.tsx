@@ -155,16 +155,6 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
           }}
           onCancel={() => {}}
         />
-        {/*<InputTypeOne*/}
-        {/*  inputName={'Relationship to PolicyHolder'}*/}
-        {/*  inputValue={relToPolicyHolder}*/}
-        {/*  onChangeEvent={(newText) => setRelToPolicyHolder(newText)}*/}
-        {/*  placeHolderValue={'Optional'}*/}
-        {/*  onBlur={blurRelToPolicyHolder}*/}
-        {/*  onEndEditing={blurRelToPolicyHolder}*/}
-        {/*  errorString={relToPolicyHolderErr}*/}
-        {/*  onFocus={() => setRelToPolicyHolderErr('')}*/}
-        {/*/>*/}
 
         <DropdownTypeOne
           onValueChange={onDropdownValueChange}
