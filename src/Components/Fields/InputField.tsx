@@ -1,39 +1,9 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TextStyle,
-  ViewStyle,
-  KeyboardTypeOptions,
-} from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import { EyeIcon, LeftIcon } from '../../Styles/Fields/inputTypeOneStyles';
 import { IconStyle } from '../../Shared/Styles/Styles';
-
-// Define a type for the component's props
-type InputFieldProps = {
-  inputName: string;
-  placeholderValue?: string;
-  placeholderColor?: string;
-  onChangeEvent: (text: string) => void;
-  onBlurEvent?: () => void;
-  inputValue: string;
-  inputTextStyle?: TextStyle;
-  inputStyle?: ViewStyle;
-  inputPStyle?: ViewStyle;
-  viewStyle?: ViewStyle;
-  isPassword?: boolean;
-  iconStyle?: ViewStyle;
-  keyboardType?: KeyboardTypeOptions | undefined;
-  errorString?: string;
-  errorStyle?: TextStyle;
-  onEndEditing?: () => void;
-  onFocus?: () => void;
-  editable?: boolean;
-  onPressIn?: () => void;
-  leftIconHTML?: Element;
-  leftIconClass?: string;
-};
+import { InputFieldProps } from '../../utilities/CommonTypes';
+import withBoxShadow from '../HOCs/InputShadowTypeOne';
 
 const InputField: React.FC<InputFieldProps> = ({
   inputName,
@@ -94,4 +64,4 @@ const InputField: React.FC<InputFieldProps> = ({
   );
 };
 
-export default InputField;
+export default withBoxShadow(InputField);

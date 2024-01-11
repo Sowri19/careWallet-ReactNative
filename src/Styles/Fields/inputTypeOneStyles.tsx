@@ -32,6 +32,14 @@ export const UsernameSection: ViewStyle = {
   flex: 0,
 };
 
+export const SelectPlaceHolder: TextStyle = {
+  color: stylePrimaryColor,
+};
+
+export const SelectPlaceHolderErr: TextStyle = {
+  color: styleErrorColor,
+};
+
 export const UsernameSectionError: ViewStyle = {
   flexDirection: 'row',
   height: 60,
@@ -46,6 +54,14 @@ export const UsernameSectionError: ViewStyle = {
   maxWidth: '100%',
   overflow: 'hidden',
   flex: 0,
+};
+
+export const PrimaryInput: TextStyle = {
+  color: stylePrimaryColor,
+};
+
+export const PrimaryInputError: TextStyle = {
+  color: styleErrorColor,
 };
 
 export const PasswordSection: ViewStyle = {

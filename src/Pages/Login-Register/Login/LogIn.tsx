@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useIsFocused } from '@react-navigation/native';
 import {
-  WelcomeText,
   RememberMe,
   RememberMeCheckbox,
   BelowInputText,
   RegisterSection,
   SignText,
+  CheckBoxContainer,
 } from './Styles';
 import {
   LogoImage,
@@ -21,8 +20,8 @@ import {
   FontBold,
   FontBoldSecond,
   LogoImageHolder,
-  ButtonDummy,
-} from '../../../Shared/Styles/Styles';
+  ButtonDummy, ButtonShadowIOS
+} from "../../../Shared/Styles/Styles";
 import InputTypeOne from '../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
@@ -37,6 +36,7 @@ import {
 import InputPasswordTypeOne from '../../../Components/Fields/InputPasswordTypeOne';
 import { chkPassValid } from '../../../utilities/ValidationUtils';
 import { PagesProps } from '../../../utilities/CommonTypes';
+import { styleFontSize18 } from '../../../Styles/AppWideConstants/Styles';
 
 let apiHitInProgress = false;
 const LogIn: React.FC<PagesProps> = ({ navigation }) => {
@@ -164,9 +164,15 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
 
         <RememberMe>
           <RememberMeCheckbox onPress={toggleRememberMe}>
-            {rememberMe && (
-              <Ionicons name="checkmark" size={24} color="#00008B" />
-            )}
+            <CheckBoxContainer>
+              {rememberMe && (
+                <Ionicons
+                  name="checkmark"
+                  size={styleFontSize18}
+                  color="#00008B"
+                />
+              )}
+            </CheckBoxContainer>
             <BelowInputText>Remember me</BelowInputText>
           </RememberMeCheckbox>
           <BelowInputText

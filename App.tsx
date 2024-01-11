@@ -24,14 +24,14 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Log in" component={LogIn} />
-          <Stack.Screen name="ForgotStepOne" component={ForgotPassStepOne} />
-          <Stack.Screen name="ForgotOTP" component={ForgotOTP} />
-          <Stack.Screen name="ForgotNewPass" component={ForgotNewPassword} />
-          <Stack.Screen name="Sign Up" component={SignUp} />
-          <Stack.Screen name="ForgotPassComplete" component={PasswordUpdated} />
-          <Stack.Screen name="SignDOB" component={SignDOB} />
-          <Stack.Screen name="Register" component={RegisterPageOne} />
+          {/*<Stack.Screen name="Log in" component={LogIn} />*/}
+          {/*<Stack.Screen name="ForgotStepOne" component={ForgotPassStepOne} />*/}
+          {/*<Stack.Screen name="ForgotOTP" component={ForgotOTP} />*/}
+          {/*<Stack.Screen name="ForgotNewPass" component={ForgotNewPassword} />*/}
+          {/*<Stack.Screen name="Sign Up" component={SignUp} />*/}
+          {/*<Stack.Screen name="ForgotPassComplete" component={PasswordUpdated} />*/}
+          {/*<Stack.Screen name="SignDOB" component={SignDOB} />*/}
+          {/*<Stack.Screen name="Register" component={RegisterPageOne} />*/}
           <Stack.Screen name="RegisterPageTwo" component={RegisterPageTwo} />
           <Stack.Screen name="IDVerification" component={IDVerification} />
           <Stack.Screen
