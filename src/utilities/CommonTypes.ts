@@ -1,4 +1,4 @@
-import { KeyboardTypeOptions, TextStyle, ViewStyle } from "react-native";
+import { KeyboardTypeOptions, TextStyle, ViewStyle } from 'react-native';
 
 export interface PagesProps {
   navigation: {
@@ -69,4 +69,23 @@ export interface InputFieldProps {
   onPressIn?: () => void;
   leftIconHTML?: Element;
   leftIconClass?: string;
-};
+}
+
+export interface InputTypeOneProps {
+  placeholderValue?: string;
+  placeholderColor?: string;
+  onChangeEvent: (text: string) => void;
+  inputValue: string;
+  inputStyle?: ViewStyle;
+  isPassword?: boolean;
+  keyboardType?: KeyboardTypeOptions | undefined;
+  onBlurEvent?: () => void;
+  onEndEditing?: () => void;
+  onFocus?: () => void;
+  editable?: boolean;
+  onPressIn?: () => void;
+  inputPStyle?: ViewStyle;
+  leftIconHTML?: Element;
+  leftIconClass?: string;
+  iconStyle?: ViewStyle;
+}

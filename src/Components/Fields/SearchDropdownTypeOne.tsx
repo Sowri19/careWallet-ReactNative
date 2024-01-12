@@ -10,14 +10,19 @@ import {
   SearchInputError,
   SearchInput,
   DropdownPlaceHolderError,
+  SearchItemContainer,
+  SearchItem,
+  SearchItemContainerSelected,
+  SearchItemSelected,
 } from '../../Styles/Fields/SearchDropdownStyles';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import axios from 'axios';
 import { stylePrimaryColor } from '../../Styles/AppWideConstants/Styles';
 import { SearchDropdownItem } from '../../utilities/CommonTypes';
+import withBoxShadow from "../HOCs/shadowTypeOne";
 
 type SearchDropdownProps = {
-  inputValue: string;
+  inputValue: SearchDropdownItem | undefined;
   inputErr: string;
   setInputValue: (item: SearchDropdownItem) => void;
   inputPlaceHolder: string;
@@ -40,36 +45,22 @@ const searchApiHit = (
 ) => {
   debounceVar && clearTimeout(debounceVar);
   debounceVar = setTimeout(async () => {
-    // const result = await axios.get(searchApi);
-    // cb(result);
-    cb({
-      data: {
-        addresses: [
-          {
-            country: 'United States',
-            locality: 'Boston',
-            postal_code: '02119',
-            state: 'Massachusetts',
-            street_address: '22 Highland Ave',
-          },
-          {
-            country: 'United States',
-            locality: 'Smiths Grove',
-            postal_code: '42171',
-            state: 'Kentucky',
-            street_address: '22 Highland Ave',
-          },
-          {
-            country: 'United States',
-            locality: 'Blah',
-            postal_code: '42300',
-            state: 'California',
-            street_address: '22 Highland Ave',
-          },
-        ],
-      },
-    });
+    const result = await axios.get(searchApi);
+    cb(result);
   }, debounceTime);
+};
+
+const renderListItem = (
+  item: SearchDropdownItem,
+  selected: boolean | undefined
+) => {
+  return (
+    <View style={selected ? SearchItemContainerSelected : SearchItemContainer}>
+      <Text style={selected ? SearchItemSelected : SearchItem}>
+        {item.fullLabel}
+      </Text>
+    </View>
+  );
 };
 
 const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
@@ -119,10 +110,13 @@ const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
         placeholderStyle={
           inputErr ? DropdownPlaceHolderError : DropdownPlaceHolder
         }
+        renderItem={renderListItem}
         activeColor={stylePrimaryColor}
         onChangeText={inputSearch}
         containerStyle={SearchBox}
-        searchField="fullLabel"
+        selectedTextStyle={
+          inputErr ? DropdownPlaceHolderError : DropdownPlaceHolder
+        }
         valueField="value"
         labelField="label"
         inputSearchStyle={inputErr ? SearchInputError : SearchInput}
@@ -136,4 +130,6 @@ const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
   );
 };
 
-export default SearchDropdownTypeOne;
+// export default SearchDropdownTypeOne;
+
+export default withBoxShadow(SearchDropdownTypeOne);

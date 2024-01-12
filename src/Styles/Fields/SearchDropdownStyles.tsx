@@ -1,5 +1,11 @@
 import { TextInput, TextStyle, ViewStyle } from "react-native";
-import { styleErrorColor, styleFontSize14, styleFontSize16, stylePrimaryColor } from "../AppWideConstants/Styles";
+import {
+  styleErrorColor,
+  styleFontSize14,
+  styleFontSize16,
+  stylePrimaryColor,
+  styleWhiteColor
+} from "../AppWideConstants/Styles";
 
 export const SearchBox: ViewStyle = {
   zIndex: 999,
@@ -28,6 +34,7 @@ export const DropdownSection: TextStyle = {
   maxWidth: '100%',
   overflow: 'hidden',
   color: stylePrimaryColor,
+  backgroundColor: styleWhiteColor,
 };
 
 export const DropdownSectionError: TextStyle = {
@@ -76,4 +83,25 @@ export const SearchInput: TextStyle = {
 
 export const SearchInputError: TextStyle = {
   color: styleErrorColor,
+};
+
+export const SearchItemContainer: ViewStyle = {
+  padding: 10,
+  borderBottomWidth: 0.5,
+  borderBottomColor: stylePrimaryColor,
+};
+
+export const SearchItemContainerSelected: ViewStyle = {
+  padding: 10,
+  borderBottomWidth: 0.5,
+  borderBottomColor: stylePrimaryColor,
+  backgroundColor: stylePrimaryColor,
+}
+
+export const SearchItem: TextStyle = {
+  color: stylePrimaryColor,
+};
+
+export const SearchItemSelected: TextStyle = {
+  color: styleWhiteColor,
 };

@@ -3,7 +3,7 @@ import { stylePrimaryColor } from '../../Styles/AppWideConstants/Styles';
 
 export const ShadowIOS: ViewStyle = {
   shadowColor: stylePrimaryColor,
-  shadowOffset: { width: 4, height: 4 },
+  shadowOffset: { width: 0, height: 4 },
   shadowOpacity: 0.25,
   shadowRadius: 4,
 };

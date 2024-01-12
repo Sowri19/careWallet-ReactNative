@@ -12,6 +12,18 @@ export const formatDate = (date: Date) => {
   return `${month}/${day}/${date.getFullYear()}`;
 };
 
+export const formatDateTwo = (date: Date) => {
+  let month = `${date.getMonth() + 1}`;
+  if (month.length == 1) {
+    month = `0${month}`;
+  }
+  let day = `${date.getDate()}`;
+  if (month.length == 1) {
+    day = `0${day}`;
+  }
+  return `${month}/${day}/${date.getFullYear().toString().slice(-2)}`;
+};
+
 export const constructDate = (text: string) => {
   const date = new Date();
   const temp = text.split('/');
