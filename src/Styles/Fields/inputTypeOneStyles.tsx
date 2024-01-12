@@ -5,8 +5,9 @@ import {
   styleErrorColor,
   styleFontSize16,
   stylePrimaryColor,
-  styleStandardButtonHeight
-} from "../AppWideConstants/Styles";
+  styleStandardButtonHeight,
+  styleWhiteColor,
+} from '../AppWideConstants/Styles';
 
 export const FieldViewStyleOne: ViewStyle = {
   position: 'relative',
@@ -30,6 +31,7 @@ export const UsernameSection: ViewStyle = {
   maxWidth: '100%',
   overflow: 'hidden',
   flex: 0,
+  backgroundColor: styleWhiteColor,
 };
 
 export const SelectPlaceHolder: TextStyle = {
@@ -54,6 +56,7 @@ export const UsernameSectionError: ViewStyle = {
   maxWidth: '100%',
   overflow: 'hidden',
   flex: 0,
+  backgroundColor: styleWhiteColor,
 };
 
 export const PrimaryInput: TextStyle = {
@@ -79,6 +82,7 @@ export const PasswordSection: ViewStyle = {
   overflow: 'hidden',
   flex: 0,
   position: 'relative',
+  backgroundColor: styleWhiteColor,
 };
 
 export const PasswordSectionError: ViewStyle = {
@@ -94,6 +98,7 @@ export const PasswordSectionError: ViewStyle = {
   overflow: 'hidden',
   flex: 0,
   position: 'relative',
+  backgroundColor: styleWhiteColor,
 };
 export const UsernameTextInput: TextStyle = {
   color: stylePrimaryColor,

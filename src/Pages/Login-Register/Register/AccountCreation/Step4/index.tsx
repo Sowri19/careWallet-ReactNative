@@ -5,9 +5,9 @@ import {
   BackButton,
   Button,
   ButtonText,
-  Container,
-  LogoImageTwo,
-} from '../../../../../Shared/Styles/Styles';
+  Container, LogoImageHolderBottomOne,
+  LogoImageTwo
+} from "../../../../../Shared/Styles/Styles";
 import { FormContainerStyleOne } from '../../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
@@ -45,6 +45,7 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
     useAppSelector(selectAddress)
   );
   const [addressErr, setAddressErr] = useState<string>('');
+  const [addressItem, setAddressItemLocal] = useState<SearchDropdownItem>();
   const [city, setCityLocal] = useState<string>(useAppSelector(selectCity));
   const [cityErr, setCityErr] = useState<string>('');
   const [state, setStateLocal] = useState<string>(useAppSelector(selectState));
@@ -68,6 +69,10 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
   };
   const setZipcode = (text: string) => {
     setZipcodeLocal(text);
+  };
+
+  const setAddressItem = (item: SearchDropdownItem) => {
+    setAddressItemLocal(item);
   };
 
   const chkDetails = () => {
@@ -105,7 +110,8 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
       state: state,
       zipcode: zipcode,
     });
-    navigation.navigate('IDVerification');
+    // navigation.navigate('IDVerification');
+    navigation.navigate(`InsuranceSignUpOne`);
   };
 
   const handleBack = async () => {
@@ -119,7 +125,6 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
   };
   const searchApi = `https://2e523o8yy4.execute-api.us-east-1.amazonaws.com/dev/googleapi?search=`;
   const searchApiCallback = (response: any) => {
-    // const { data } = response;
     const { data = {} } = response;
     const { addresses = [] } = data;
     const results: SearchDropdownItem[] = addresses.map((item: any) => {
@@ -129,11 +134,11 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
         fullLabel,
         value,
         address: {
-          country: item.country,
-          locality: item.locality,
-          postal_code: item.postal_code,
-          state: item.state,
-          street_address: item.street_address,
+          country: item.country || ``,
+          locality: item.locality || ``,
+          postal_code: item.postal_code || ``,
+          state: item.state || ``,
+          street_address: item.street_address || ``,
         },
       };
     });
@@ -146,19 +151,17 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>{`< Back`}</ButtonText>
         </BackButton>
         <SearchDropdownTypeOne
-          inputValue={address}
+          inputValue={addressItem}
           inputPlaceHolder={'Enter your street address'}
           inputErr={addressErr}
           setInputValue={(item) => {
-            setTimeout(() => {
-              const { street_address, locality, state, postal_code } =
-                item.address;
-              // constructSearchAddressFromString(item.value);
-              setAddress(street_address);
-              setCity(locality);
-              setState(state);
-              setZipcode(postal_code);
-            });
+            const { street_address, locality, state, postal_code } =
+              item.address;
+            setAddress(street_address);
+            setCity(locality);
+            setState(state);
+            setZipcode(postal_code);
+            setAddressItem(item);
           }}
           initialList={intialData}
           inputName={'Address'}
@@ -194,9 +197,11 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
-      <LogoImageTwo
-        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
-      />
+      <LogoImageHolderBottomOne>
+        <LogoImageTwo
+          source={require('../../../../../Shared/Media/Images/CareWalletTextandLogo.png')}
+        />
+      </LogoImageHolderBottomOne>
     </Container>
   );
 };

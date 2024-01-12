@@ -16,6 +16,8 @@ import ForgotNewPassword from './src/Pages/Login-Register/ForgotPassword/Step3/N
 import ForgotOTP from './src/Pages/Login-Register/ForgotPassword/Step2/Step2';
 import IDVerification from './src/Pages/Login-Register/Register/AccountCreation/Step5/index';
 import PasswordUpdated from './src/Pages/Login-Register/ForgotPassword/Step4/PasswordUpdated';
+import Homepage from './src/Pages/LoggedInPages/Homepage/Homepage';
+import SettingsPage from './src/Pages/LoggedInPages/Settings/Settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,14 +26,14 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/*<Stack.Screen name="Log in" component={LogIn} />*/}
-          {/*<Stack.Screen name="ForgotStepOne" component={ForgotPassStepOne} />*/}
-          {/*<Stack.Screen name="ForgotOTP" component={ForgotOTP} />*/}
-          {/*<Stack.Screen name="ForgotNewPass" component={ForgotNewPassword} />*/}
-          {/*<Stack.Screen name="Sign Up" component={SignUp} />*/}
-          {/*<Stack.Screen name="ForgotPassComplete" component={PasswordUpdated} />*/}
-          {/*<Stack.Screen name="SignDOB" component={SignDOB} />*/}
-          {/*<Stack.Screen name="Register" component={RegisterPageOne} />*/}
+          <Stack.Screen name="Log in" component={LogIn} />
+          <Stack.Screen name="ForgotStepOne" component={ForgotPassStepOne} />
+          <Stack.Screen name="ForgotOTP" component={ForgotOTP} />
+          <Stack.Screen name="ForgotNewPass" component={ForgotNewPassword} />
+          <Stack.Screen name="Sign Up" component={SignUp} />
+          <Stack.Screen name="ForgotPassComplete" component={PasswordUpdated} />
+          <Stack.Screen name="SignDOB" component={SignDOB} />
+          <Stack.Screen name="Register" component={RegisterPageOne} />
           <Stack.Screen name="RegisterPageTwo" component={RegisterPageTwo} />
           <Stack.Screen name="IDVerification" component={IDVerification} />
           <Stack.Screen
@@ -43,6 +45,8 @@ export default function App() {
             component={InsuranceSignUpTwo}
           />
           <Stack.Screen name="Verification" component={Verification} />
+          <Stack.Screen name="Homepage" component={Homepage} />
+          <Stack.Screen name="settings" component={SettingsPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

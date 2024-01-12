@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { TextStyle, ViewStyle } from 'react-native';
 import {
+  styleAcceptColor,
   styleErrorColor,
   styleFontWeightBold400,
   styleFontWeightBold500,
@@ -9,10 +10,11 @@ import {
   styleStandardBackButtonHeight,
   styleStandardButtonFontSize,
   styleStandardButtonHeight,
-  styleWhiteColor,
-} from '../../Styles/AppWideConstants/Styles';
-import React from 'react';
+  styleWhiteColor
+} from "../../Styles/AppWideConstants/Styles";
 import withBoxShadow from '../../Components/HOCs/ButtonShadowTypeOne';
+import { Ionicons } from "@expo/vector-icons";
+import { ProfileImageHolderLocal } from "../../Pages/LoggedInPages/Homepage/Style";
 
 export const Container = styled.SafeAreaView`
   background-color: ${styleWhiteColor};
@@ -38,6 +40,17 @@ export const FormContainerStyleTwo = styled.View`
   justify-content: center;
   width: 70%;
   height: 75%;
+  position: relative;
+  padding-top: 10%;
+  z-index: 1;
+`;
+
+export const FormContainerStyleThree = styled.View`
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  height: 85%;
   position: relative;
   padding-top: 10%;
   z-index: 1;
@@ -86,7 +99,23 @@ const ButtonNormal = styled.TouchableOpacity`
   z-index: 2;
 `;
 
+const ButtonHalf = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: ${stylePrimaryColor};
+  height: ${styleStandardButtonHeight}px;
+  margin-top: 2%;
+  margin-bottom: 12px;
+  border-width: 0.5px;
+  border-radius: 10px;
+  min-width: 45%;
+  z-index: 2;
+`;
+
 export const Button = withBoxShadow(ButtonNormal);
+
+export const ButtonH = withBoxShadow(ButtonHalf);
 
 export const ButtonDummy = styled.View`
   flex-direction: row;
@@ -151,6 +180,15 @@ export const LogoImageHolderBottomOne = styled.View`
   overflow: hidden;
   position: relative;
   height: 25%;
+  padding-bottom: 6%;
+`;
+export const LogoImageHolderBottomThree = styled.View`
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  height: 15%;
   padding-bottom: 6%;
 `;
 export const LogoImageTwo = styled.Image`
@@ -237,3 +275,32 @@ export const PageContentHolderCenter: ViewStyle = {
   flexDirection: 'column',
   justifyContent: 'center',
 };
+
+
+export const GenericIcon = styled(Ionicons)``;
+
+export const GenericShadowIcon = withBoxShadow(GenericIcon);
+
+
+export const SettingsIcon: TextStyle = {
+  width: 58,
+  height: 58,
+  fontSize: 58,
+  color: stylePrimaryColor,
+};
+
+export const ImageIcon: TextStyle = {
+  width: 58,
+  height: 58,
+  fontSize: 58,
+  color: styleAcceptColor,
+};
+
+
+export const ProfileImageHolder = withBoxShadow(ProfileImageHolderLocal);
+
+export const ImageProfile = styled.Image`
+  min-height: 78px;
+  width: 78px;
+  resize-mode: contain;
+`;

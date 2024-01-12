@@ -4,9 +4,9 @@ import {
   Button,
   ButtonText,
   Container,
-  FormContainerStyleOne,
-  LogoImageTwo,
-} from '../../../../../Shared/Styles/Styles';
+  FormContainerStyleOne, LogoImageHolderBottomOne,
+  LogoImageTwo
+} from "../../../../../Shared/Styles/Styles";
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
   setState as setInsuranceOneState,
@@ -146,6 +146,7 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
           onFocus={() => setMemberIDErr('')}
         />
         <DatePickerTypeOne
+          inputName={'Member DOB'}
           inputValue={memderDOBDate}
           placeHolderValue={`MM/DD/YYYY`}
           errorString={dobErr}
@@ -158,9 +159,11 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
-      <LogoImageTwo
-        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
-      />
+      <LogoImageHolderBottomOne>
+        <LogoImageTwo
+          source={require('../../../../../Shared/Media/Images/CareWalletTextandLogo.png')}
+        />
+      </LogoImageHolderBottomOne>
     </Container>
   );
 };
