@@ -24,7 +24,11 @@ const IDVerification = () => {
 
   return (
     <Container>
-      <CustomCamera onPictureTaken={handlePictureTaken} initialCameraType={2} />
+      <CustomCamera
+        onPictureTaken={handlePictureTaken}
+        initialCameraType={1}
+        camera={2}
+      />
     </Container>
   );
 };

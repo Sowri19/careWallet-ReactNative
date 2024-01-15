@@ -15,6 +15,7 @@ import { CustomCameraProps } from '../../Shared/Interfaces/Camera';
 const CustomCamera: React.FC<CustomCameraProps> = ({
   onPictureTaken,
   initialCameraType,
+  camera,
 }: CustomCameraProps) => {
   const dispatch = useDispatch();
   const hasCameraPermission = useSelector(
@@ -63,7 +64,18 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
         <ButtonText>Next</ButtonText>
       </CameraButton>
       <OverlayImage
-        source={require('../../Shared/Media/Images/FacialRekog.png')}
+        camera={camera}
+        source={
+          camera === 1
+            ? require('../../Shared/Media/Images/FacialRekog.png')
+            : camera === 2
+              ? require('../../Shared/Media/Images/Scan-positioning-rectangle.png')
+              : null
+        }
+      />
+      <OverlayImage1
+        camera={camera}
+        source={require('../../Shared/Media/Images/Scan-positioning-rectangle.png')}
       />
     </>
   );
