@@ -4,7 +4,7 @@ import CustomCamera from '../../../../../Components/Camera/index';
 import { Photo } from '../../../../../utilities/CommonTypes';
 import { Container } from '../../../../../Shared/Styles/Styles';
 
-const IDVerification = () => {
+const FaceVerification = () => {
   const handlePictureTaken = async (photo: Photo) => {
     console.log(photo.uri);
 
@@ -24,9 +24,13 @@ const IDVerification = () => {
 
   return (
     <Container>
-      <CustomCamera onPictureTaken={handlePictureTaken} initialCameraType={2} />
+      <CustomCamera
+        onPictureTaken={handlePictureTaken}
+        initialCameraType={2}
+        camera={1}
+      />
     </Container>
   );
 };
 
-export default IDVerification;
+export default FaceVerification;
