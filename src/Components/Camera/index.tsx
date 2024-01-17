@@ -2,7 +2,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 import { Text } from 'react-native';
-import { CameraView, CameraStyled, CameraButton, OverlayImage } from './styles';
+import {
+  CameraView,
+  CameraStyled,
+  CameraButton,
+  OverlayImage,
+  OverlayImage1,
+} from './styles';
 import { ButtonText, LogoImageTwo } from '../../Shared/Styles/Styles';
 import { useDispatch, useSelector } from 'react-redux'; // Import the necessary functions
 import {
@@ -15,7 +21,6 @@ import { CustomCameraProps } from '../../Shared/Interfaces/Camera';
 const CustomCamera: React.FC<CustomCameraProps> = ({
   onPictureTaken,
   initialCameraType,
-  camera,
 }: CustomCameraProps) => {
   const dispatch = useDispatch();
   const hasCameraPermission = useSelector(
@@ -64,18 +69,16 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
         <ButtonText>Next</ButtonText>
       </CameraButton>
       <OverlayImage
-        camera={camera}
         source={
-          camera === 1
-            ? require('../../Shared/Media/Images/FacialRekog.png')
-            : camera === 2
-              ? require('../../Shared/Media/Images/Scan-positioning-rectangle.png')
-              : null
+          initialCameraType === 2 &&
+          require('../../Shared/Media/Images/FacialRekog.png')
         }
       />
       <OverlayImage1
-        camera={camera}
-        source={require('../../Shared/Media/Images/Scan-positioning-rectangle.png')}
+        source={
+          initialCameraType === 1 &&
+          require('../../Shared/Media/Images/Scan-positioning-rectangle.png')
+        }
       />
     </>
   );

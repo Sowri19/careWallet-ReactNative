@@ -5,9 +5,10 @@ import {
   BackButton,
   Button,
   ButtonText,
-  Container, LogoImageHolderBottomOne,
-  LogoImageTwo
-} from "../../../../../Shared/Styles/Styles";
+  Container,
+  LogoImageHolderBottomOne,
+  LogoImageTwo,
+} from '../../../../../Shared/Styles/Styles';
 import { FormContainerStyleOne } from '../../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
@@ -110,8 +111,8 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
       state: state,
       zipcode: zipcode,
     });
-    // navigation.navigate('IDVerification');
-    navigation.navigate(`InsuranceSignUpOne`);
+    navigation.navigate('FaceVerification');
+    // navigation.navigate(`InsuranceSignUpOne`);
   };
 
   const handleBack = async () => {

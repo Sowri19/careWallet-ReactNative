@@ -5,7 +5,6 @@ import {
   stylePrimaryColor,
   styleWhiteColor,
 } from '../../Styles/AppWideConstants/Styles';
-import { CustomCameraProps } from '../../Shared/Interfaces/Camera';
 
 export const CameraButton = styled(Button)`
   width: 193px;
@@ -35,7 +34,7 @@ export const TakePictureButton = styled.TouchableOpacity`
   background-color: ${stylePrimaryColor};
 `;
 
-export const OverlayImage = styled.Image<CustomCameraProps>`
+export const OverlayImage = styled.Image`
   position: absolute;
   top: 30%;
   left: 22.5%;
@@ -43,5 +42,10 @@ export const OverlayImage = styled.Image<CustomCameraProps>`
   margin-left: -35px;
   margin-top: -0px;
   z-index: 1;
-  width: ${(props) => (props.camera === 1 ? '300px' : '200px')};
+  width: 300px;
+`;
+export const OverlayImage1 = styled.Image`
+  position: absolute;
+  top: 40%;
+  z-index: 1;
 `;
