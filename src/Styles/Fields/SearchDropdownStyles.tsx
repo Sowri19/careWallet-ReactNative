@@ -1,5 +1,11 @@
-import { TextStyle, ViewStyle } from "react-native";
-import { styleErrorColor, stylePrimaryColor } from "../AppWideConstants/Styles";
+import { TextInput, TextStyle, ViewStyle } from "react-native";
+import {
+  styleErrorColor,
+  styleFontSize14,
+  styleFontSize16,
+  stylePrimaryColor,
+  styleWhiteColor
+} from "../AppWideConstants/Styles";
 
 export const SearchBox: ViewStyle = {
   zIndex: 999,
@@ -15,7 +21,7 @@ export const SearchBox: ViewStyle = {
   maxHeight: '50%',
 };
 
-export const DropdownSection: ViewStyle = {
+export const DropdownSection: TextStyle = {
   height: 60,
   marginTop: 12,
   marginBottom: 20,
@@ -27,9 +33,11 @@ export const DropdownSection: ViewStyle = {
   minWidth: '100%',
   maxWidth: '100%',
   overflow: 'hidden',
+  color: stylePrimaryColor,
+  backgroundColor: styleWhiteColor,
 };
 
-export const DropdownSectionError: ViewStyle = {
+export const DropdownSectionError: TextStyle = {
   height: 60,
   marginTop: 12,
   marginBottom: 0,
@@ -41,11 +49,17 @@ export const DropdownSectionError: ViewStyle = {
   minWidth: '100%',
   maxWidth: '100%',
   overflow: 'hidden',
+  color: styleErrorColor,
 };
 
 export const DropdownPlaceHolder: TextStyle = {
-  color: '#C8C8C8',
-  fontSize: 14,
+  color: stylePrimaryColor,
+  fontSize: styleFontSize14,
+};
+
+export const DropdownPlaceHolderError: TextStyle = {
+  ...DropdownPlaceHolder,
+  color: styleErrorColor,
 };
 
 export const LabelText: TextStyle = {
@@ -61,4 +75,33 @@ export const ErrorText: TextStyle = {
   marginTop: 5,
   lineHeight: 12,
   marginBottom: 3,
+};
+
+export const SearchInput: TextStyle = {
+  color: stylePrimaryColor,
+};
+
+export const SearchInputError: TextStyle = {
+  color: styleErrorColor,
+};
+
+export const SearchItemContainer: ViewStyle = {
+  padding: 10,
+  borderBottomWidth: 0.5,
+  borderBottomColor: stylePrimaryColor,
+};
+
+export const SearchItemContainerSelected: ViewStyle = {
+  padding: 10,
+  borderBottomWidth: 0.5,
+  borderBottomColor: stylePrimaryColor,
+  backgroundColor: stylePrimaryColor,
+}
+
+export const SearchItem: TextStyle = {
+  color: stylePrimaryColor,
+};
+
+export const SearchItemSelected: TextStyle = {
+  color: styleWhiteColor,
 };

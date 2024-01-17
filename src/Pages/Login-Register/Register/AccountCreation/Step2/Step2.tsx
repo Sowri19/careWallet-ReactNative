@@ -3,25 +3,29 @@ import {
   BackButton,
   Button,
   ButtonText,
-  Container, FontBoldSecond,
+  Container,
+  FontBoldSecond,
   FormContainerStyleOne,
   LogoImage,
-  LogoImageHolder
-} from "../../../../../Shared/Styles/Styles";
-import { BelowInputText, RegisterSection, SignText } from "../Step1/Styles";
+  LogoImageHolder,
+} from '../../../../../Shared/Styles/Styles';
+import { BelowInputText, RegisterSection, SignText } from '../Step1/Styles';
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
   setState as setStateAction,
   SignUpStepTwoState,
 } from '../../../../../ReduxStore/Slices/Register/stepTwo';
-import { chkDateValid } from '../../../../../utilities/ValidationUtils';
+import {
+  chk18DateValid,
+  chkDateValid,
+} from '../../../../../utilities/ValidationUtils';
 import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
 import { formatDate } from '../../../../../utilities/FormatUtils';
 import { PagesProps } from '../../../../../utilities/CommonTypes';
 
 const StepTwo: React.FC<PagesProps> = ({ navigation }) => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [dob, setDOBLocal] = useState<string>(formatDate(date));
+  const [date, setDate] = useState<Date>();
+  const [dob, setDOBLocal] = useState<string>('');
   const [dobErr, setDOBErr] = useState<string>('');
   const dispatch = useAppDispatch();
   const updateState = (update: SignUpStepTwoState) => {
@@ -32,7 +36,12 @@ const StepTwo: React.FC<PagesProps> = ({ navigation }) => {
   };
   const chkDetails = () => {
     let result = true;
-    const error = chkDateValid(dob);
+    let error = chkDateValid(dob);
+    if (error !== '') {
+      setDOBErr(error);
+      result = false;
+    }
+    error = chk18DateValid(date);
     if (error !== '') {
       setDOBErr(error);
       result = false;
@@ -40,14 +49,13 @@ const StepTwo: React.FC<PagesProps> = ({ navigation }) => {
     return result;
   };
   const handleBack = () => {
-    console.log('Shashi');
     updateState({
       dob: '',
     });
     navigation.navigate('Sign Up');
   };
   const handleNext = () => {
-    if (!chkDetails) {
+    if (!chkDetails()) {
       return;
     }
     updateState({

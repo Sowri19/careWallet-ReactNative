@@ -1,39 +1,10 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TextStyle,
-  ViewStyle,
-  KeyboardTypeOptions,
-} from 'react-native';
+import { View, Text, TextInput } from 'react-native';
 import { EyeIcon, LeftIcon } from '../../Styles/Fields/inputTypeOneStyles';
 import { IconStyle } from '../../Shared/Styles/Styles';
-
-// Define a type for the component's props
-type InputFieldProps = {
-  inputName: string;
-  placeholderValue?: string;
-  placeholderColor?: string;
-  onChangeEvent: (text: string) => void;
-  onBlurEvent?: () => void;
-  inputValue: string;
-  inputTextStyle?: TextStyle;
-  inputStyle?: ViewStyle;
-  inputPStyle?: ViewStyle;
-  viewStyle?: ViewStyle;
-  isPassword?: boolean;
-  iconStyle?: ViewStyle;
-  keyboardType?: KeyboardTypeOptions | undefined;
-  errorString?: string;
-  errorStyle?: TextStyle;
-  onEndEditing?: () => void;
-  onFocus?: () => void;
-  editable?: boolean;
-  onPressIn?: () => void;
-  leftIconHTML?: Element;
-  leftIconClass?: string;
-};
+import { InputFieldProps } from '../../utilities/CommonTypes';
+import withBoxShadow from '../HOCs/shadowTypeOne';
+import GenericTextInput from './TextInputOne';
 
 const InputField: React.FC<InputFieldProps> = ({
   inputName,
@@ -58,35 +29,27 @@ const InputField: React.FC<InputFieldProps> = ({
   leftIconHTML,
   leftIconClass,
 }) => {
-  const [passwordVisible, setPasswordVisibility] = useState<boolean>(false);
   return (
     <View style={viewStyle}>
       {inputName !== '' && <Text style={inputTextStyle}>{inputName}</Text>}
-      <View style={inputPStyle}>
-        {leftIconClass && <LeftIcon name={leftIconClass} style={IconStyle} />}
-        {leftIconHTML && <>{leftIconHTML}</>}
-        <TextInput
-          placeholder={placeholderValue}
-          placeholderTextColor={placeholderColor}
-          onChangeText={onChangeEvent}
-          value={inputValue}
-          style={inputStyle}
-          secureTextEntry={isPassword && !passwordVisible}
-          keyboardType={keyboardType}
-          onBlur={onBlurEvent}
-          onEndEditing={onEndEditing}
-          onFocus={onFocus}
-          editable={editable}
-          onPressIn={onPressIn}
-        />
-        {isPassword && (
-          <EyeIcon
-            name={passwordVisible ? 'eye-off' : 'eye'}
-            style={iconStyle}
-            onPress={() => setPasswordVisibility(!passwordVisible)}
-          />
-        )}
-      </View>
+      <GenericTextInput
+        placeholderValue={placeholderValue}
+        placeholderColor={placeholderColor}
+        onChangeEvent={onChangeEvent}
+        inputValue={inputValue}
+        inputStyle={inputStyle}
+        isPassword={isPassword}
+        keyboardType={keyboardType}
+        onBlurEvent={onBlurEvent}
+        onEndEditing={onEndEditing}
+        onFocus={onFocus}
+        editable={editable}
+        onPressIn={onPressIn}
+        inputPStyle={inputPStyle}
+        leftIconClass={leftIconClass}
+        leftIconHTML={leftIconHTML}
+        iconStyle={iconStyle}
+      />
       {errorString && errorString !== '' && (
         <Text style={errorStyle}>{errorString}</Text>
       )}

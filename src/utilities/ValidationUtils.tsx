@@ -1,3 +1,5 @@
+import { formatDate } from "./FormatUtils";
+
 export const chkPassValid = (text: string) => {
   if (text == '') {
     return 'Password cannot be empty';
@@ -22,6 +24,23 @@ export const chkDateValid = (text: string) => {
     return 'Date cannot be empty';
   }
   return '';
+};
+
+export const chk18DateValid = (date: Date | undefined) => {
+  if (!date) {
+    return chkDateValid('');
+  }
+  const error = chkDateValid(formatDate(date));
+  if (error) {
+    return error;
+  }
+  // at least 18 years older
+  const eighteenYearsAgo = new Date();
+  eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
+  if (date > eighteenYearsAgo) {
+    return `You must be at least 18 years old.`;
+  }
+  return ``;
 };
 
 export const chkPhoneValid = (text: string) => {

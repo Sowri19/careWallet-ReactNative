@@ -9,7 +9,8 @@
     "android-native": "expo run:android",
     "ios-native": "expo run:ios",
     "web": "expo start --web",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "postinstall": "npx husky install"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

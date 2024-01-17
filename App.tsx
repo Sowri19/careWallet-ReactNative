@@ -17,6 +17,8 @@ import ForgotOTP from './src/Pages/Login-Register/ForgotPassword/Step2/Step2';
 import FaceVerification from './src/Pages/Login-Register/Register/AccountCreation/Step5/index';
 import IDVerification from './src/Pages/Login-Register/Register/AccountCreation/Step6/index';
 import PasswordUpdated from './src/Pages/Login-Register/ForgotPassword/Step4/PasswordUpdated';
+import Homepage from './src/Pages/LoggedInPages/Homepage/Homepage';
+import SettingsPage from './src/Pages/LoggedInPages/Settings/Settings';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +47,8 @@ export default function App() {
             component={InsuranceSignUpTwo}
           />
           <Stack.Screen name="Verification" component={Verification} />
+          <Stack.Screen name="Homepage" component={Homepage} />
+          <Stack.Screen name="settings" component={SettingsPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

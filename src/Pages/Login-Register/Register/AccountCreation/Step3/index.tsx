@@ -30,6 +30,7 @@ import {
   chkConfirmPassValid,
 } from '../../../../../utilities/ValidationUtils';
 import { PagesProps } from '../../../../../utilities/CommonTypes';
+import { extractNumbersFromString } from '../../../../../utilities/FormatUtils';
 
 const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
   const [phoneNumber, setPhoneNumberLocal] = useState<string>(
@@ -54,7 +55,7 @@ const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
     setPhoneNumberLocal(text);
   };
   const blurPhoneNumber = () => {
-    setPhoneErr(chkPhoneValid(phoneNumber));
+    setPhoneErr(chkPhoneValid(extractNumbersFromString(phoneNumber)));
   };
   const setEmail = (text: string) => {
     setEmailLocal(text);
@@ -86,7 +87,7 @@ const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
 
   const chkDetails = () => {
     let result = true;
-    let error = chkPhoneValid(phoneNumber);
+    let error = chkPhoneValid(extractNumbersFromString(phoneNumber));
     setPhoneErr(error);
     if (error !== '') {
       result = false;
@@ -136,6 +137,7 @@ const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
           onEndEditing={blurPhoneNumber}
           errorString={phoneErr}
           onFocus={() => setPhoneErr('')}
+          fieldStyle={'phone'}
         />
 
         <InputTypeOne

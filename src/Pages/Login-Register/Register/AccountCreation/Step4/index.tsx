@@ -6,6 +6,7 @@ import {
   Button,
   ButtonText,
   Container,
+  LogoImageHolderBottomOne,
   LogoImageTwo,
 } from '../../../../../Shared/Styles/Styles';
 import { FormContainerStyleOne } from '../../../../../Shared/Styles/Styles';
@@ -29,32 +30,23 @@ import {
   chkStateValid,
   chkZipcodeValid,
 } from '../../../../../utilities/ValidationUtils';
-import { PagesProps } from '../../../../../utilities/CommonTypes';
+import {
+  PagesProps,
+  SearchDropdownItem,
+} from '../../../../../utilities/CommonTypes';
+import {
+  constructSearchAddressFromString,
+  formatSearchAddressToString,
+} from '../../../../../utilities/FormatUtils';
 
-const intialData = [
-  {
-    label: 'Item 1',
-    value: 'item1',
-  },
-  {
-    label: 'Item 2',
-    value: 'item2',
-  },
-  {
-    label: 'Item 3',
-    value: 'item3',
-  },
-  {
-    label: 'Item 4',
-    value: 'item4',
-  },
-];
+const intialData = [];
 
 const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
   const [address, setAddressLocal] = useState<string>(
     useAppSelector(selectAddress)
   );
   const [addressErr, setAddressErr] = useState<string>('');
+  const [addressItem, setAddressItemLocal] = useState<SearchDropdownItem>();
   const [city, setCityLocal] = useState<string>(useAppSelector(selectCity));
   const [cityErr, setCityErr] = useState<string>('');
   const [state, setStateLocal] = useState<string>(useAppSelector(selectState));
@@ -78,6 +70,10 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
   };
   const setZipcode = (text: string) => {
     setZipcodeLocal(text);
+  };
+
+  const setAddressItem = (item: SearchDropdownItem) => {
+    setAddressItemLocal(item);
   };
 
   const chkDetails = () => {
@@ -115,7 +111,8 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
       state: state,
       zipcode: zipcode,
     });
-    navigation.navigate('IDVerification');
+    navigation.navigate('FaceVerification');
+    // navigation.navigate(`InsuranceSignUpOne`);
   };
 
   const handleBack = async () => {
@@ -127,12 +124,26 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
     });
     navigation.navigate('Register');
   };
-  const searchApi = `https://lnaojbkzej.execute-api.us-east-1.amazonaws.com/dev/geocoding?search=${encodeURIComponent(
-    address
-  )}`;
-  const searchApiCallback = (data: any) => {
-    console.log(data);
-    return intialData;
+  const searchApi = `https://2e523o8yy4.execute-api.us-east-1.amazonaws.com/dev/googleapi?search=`;
+  const searchApiCallback = (response: any) => {
+    const { data = {} } = response;
+    const { addresses = [] } = data;
+    const results: SearchDropdownItem[] = addresses.map((item: any) => {
+      const { label, value, fullLabel } = formatSearchAddressToString(item);
+      return {
+        label,
+        fullLabel,
+        value,
+        address: {
+          country: item.country || ``,
+          locality: item.locality || ``,
+          postal_code: item.postal_code || ``,
+          state: item.state || ``,
+          street_address: item.street_address || ``,
+        },
+      };
+    });
+    return results;
   };
   return (
     <Container>
@@ -141,14 +152,17 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>{`< Back`}</ButtonText>
         </BackButton>
         <SearchDropdownTypeOne
-          inputValue={address}
+          inputValue={addressItem}
           inputPlaceHolder={'Enter your street address'}
           inputErr={addressErr}
           setInputValue={(item) => {
-            setAddress(item.value);
-            setCity(item.value);
-            setState(item.value);
-            setZipcode(item.value);
+            const { street_address, locality, state, postal_code } =
+              item.address;
+            setAddress(street_address);
+            setCity(locality);
+            setState(state);
+            setZipcode(postal_code);
+            setAddressItem(item);
           }}
           initialList={intialData}
           inputName={'Address'}
@@ -157,6 +171,7 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
             searchApi: searchApi,
             searchApiCallback: searchApiCallback,
           }}
+          // renderInputSearch={renderInputSearch}
         />
         <InputTypeOne
           inputName={'City'}
@@ -183,9 +198,11 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
-      <LogoImageTwo
-        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
-      />
+      <LogoImageHolderBottomOne>
+        <LogoImageTwo
+          source={require('../../../../../Shared/Media/Images/CareWalletTextandLogo.png')}
+        />
+      </LogoImageHolderBottomOne>
     </Container>
   );
 };

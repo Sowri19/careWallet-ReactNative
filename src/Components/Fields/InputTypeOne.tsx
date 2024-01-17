@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { KeyboardTypeOptions } from 'react-native';
+import React from 'react';
 import InputField from './InputField';
 import {
   UsernameSection,
@@ -8,6 +7,8 @@ import {
   UsernameSectionError,
   ErrorText,
   CountryCode,
+  PrimaryInputError,
+  PrimaryInput,
 } from '../../Styles/Fields/inputTypeOneStyles';
 import {
   styleErrorColor,
@@ -17,23 +18,7 @@ import {
   extractNumbersFromString,
   formatPhoneNumberString,
 } from '../../utilities/FormatUtils';
-
-type InputOneFieldProps = {
-  inputName: string;
-  onChangeEvent: (text: string) => void;
-  inputValue: string;
-  placeHolderValue: string;
-  keyboardType?: KeyboardTypeOptions | undefined;
-  errorString?: string;
-  onBlur?: () => void;
-  onEndEditing?: () => void;
-  onFocus?: () => void;
-  editable?: boolean;
-  onPressIn?: () => void;
-  leftIconHTML?: Element;
-  leftIconClass?: string;
-  fieldStyle?: 'phone';
-};
+import { InputOneFieldProps } from '../../utilities/CommonTypes';
 const InputTypeOne: React.FC<InputOneFieldProps> = ({
   inputName,
   onChangeEvent,
@@ -110,6 +95,7 @@ const InputTypeOne: React.FC<InputOneFieldProps> = ({
         placeholderColor={isError ? styleErrorColor : stylePrimaryColor}
         inputPStyle={isError ? UsernameSectionError : UsernameSection}
         inputTextStyle={UsernameTextInput}
+        inputStyle={isError ? PrimaryInputError : PrimaryInput}
         errorStyle={ErrorText}
         errorString={errorString}
         onBlurEvent={onBlurLogic}

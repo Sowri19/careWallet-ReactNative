@@ -7,29 +7,34 @@ import {
   DropdownSectionError,
   ErrorText,
   SearchBox,
+  SearchInputError,
+  SearchInput,
+  DropdownPlaceHolderError,
+  SearchItemContainer,
+  SearchItem,
+  SearchItemContainerSelected,
+  SearchItemSelected,
 } from '../../Styles/Fields/SearchDropdownStyles';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import axios from 'axios';
-import { stylePrimaryColor } from "../../Styles/AppWideConstants/Styles";
-
-type Item = {
-  label: string;
-  value: string;
-};
+import { stylePrimaryColor } from '../../Styles/AppWideConstants/Styles';
+import { SearchDropdownItem } from '../../utilities/CommonTypes';
+import withBoxShadow from "../HOCs/shadowTypeOne";
 
 type SearchDropdownProps = {
-  inputValue: string;
+  inputValue: SearchDropdownItem | undefined;
   inputErr: string;
-  setInputValue: (item: Item) => void;
+  setInputValue: (item: SearchDropdownItem) => void;
   inputPlaceHolder: string;
   inputName: string;
   searchPlaceHolder: string;
-  initialList?: Item[];
+  initialList?: SearchDropdownItem[];
   searchApiProps?: {
     searchApi: string;
-    searchApiCallback: (data: any) => Item[];
+    searchApiCallback: (data: any) => SearchDropdownItem[];
   };
   debounceTime?: number;
+  renderInputSearch?: (onSearch: (text: string) => void) => JSX.Element;
 };
 
 let debounceVar: any;
@@ -45,6 +50,19 @@ const searchApiHit = (
   }, debounceTime);
 };
 
+const renderListItem = (
+  item: SearchDropdownItem,
+  selected: boolean | undefined
+) => {
+  return (
+    <View style={selected ? SearchItemContainerSelected : SearchItemContainer}>
+      <Text style={selected ? SearchItemSelected : SearchItem}>
+        {item.fullLabel}
+      </Text>
+    </View>
+  );
+};
+
 const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
   inputValue,
   inputErr,
@@ -55,12 +73,17 @@ const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
   initialList,
   searchApiProps,
   debounceTime,
+  renderInputSearch,
 }) => {
-  const [searchList, setSearchlist] = useState<Item[]>(initialList || []);
+  const [searchList, setSearchlist] = useState<SearchDropdownItem[]>(
+    initialList || []
+  );
   const debounceTimeLocal = debounceTime ? debounceTime : 500;
   const inputSearch = (text: string) => {
     if (searchApiProps && text.length > 2) {
-      const completeApi = `${searchApiProps.searchApi}${text}`;
+      const completeApi = `${searchApiProps.searchApi}${encodeURIComponent(
+        text
+      )}`;
       searchApiHit(
         completeApi,
         (data) => {
@@ -77,26 +100,36 @@ const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
       <Dropdown
         data={searchList}
         style={inputErr ? DropdownSectionError : DropdownSection}
-        labelField="label"
         onChange={(item) => {
           setInputValue(item);
         }}
-        valueField="value"
         value={inputValue}
         placeholder={inputPlaceHolder}
         searchPlaceholder={searchPlaceHolder}
         search
-        placeholderStyle={DropdownPlaceHolder}
+        placeholderStyle={
+          inputErr ? DropdownPlaceHolderError : DropdownPlaceHolder
+        }
+        renderItem={renderListItem}
         activeColor={stylePrimaryColor}
         onChangeText={inputSearch}
         containerStyle={SearchBox}
+        selectedTextStyle={
+          inputErr ? DropdownPlaceHolderError : DropdownPlaceHolder
+        }
+        valueField="value"
+        labelField="label"
+        inputSearchStyle={inputErr ? SearchInputError : SearchInput}
         renderRightIcon={() => {
           return <></>;
         }}
+        renderInputSearch={renderInputSearch}
       />
       {inputErr && inputErr !== '' && <Text style={ErrorText}>{inputErr}</Text>}
     </>
   );
 };
 
-export default SearchDropdownTypeOne;
+// export default SearchDropdownTypeOne;
+
+export default withBoxShadow(SearchDropdownTypeOne);

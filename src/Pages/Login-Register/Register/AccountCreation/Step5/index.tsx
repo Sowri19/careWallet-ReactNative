@@ -24,11 +24,7 @@ const FaceVerification = () => {
 
   return (
     <Container>
-      <CustomCamera
-        onPictureTaken={handlePictureTaken}
-        initialCameraType={2}
-        camera={1}
-      />
+      <CustomCamera onPictureTaken={handlePictureTaken} initialCameraType={2} />
     </Container>
   );
 };

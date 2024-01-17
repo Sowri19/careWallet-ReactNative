@@ -4,9 +4,9 @@ import {
   Button,
   ButtonText,
   Container,
-  FormContainerStyleOne,
-  LogoImageTwo,
-} from '../../../../../Shared/Styles/Styles';
+  FormContainerStyleOne, LogoImageHolderBottomOne,
+  LogoImageTwo
+} from "../../../../../Shared/Styles/Styles";
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
   setState as setInsuranceOneState,
@@ -14,7 +14,7 @@ import {
 } from '../../../../../ReduxStore/Slices/InsuranceCheck/stepOne';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
-  chkDateValid,
+  chk18DateValid,
   chkIDValid,
   chkNameValid,
 } from '../../../../../utilities/ValidationUtils';
@@ -82,11 +82,11 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
     if (error !== '') {
       result = false;
     }
-    // error = chkDateValid(memberDOB);
-    // setDOBErr(error);
-    // if (error !== '') {
-    //   result = false;
-    // }
+    error = chk18DateValid(memderDOBDate);
+    setDOBErr(error);
+    if (error !== '') {
+      result = false;
+    }
     return result;
   };
   const handleNext = () => {
@@ -146,8 +146,9 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
           onFocus={() => setMemberIDErr('')}
         />
         <DatePickerTypeOne
+          inputName={'Member DOB'}
           inputValue={memderDOBDate}
-          placeHolderValue={`mm/dd/yyyy`}
+          placeHolderValue={`MM/DD/YYYY`}
           errorString={dobErr}
           onPressIn={openDatePicker}
           onDateConfirm={onDateConfirm}
@@ -158,9 +159,11 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
-      <LogoImageTwo
-        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
-      />
+      <LogoImageHolderBottomOne>
+        <LogoImageTwo
+          source={require('../../../../../Shared/Media/Images/CareWalletTextandLogo.png')}
+        />
+      </LogoImageHolderBottomOne>
     </Container>
   );
 };

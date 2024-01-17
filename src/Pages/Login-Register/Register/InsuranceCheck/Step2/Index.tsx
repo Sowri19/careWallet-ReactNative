@@ -5,8 +5,8 @@ import {
   FormContainerStyleOne,
   LogoImageTwo,
   ButtonText,
-  Container,
-} from '../../../../../Shared/Styles/Styles';
+  Container, LogoImageHolderBottomOne
+} from "../../../../../Shared/Styles/Styles";
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
@@ -155,16 +155,6 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
           }}
           onCancel={() => {}}
         />
-        {/*<InputTypeOne*/}
-        {/*  inputName={'Relationship to PolicyHolder'}*/}
-        {/*  inputValue={relToPolicyHolder}*/}
-        {/*  onChangeEvent={(newText) => setRelToPolicyHolder(newText)}*/}
-        {/*  placeHolderValue={'Optional'}*/}
-        {/*  onBlur={blurRelToPolicyHolder}*/}
-        {/*  onEndEditing={blurRelToPolicyHolder}*/}
-        {/*  errorString={relToPolicyHolderErr}*/}
-        {/*  onFocus={() => setRelToPolicyHolderErr('')}*/}
-        {/*/>*/}
 
         <DropdownTypeOne
           onValueChange={onDropdownValueChange}
@@ -178,9 +168,11 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
           <ButtonText>Next</ButtonText>
         </Button>
       </FormContainerStyleOne>
-      <LogoImageTwo
-        source={require('../../../../../Shared/Media/Images/CareWalletLogo.png')}
-      />
+      <LogoImageHolderBottomOne>
+        <LogoImageTwo
+          source={require('../../../../../Shared/Media/Images/CareWalletTextandLogo.png')}
+        />
+      </LogoImageHolderBottomOne>
     </Container>
   );
 };

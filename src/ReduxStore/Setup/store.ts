@@ -8,6 +8,7 @@ import insStepOneReducer from '../Slices/InsuranceCheck/stepOne';
 import insStepTwoReducer from '../Slices/InsuranceCheck/stepTwo';
 import forgotReducer from '../Slices/ForgotPassword/forgotSlice';
 import cameraReducer from '../Slices/CameraSlice/CameraSlice';
+import homeReducer from '../Slices/HomePage/homePage';
 
 export const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
     insStepTwoState: insStepTwoReducer,
     forgotState: forgotReducer,
     camera: cameraReducer,
+    homeState: homeReducer,
   },
 });
 
