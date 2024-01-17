@@ -30,6 +30,7 @@ import {
   chkConfirmPassValid,
 } from '../../../../../utilities/ValidationUtils';
 import { PagesProps } from '../../../../../utilities/CommonTypes';
+
 import { extractNumbersFromString } from '../../../../../utilities/FormatUtils';
 
 const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
