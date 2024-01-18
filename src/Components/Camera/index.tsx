@@ -18,6 +18,10 @@ import {
 import { RootState } from '../../ReduxStore/Setup/store';
 import { CustomCameraProps } from '../../Shared/Interfaces/Camera';
 
+import facialRekogImage from '../../Shared/Media/Images/FacialRekog.png';
+import positioningRectangleImage from '../../Shared/Media/Images/Scan-positioning-rectangle.png';
+import careWalletLogoImage from '../../Shared/Media/Images/CareWalletTextandLogo.png';
+
 const CustomCamera: React.FC<CustomCameraProps> = ({
   onPictureTaken,
   initialCameraType,
@@ -54,9 +58,7 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
 
   return (
     <>
-      <LogoImageTwo
-        source={require('../../Shared/Media/Images/CareWalletTextandLogo.png')}
-      />
+      <LogoImageTwo source={careWalletLogoImage} />
       <CameraView>
         <CameraStyled
           ref={cameraRef}
@@ -64,22 +66,13 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
           ratio="4:3"
         />
       </CameraView>
-
       <CameraButton onPress={takePicture}>
         <ButtonText>Next</ButtonText>
       </CameraButton>
-      <OverlayImage
-        source={
-          initialCameraType === 2 &&
-          require('../../Shared/Media/Images/FacialRekog.png')
-        }
-      />
-      <OverlayImage1
-        source={
-          initialCameraType === 1 &&
-          require('../../Shared/Media/Images/Scan-positioning-rectangle.png')
-        }
-      />
+      {initialCameraType === 2 && <OverlayImage source={facialRekogImage} />}
+      {initialCameraType === 1 && (
+        <OverlayImage1 source={positioningRectangleImage} />
+      )}
     </>
   );
 };
