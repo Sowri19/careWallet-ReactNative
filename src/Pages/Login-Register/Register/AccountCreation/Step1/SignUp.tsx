@@ -85,7 +85,7 @@ const SignUp: React.FC<PagesProps> = ({ navigation }) => {
       firstName: firstName,
       lastName: lastName,
     });
-    navigation.navigate('SignDOB');
+    navigation.navigate('FaceVerification');
   };
   return (
     <Container>

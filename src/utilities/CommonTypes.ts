@@ -7,6 +7,8 @@ export interface PagesProps {
 }
 export interface Photo {
   uri: string;
+  fileName?: string;
+  type?: string;
 }
 
 export interface CustomCameraProps {
