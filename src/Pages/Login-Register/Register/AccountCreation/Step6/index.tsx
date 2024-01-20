@@ -1,8 +1,9 @@
 import React from 'react';
 import * as FileSystem from 'expo-file-system';
 import CustomCamera from '../../../../../Components/Camera/index';
-import { Container } from './styles';
+import { ContainerStyle, Logo } from './styles';
 import { Photo } from '../../../../../utilities/CommonTypes';
+import CareWalletTextandLogo from '../../../../../Shared/Media/Images/CareWalletTextandLogo.png';
 
 const IDVerification = () => {
   const handlePictureTaken = async (photo: Photo) => {
@@ -23,9 +24,14 @@ const IDVerification = () => {
   };
 
   return (
-    <Container>
-      <CustomCamera onPictureTaken={handlePictureTaken} initialCameraType={1} />
-    </Container>
+    <ContainerStyle>
+      <CustomCamera
+        onPictureTaken={handlePictureTaken}
+        initialCameraType={1}
+        position={'front'}
+      />
+      <Logo source={CareWalletTextandLogo} alt="CareWalletTextandLogo" />
+    </ContainerStyle>
   );
 };
 
