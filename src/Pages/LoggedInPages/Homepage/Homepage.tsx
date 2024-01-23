@@ -43,6 +43,7 @@ import {
   selectProfilePictureUrl,
   selectValidityDate,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
+import { getImageUrlfromBinaryAPI } from "../../../utilities/commonUtilFunctions";
 
 const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
@@ -81,10 +82,14 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
     imageUrl2 = ``;
   }
   const isActive = useAppSelector(selectActive);
-  useEffect(() => {
+  console.log(profileImage);
+  const getAllBlobs = async () => {
     setProfileImageLocal({
       uri: profileImageUrl,
     });
+  };
+  useEffect(() => {
+    getAllBlobs();
   }, []);
   return (
     <>

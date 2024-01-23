@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Ionicons } from '@expo/vector-icons';
-import axios from 'axios';
 import { useIsFocused } from '@react-navigation/native';
 import {
   RememberMe,
@@ -20,8 +18,8 @@ import {
   FontBold,
   FontBoldSecond,
   LogoImageHolder,
-  ButtonDummy, ButtonShadowIOS
-} from "../../../Shared/Styles/Styles";
+  ButtonDummy,
+} from '../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../Components/Fields/InputTypeOne';
 import {
   useAppDispatch,
@@ -37,6 +35,11 @@ import InputPasswordTypeOne from '../../../Components/Fields/InputPasswordTypeOn
 import { chkPassValid } from '../../../utilities/ValidationUtils';
 import { PagesProps } from '../../../utilities/CommonTypes';
 import { styleFontSize18 } from '../../../Styles/AppWideConstants/Styles';
+import axiosInstance from '../../../utilities/axiosInstance';
+import {
+  HomePageState,
+  setState as setHomepageState,
+} from '../../../ReduxStore/Slices/HomePage/homePage';
 
 let apiHitInProgress = false;
 const LogIn: React.FC<PagesProps> = ({ navigation }) => {
@@ -51,9 +54,13 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
     useAppSelector(selectPassword)
   );
   const [passwordErr, setPasswordErr] = useState<string>('');
+  const [type, setType] = useState<string>(`email`);
   const dispatch = useAppDispatch();
   const updateLoginState = (update: LoginState) => {
     dispatch(setLoginState(update));
+  };
+  const updateType = (newType: string) => {
+    setType(newType);
   };
   const blurLoginID = () => {
     setLoginIDErr(chkLoginIDValid(loginID));
@@ -67,6 +74,11 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
   const blurPassword = () => {
     setPasswordErr(chkPassValid(password));
   };
+
+  const updateHomePageState = (update: HomePageState) => {
+    dispatch(setHomepageState(update));
+  };
+
   const chkDetails = () => {
     let result = true;
     let error = chkLoginIDValid(loginID);
@@ -85,6 +97,7 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
     updateLoginState({
       loginID: '',
       password: '',
+      type: '',
     });
     setPasswordLocal('');
     setLoginIDLocal('');
@@ -104,21 +117,57 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
       return;
     }
     apiHitInProgress = true;
-    updateLoginState({
-      loginID: loginID,
-      password: password,
-    });
+    // updateLoginState({
+    //   loginID: loginID,
+    //   password: password,
+    // });
     // navigation.navigate('');
     try {
-      const response = await axios.post('/path/to/server/endpoint', {
-        email: loginID,
-        password: password,
-      });
-
+      const response = await axiosInstance.post(
+        `/patient/authentication/login.ns`,
+        {
+          username: loginID.toLowerCase(),
+          password: password,
+          type,
+        }
+      );
+      console.log(response.data);
       if (response.data.success) {
-        const auth = getAuth();
-        await signInWithEmailAndPassword(auth, loginID, password);
-        navigation.navigate('NextScreen');
+        const responseAcc = await axiosInstance.get(
+          `/patient/dashboard/account-home.ns`
+        );
+        if (responseAcc.data.success) {
+          const accountData = responseAcc.data.data;
+          updateHomePageState({
+            healthCard1Url: '',
+            healthCard2Url: '',
+            insuranceUrl:
+              'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-front',
+            isActive: true,
+            licenseUrl:
+              'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=govID-front',
+            profilePictureUrl:
+              'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=user-photo',
+            validityDate: '',
+            email: accountData.email,
+            phoneNumber: accountData.phoneNumber,
+            dateOfBirth: accountData.dob,
+            firstName: accountData.firstName,
+            lastName: accountData.lastName,
+            address: {
+              state: accountData.state,
+              postal_code: accountData.zipcode,
+              street_address: accountData.address,
+              locality: accountData.city,
+              country: `US`,
+            },
+            insuranceID: accountData.insuranceID,
+            insuranceName: accountData.insuranceName,
+          });
+          navigation.navigate('Homepage');
+        } else {
+          console.log('Authentication failed on the server.');
+        }
       } else {
         console.log('Authentication failed on the server.');
       }
