@@ -10,6 +10,10 @@ import {
   OverlayImage1,
   FrontID,
   CameraText,
+  TopBorder,
+  BottomBorder,
+  LeftBorder,
+  RightBorder,
 } from './styles';
 import { ButtonText, LogoImageTwo } from '../../Shared/Styles/Styles';
 import { useDispatch, useSelector } from 'react-redux'; // Import the necessary functions
@@ -47,7 +51,7 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
     return <></>;
   }
 
-  if (hasCameraPermission === false) {
+  if (!hasCameraPermission) {
     return <Text>No access to camera</Text>;
   }
 
@@ -81,7 +85,7 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
       {initialCameraType === 1 && (
         <>
           <BackButton onPress={handleBack}>
-            <ButtonText>{`< Back`}</ButtonText>
+            <ButtonText>{'< Back'}</ButtonText>
           </BackButton>
           <FrontID>
             <CameraStyled
@@ -89,6 +93,11 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
               type={initialCameraType || 1}
               ratio="4:3"
             />
+            <TopBorder />
+            <BottomBorder />
+            <LeftBorder />
+            <RightBorder />
+
             <OverlayImage1 source={positioningRectangleImage} />
           </FrontID>
           <CameraText>

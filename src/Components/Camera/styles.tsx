@@ -15,17 +15,6 @@ export const CameraButton = styled(Button)`
   border: 0;
 `;
 
-export const CameraView = styled.View`
-  align-self: center;
-  margin: 30px 0 0 0;
-  width: 400px;
-  height: 720px;
-  background-color: ${styleWhiteColor};
-  border-radius: 26px;
-  border: 5px solid ${stylePrimaryColor};
-  overflow: hidden;
-`;
-
 export const CameraStyled = styled(Camera)`
   flex: 1;
 `;
@@ -92,3 +81,58 @@ const BackButtonNormal = styled.TouchableOpacity`
 `;
 
 export const BackButton = withBoxShadow(BackButtonNormal);
+
+export const CameraView = styled.View`
+  align-self: center;
+  margin: 30px 0 0 0;
+  width: 400px;
+  height: 720px;
+  background-color: ${styleWhiteColor};
+  border-radius: 26px;
+  border: 5px solid ${stylePrimaryColor};
+  overflow: hidden;
+`;
+
+export const ViewfinderOverlay = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-color: rgba(0, 0, 0, 0.7);
+  border-width: 45px 20px 30px 20px;
+  border-style: solid;
+`;
+
+export const BorderView = styled.View`
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.2);
+`;
+
+export const TopBorder = styled(BorderView)`
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45px;
+`;
+
+export const BottomBorder = styled(BorderView)`
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+`;
+
+export const LeftBorder = styled(BorderView)`
+  top: 45px;
+  left: 0;
+  bottom: 32px;
+  width: 39px;
+`;
+
+export const RightBorder = styled(BorderView)`
+  top: 45px;
+  right: 0;
+  bottom: 32px;
+  width: 37px;
+`;

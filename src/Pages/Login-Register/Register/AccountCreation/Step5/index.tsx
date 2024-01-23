@@ -1,51 +1,63 @@
 import React from 'react';
-import * as FileSystem from 'expo-file-system';
 import CustomCamera from '../../../../../Components/Camera/index';
 import { Photo } from '../../../../../utilities/CommonTypes';
 import { PagesProps } from '../../../../../utilities/CommonTypes';
 import { ContainerStyle } from './styles';
+import * as MediaLibrary from 'expo-media-library';
+import * as ImageManipulator from 'expo-image-manipulator';
+import axios from 'axios';
+
 const FaceVerification: React.FC<PagesProps> = ({ navigation }) => {
+  const compressImage = async (uri: string): Promise<string> => {
+    const compressedImage: ImageManipulator.ImageResult =
+      await ImageManipulator.manipulateAsync(uri, [], {
+        compress: 0.7,
+        format: ImageManipulator.SaveFormat.JPEG,
+      });
+    return compressedImage.uri;
+  };
+
   const handlePictureTaken = async (photo: Photo, imageType: string) => {
     console.log('Photo URI:', photo.uri);
 
     try {
-      const fileUri = FileSystem.documentDirectory + 'originalPhoto.jpg';
-      await FileSystem.moveAsync({
-        from: photo.uri,
-        to: fileUri,
-      });
-      console.log('Original image saved to:', fileUri);
-      await uploadImage(fileUri, imageType);
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status !== 'granted') {
+        console.error('Permissions to access media library were denied');
+        return;
+      }
+
+      const compressedUri = await compressImage(photo.uri);
+      console.log('Compressed Image URI:', compressedUri);
+      const asset = await MediaLibrary.createAssetAsync(compressedUri);
+      console.log('Photo saved to gallery:', asset);
+      await uploadImage(compressedUri, imageType);
     } catch (error) {
-      console.error('Error processing the image file:', error);
+      console.error('Error processing the image:', error);
     }
   };
 
   const uploadImage = async (fileUri: string, imageType: string) => {
-    // const apiUrl = `https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/resource-patient/upload/image.ns?type=${imageType}`;
-    // const formData = new FormData();
-    // formData.append('file-carewallet', {
-    //   uri: fileUri,
-    //   name: 'originalPhoto.jpg',
-    //   type: 'image/jpeg',
-    // });
+    const formData = new FormData();
+    formData.append('file-carewallet', {
+      uri: fileUri,
+      name: 'image.jpg',
+      type: 'image/jpeg',
+    });
 
     try {
-      // const response = await fetch(apiUrl, {
-      //   method: 'POST',
-      //   body: formData,
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
+      const response = await axios.post(
+        `https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/resource-patient/upload/image.ns?type=${imageType}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      console.log('Image uploaded:', response.data);
 
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! status: ${response.status}`);
-      // }
-
-      // const result = await response.json();
-      // console.log('Upload result:', result);
-      navigation.navigate('IDVerification');
+      navigation.navigate('IDFront');
     } catch (error) {
       console.error('Error uploading image:', error);
     }
