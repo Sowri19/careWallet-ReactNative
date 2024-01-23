@@ -37,6 +37,7 @@ import {
   selectPhoneNumber,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
 import { formatPhoneNumberString } from '../../../utilities/FormatUtils';
+import axiosInstance from '../../../utilities/axiosInstance';
 
 const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
   const [activeDate, setActiveDateLocal] = useState<string>(
@@ -74,6 +75,12 @@ const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
       uri: profileImageUrl,
     });
   }, []);
+  const logout = async () => {
+    const response = await axiosInstance.get(
+      `https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/authentication/logout.ns`
+    );
+    navigation.navigate(`Log in`);
+  };
   return (
     <Container>
       <FormContainerStyleTwo>
@@ -118,6 +125,13 @@ const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
           }}
         >
           <ButtonText>{`< Back`}</ButtonText>
+        </Button>
+        <Button
+          onPress={() => {
+            logout();
+          }}
+        >
+          <ButtonText>{`Logout`}</ButtonText>
         </Button>
       </FormContainerStyleTwo>
     </Container>
