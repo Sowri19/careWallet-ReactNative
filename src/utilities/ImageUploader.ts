@@ -17,7 +17,7 @@ const compressorUploader = async (
   const compressImage = async (uri: string): Promise<string> => {
     const compressedImage: ImageManipulator.ImageResult =
       await ImageManipulator.manipulateAsync(uri, [], {
-        compress: 0.1,
+        compress: 0.7,
         format: ImageManipulator.SaveFormat.JPEG,
       });
     return compressedImage.uri;
