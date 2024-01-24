@@ -15,7 +15,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ForgotNewPassword from './src/Pages/Login-Register/ForgotPassword/Step3/NewPassword';
 import ForgotOTP from './src/Pages/Login-Register/ForgotPassword/Step2/Step2';
 import FaceVerification from './src/Pages/Login-Register/Register/AccountCreation/Step5/index';
-import IDVerification from './src/Pages/Login-Register/Register/AccountCreation/Step6/index';
+import IDFront from './src/Pages/Login-Register/Register/AccountCreation/Step6/index';
+import IDBack from './src/Pages/Login-Register/Register/AccountCreation/Step7/index';
+import InsuranceFront from './src/Pages/Login-Register/Register/AccountCreation/Step8/index';
+import InsuranceBack from './src/Pages/Login-Register/Register/AccountCreation/Step9/index';
 import PasswordUpdated from './src/Pages/Login-Register/ForgotPassword/Step4/PasswordUpdated';
 import Homepage from './src/Pages/LoggedInPages/Homepage/Homepage';
 import SettingsPage from './src/Pages/LoggedInPages/Settings/Settings';
@@ -37,7 +40,11 @@ export default function App() {
           <Stack.Screen name="Register" component={RegisterPageOne} />
           <Stack.Screen name="RegisterPageTwo" component={RegisterPageTwo} />
           <Stack.Screen name="FaceVerification" component={FaceVerification} />
-          <Stack.Screen name="IDVerification" component={IDVerification} />
+          <Stack.Screen name="IDFront" component={IDFront} />
+          <Stack.Screen name="IDBack" component={IDBack} />
+          <Stack.Screen name="InsuranceFront" component={InsuranceFront} />
+          <Stack.Screen name="InsuranceBack" component={InsuranceBack} />
+          <Stack.Screen name="Verification" component={Verification} />
           <Stack.Screen
             name="InsuranceSignUpOne"
             component={InsuranceSignUpOne}
@@ -46,7 +53,6 @@ export default function App() {
             name="InsuranceSignUpTwo"
             component={InsuranceSignUpTwo}
           />
-          <Stack.Screen name="Verification" component={Verification} />
           <Stack.Screen name="Homepage" component={Homepage} />
           <Stack.Screen name="settings" component={SettingsPage} />
         </Stack.Navigator>

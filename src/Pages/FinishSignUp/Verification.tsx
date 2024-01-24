@@ -33,29 +33,6 @@ import { selectInsStepTwoData } from '../../ReduxStore/Slices/InsuranceCheck/ste
 import { selectSignUpStepTwoData } from '../../ReduxStore/Slices/Register/stepTwo';
 import { PagesProps } from '../../utilities/CommonTypes';
 
-let apiHitInProgress = false;
-const accountCreationApi = async (request: ApiObject<AccountCreationData>) => {
-  if (apiHitInProgress) {
-    return;
-  }
-  try {
-    const response = await axios.post(
-      '/path/to/server/endpoint',
-      request.requestData
-    );
-
-    if (response.data.success) {
-      request.successCB(response.data);
-    } else {
-      request.errorCB(response.data);
-    }
-    apiHitInProgress = false;
-  } catch (error) {
-    apiHitInProgress = false;
-    request.exceptionCB(error);
-  }
-};
-
 const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepOneStore = useAppSelector(selectSignUpStepOneData);
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
@@ -67,6 +44,8 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const durationOfLoader = 5;
   const isVerified = progress >= 100;
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
   useEffect(() => {
     setTimeout(() => {
       startLoader();
@@ -83,6 +62,37 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const handleBack = () => {
     navigation.navigate('InsuranceSignUpTwo');
   };
+
+  let intervalId: string | number | NodeJS.Timeout | undefined;
+
+  const pollApi = async () => {
+    try {
+      const response = await axios.get(
+        'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/onboarding/get-verification-status.ns'
+      );
+
+      console.log('Response from API:', response.data); // Log the response data
+
+      if (response.data) {
+        setIsSuccess(true);
+        setProgress(100);
+        clearInterval(intervalId);
+      } else {
+        intervalId = setInterval(pollApi, 10000);
+      }
+    } catch (error) {
+      console.log('Error occurred during polling: ', error);
+    }
+  };
+
+  useEffect(() => {
+    intervalId = setInterval(pollApi, 10000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   const handleNext = () => {
     accountCreationApi({
       requestData: {
@@ -118,17 +128,19 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   };
 
   const startLoader = () => {
-    animatedValue.setValue(0); // Reset the animated value to 0
-    animateProgress(); // Trigger the animation again
+    animatedValue.setValue(0);
+    animateProgress();
   };
   const animateProgress = () => {
     Animated.timing(animatedValue, {
-      toValue: 100,
-      duration: durationOfLoader * 1000, // Set the duration for the loader to complete
-      easing: Easing.linear, // Use linear easing for a smooth increment
+      toValue: isSuccess ? 100 : 100,
+      duration: durationOfLoader * 1000,
+      easing: Easing.linear,
       useNativeDriver: false,
     }).start(() => {
-      setProgress(100);
+      if (!isSuccess) {
+        setProgress(100);
+      }
     });
   };
 
