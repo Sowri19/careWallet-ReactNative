@@ -1,12 +1,17 @@
-// CustomCamera.tsx
-import React, { useEffect, useRef } from 'react';
+// IDScanner.js
+import React, { useRef, useEffect } from 'react';
 import { Camera } from 'expo-camera';
-import { Text } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  CameraView,
-  CameraStyled,
+  setPictureImageUri,
+  setIsUploading,
+  setCameraPermission,
+} from '../../ReduxStore/Slices/CameraSlice/CameraSlice';
+import {
+  ContainerStyle,
+  Logo,
   CameraButton,
-  OverlayImage,
+  CameraStyled,
   OverlayImage1,
   FrontID,
   CameraText,
@@ -14,30 +19,30 @@ import {
   BottomBorder,
   LeftBorder,
   RightBorder,
+  BackButton,
+  ButtonText,
 } from './styles';
-import { ButtonText, LogoImageTwo } from '../../Shared/Styles/Styles';
-import { useDispatch, useSelector } from 'react-redux'; // Import the necessary functions
-import {
-  setCameraPermission,
-  setPictureImageUri,
-} from '../../ReduxStore/Slices/CameraSlice/CameraSlice';
-import { BackButton } from './styles';
-import { RootState } from '../../ReduxStore/Setup/store';
-import { CustomCameraProps } from '../../Shared/Interfaces/Camera';
-import facialRekogImage from '../../Shared/Media/Images/FacialRekog.png';
+import Loader from '../../Components/Loader/index';
 import positioningRectangleImage from '../../Shared/Media/Images/Scan-positioning-rectangle.png';
-import careWalletLogoImage from '../../Shared/Media/Images/CareWalletTextandLogo.png';
-
-const CustomCamera: React.FC<CustomCameraProps> = ({
-  onPictureTaken,
-  initialCameraType,
-  position,
+import { RootState } from '../../ReduxStore/Setup/store';
+import compressorUploader from '../../utilities/ImageUploader';
+import CareWalletTextandLogo from '../../Shared/Media/Images/CareWalletTextandLogo.png';
+import { CustomCameraProps, PagesProps } from '../../utilities/CommonTypes';
+import { Photo } from '../../utilities/CommonTypes';
+const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
+  navigation,
+  scanText,
+  backTo,
+  fileName,
+  imageType,
+  type,
+  navigateTo,
 }) => {
   const dispatch = useDispatch();
-  const hasCameraPermission = useSelector(
-    (state: RootState) => state.camera.hasCameraPermission
-  );
 
+  const isUploading = useSelector(
+    (state: RootState) => state.camera.isUploading
+  );
   const cameraRef = useRef<Camera | null>(null);
 
   useEffect(() => {
@@ -47,71 +52,63 @@ const CustomCamera: React.FC<CustomCameraProps> = ({
     })();
   }, [dispatch]);
 
-  if (hasCameraPermission === null) {
-    return <></>;
-  }
-
-  if (!hasCameraPermission) {
-    return <Text>No access to camera</Text>;
-  }
+  const handlePictureTaken = async (
+    photo: Photo,
+    fileName: string,
+    type: string,
+    imageType: string,
+    navigateTo: string
+  ) => {
+    compressorUploader(
+      photo,
+      fileName,
+      type,
+      imageType,
+      navigation,
+      navigateTo,
+      () => dispatch(setIsUploading(false))
+    );
+  };
 
   const takePicture = async () => {
     if (cameraRef.current) {
+      dispatch(setIsUploading(true));
       const photo = await cameraRef.current.takePictureAsync();
       dispatch(setPictureImageUri(photo.uri));
-      onPictureTaken(photo);
+      handlePictureTaken(photo, fileName, type, imageType, navigateTo);
     }
   };
-  const handleBack = () => {};
+  const handleBack = () => {
+    if (backTo) {
+      navigation.navigate(backTo);
+    }
+  };
 
   return (
-    <>
-      {initialCameraType === 2 && (
-        <>
-          <LogoImageTwo source={careWalletLogoImage} />
-          <CameraView>
-            <CameraStyled
-              ref={cameraRef}
-              type={initialCameraType || 1}
-              ratio="4:3"
-            />
-          </CameraView>
-          <CameraButton onPress={takePicture}>
-            <ButtonText>Next</ButtonText>
-          </CameraButton>
-          <OverlayImage source={facialRekogImage} />
-        </>
-      )}
-      {initialCameraType === 1 && (
-        <>
-          <BackButton onPress={handleBack}>
-            <ButtonText>{'< Back'}</ButtonText>
-          </BackButton>
-          <FrontID>
-            <CameraStyled
-              ref={cameraRef}
-              type={initialCameraType || 1}
-              ratio="4:3"
-            />
-            <TopBorder />
-            <BottomBorder />
-            <LeftBorder />
-            <RightBorder />
+    <ContainerStyle>
+      <BackButton onPress={handleBack}>
+        <ButtonText>{'< Back'}</ButtonText>
+      </BackButton>
+      <FrontID>
+        <CameraStyled ref={cameraRef} type={1} ratio="4:3" />
+        <TopBorder />
+        <BottomBorder />
+        <LeftBorder />
+        <RightBorder />
 
-            <OverlayImage1 source={positioningRectangleImage} />
-          </FrontID>
-          <CameraText>
-            {position === 'front'
-              ? 'Position the FRONT of your Government Identification card in the frame to scan it.'
-              : 'Position the BACK of your Government Identification card in the frame to scan it.'}
-          </CameraText>
-          <CameraButton onPress={takePicture}>
-            <ButtonText>Next</ButtonText>
-          </CameraButton>
-        </>
+        <OverlayImage1 source={positioningRectangleImage} />
+      </FrontID>
+      <CameraText>{scanText}</CameraText>
+      {isUploading ? (
+        <Loader />
+      ) : (
+        <CameraButton onPress={takePicture}>
+          <ButtonText>Next</ButtonText>
+        </CameraButton>
       )}
-    </>
+      <Logo source={CareWalletTextandLogo} alt="CareWalletTextandLogo" />
+    </ContainerStyle>
   );
 };
 
-export default CustomCamera;
+export default IDScanner;

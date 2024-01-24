@@ -15,7 +15,6 @@ export const styleFontSize14 = 14;
 export const styleFontSize16 = 16;
 export const styleFontSize18 = 18;
 export const styleFontSize25 = 25;
-
 export const styleFontSize35 = 35;
 
 export const styleStandardButtonHeight = 60;

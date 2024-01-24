@@ -12,8 +12,12 @@ export interface Photo {
 }
 
 export interface CustomCameraProps {
-  onPictureTaken: (photo: Photo) => void;
-  initialCameraType: number;
+  scanText?: string;
+  backTo: string;
+  fileName: string;
+  imageType: string;
+  type: string;
+  navigateTo: string;
 }
 
 export interface Address {

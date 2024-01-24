@@ -1,74 +1,93 @@
-import React from 'react';
-import CustomCamera from '../../../../../Components/Camera/index';
-import { Photo } from '../../../../../utilities/CommonTypes';
-import { PagesProps } from '../../../../../utilities/CommonTypes';
-import { ContainerStyle } from './styles';
-import * as MediaLibrary from 'expo-media-library';
-import * as ImageManipulator from 'expo-image-manipulator';
-import axios from 'axios';
+import React, { useRef } from 'react';
+import { Photo, PagesProps } from '../../../../../utilities/CommonTypes';
+import {
+  ContainerStyle,
+  LoadingContainer,
+  SubHeaderBoldLoading,
+  ActivityIndicatorStyle,
+  CameraButton,
+  CameraView,
+  CameraStyled,
+  OverlayImage,
+  Indicator,
+} from './styles';
+import { ButtonText, LogoImageTwo } from '../../../../../Shared/Styles/Styles';
+import { View, ActivityIndicator } from 'react-native';
+import compressorUploader from '../../../../../utilities/ImageUploader';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../../../ReduxStore/Setup/store';
+import { Camera } from 'expo-camera';
+import {
+  setPictureImageUri,
+  setIsUploading,
+} from '../../../../../ReduxStore/Slices/CameraSlice/CameraSlice';
+import { stylePrimaryColor } from '../../../../../Styles/AppWideConstants/Styles';
+import careWalletLogoImage from '../../../../../Shared/Media/Images/CareWalletTextandLogo.png';
+import facialRekogImage from '../../../../../Shared/Media/Images/FacialRekog.png';
 
 const FaceVerification: React.FC<PagesProps> = ({ navigation }) => {
-  const compressImage = async (uri: string): Promise<string> => {
-    const compressedImage: ImageManipulator.ImageResult =
-      await ImageManipulator.manipulateAsync(uri, [], {
-        compress: 0.7,
-        format: ImageManipulator.SaveFormat.JPEG,
-      });
-    return compressedImage.uri;
+  const dispatch = useDispatch();
+  const isUploading = useSelector(
+    (state: RootState) => state.camera.isUploading
+  );
+  const cameraRef = useRef<Camera | null>(null);
+
+  const handlePictureTaken = async (
+    photo: Photo,
+    fileName: string,
+    type: string,
+    imageType: string,
+    navigateTo: string
+  ) => {
+    compressorUploader(
+      photo,
+      fileName,
+      type,
+      imageType,
+      navigation,
+      navigateTo,
+      () => dispatch(setIsUploading(false))
+    );
   };
 
-  const handlePictureTaken = async (photo: Photo, imageType: string) => {
-    console.log('Photo URI:', photo.uri);
-
-    try {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Permissions to access media library were denied');
-        return;
-      }
-
-      const compressedUri = await compressImage(photo.uri);
-      console.log('Compressed Image URI:', compressedUri);
-      const asset = await MediaLibrary.createAssetAsync(compressedUri);
-      console.log('Photo saved to gallery:', asset);
-      await uploadImage(compressedUri, imageType);
-    } catch (error) {
-      console.error('Error processing the image:', error);
-    }
-  };
-
-  const uploadImage = async (fileUri: string, imageType: string) => {
-    const formData = new FormData();
-    formData.append('file-carewallet', {
-      uri: fileUri,
-      name: 'image.jpg',
-      type: 'image/jpeg',
-    });
-
-    try {
-      const response = await axios.post(
-        `https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/resource-patient/upload/image.ns?type=${imageType}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      dispatch(setIsUploading(true));
+      const photo = await cameraRef.current.takePictureAsync();
+      dispatch(setPictureImageUri(photo.uri));
+      handlePictureTaken(
+        photo,
+        'UserPhoto',
+        'image/jpeg',
+        'user-photo',
+        'IDFront'
       );
-      console.log('Image uploaded:', response.data);
-
-      navigation.navigate('IDFront');
-    } catch (error) {
-      console.error('Error uploading image:', error);
     }
   };
 
   return (
     <ContainerStyle>
-      <CustomCamera
-        onPictureTaken={(photo) => handlePictureTaken(photo, 'user-photo')}
-        initialCameraType={2}
-      />
+      <LogoImageTwo source={careWalletLogoImage} />
+      <CameraView>
+        <CameraStyled ref={cameraRef} type={2} ratio="4:3" />
+      </CameraView>
+      <OverlayImage source={facialRekogImage} />
+
+      {isUploading ? (
+        <Indicator>
+          <View style={LoadingContainer}>
+            <SubHeaderBoldLoading>Verifying</SubHeaderBoldLoading>
+            <ActivityIndicator
+              style={ActivityIndicatorStyle}
+              color={stylePrimaryColor}
+            />
+          </View>
+        </Indicator>
+      ) : (
+        <CameraButton onPress={takePicture}>
+          <ButtonText>Next</ButtonText>
+        </CameraButton>
+      )}
     </ContainerStyle>
   );
 };
