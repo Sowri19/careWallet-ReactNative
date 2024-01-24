@@ -17,6 +17,8 @@ import ForgotOTP from './src/Pages/Login-Register/ForgotPassword/Step2/Step2';
 import FaceVerification from './src/Pages/Login-Register/Register/AccountCreation/Step5/index';
 import IDFront from './src/Pages/Login-Register/Register/AccountCreation/Step6/index';
 import IDBack from './src/Pages/Login-Register/Register/AccountCreation/Step7/index';
+import InsuranceFront from './src/Pages/Login-Register/Register/AccountCreation/Step8/index';
+import InsuranceBack from './src/Pages/Login-Register/Register/AccountCreation/Step9/index';
 import PasswordUpdated from './src/Pages/Login-Register/ForgotPassword/Step4/PasswordUpdated';
 import Homepage from './src/Pages/LoggedInPages/Homepage/Homepage';
 import SettingsPage from './src/Pages/LoggedInPages/Settings/Settings';
@@ -40,6 +42,8 @@ export default function App() {
           <Stack.Screen name="FaceVerification" component={FaceVerification} />
           <Stack.Screen name="IDFront" component={IDFront} />
           <Stack.Screen name="IDBack" component={IDBack} />
+          <Stack.Screen name="InsuranceFront" component={InsuranceFront} />
+          <Stack.Screen name="InsuranceBack" component={InsuranceBack} />
           <Stack.Screen
             name="InsuranceSignUpOne"
             component={InsuranceSignUpOne}
