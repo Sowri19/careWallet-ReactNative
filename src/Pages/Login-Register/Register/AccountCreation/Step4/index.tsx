@@ -46,6 +46,7 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
     useAppSelector(selectAddress)
   );
   const [addressErr, setAddressErr] = useState<string>('');
+  const [streetAddress, setStreetAddressLocal] = useState<string>('');
   const [addressItem, setAddressItemLocal] = useState<SearchDropdownItem>();
   const [city, setCityLocal] = useState<string>(useAppSelector(selectCity));
   const [cityErr, setCityErr] = useState<string>('');
@@ -124,10 +125,10 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
     });
     navigation.navigate('Register');
   };
-  const searchApi = `https://2e523o8yy4.execute-api.us-east-1.amazonaws.com/dev/googleapi?search=`;
+  const searchApi = `https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/nostate/stateless/searchAddress.ns?search=`;
   const searchApiCallback = (response: any) => {
     const { data = {} } = response;
-    const { addresses = [] } = data;
+    const { addresses = [] } = data.data;
     const results: SearchDropdownItem[] = addresses.map((item: any) => {
       const { label, value, fullLabel } = formatSearchAddressToString(item);
       return {
@@ -143,6 +144,23 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
         },
       };
     });
+
+    // console.log(streetAddress);
+
+    // if (streetAddress) {
+    //   results.unshift({
+    //     label: streetAddress,
+    //     fullLabel: streetAddress,
+    //     value: streetAddress,
+    //     address: {
+    //       country: '',
+    //       locality: '',
+    //       postal_code: '',
+    //       state: '',
+    //       street_address: streetAddress,
+    //     }
+    //   });
+    // }
     return results;
   };
   return (
@@ -171,6 +189,7 @@ const RegisterPageTwo: React.FC<PagesProps> = ({ navigation }) => {
             searchApi: searchApi,
             searchApiCallback: searchApiCallback,
           }}
+          searchInputValueCB={setStreetAddressLocal}
           // renderInputSearch={renderInputSearch}
         />
         <InputTypeOne
