@@ -33,29 +33,6 @@ import { selectInsStepTwoData } from '../../ReduxStore/Slices/InsuranceCheck/ste
 import { selectSignUpStepTwoData } from '../../ReduxStore/Slices/Register/stepTwo';
 import { PagesProps } from '../../utilities/CommonTypes';
 
-let apiHitInProgress = false;
-const accountCreationApi = async (request: ApiObject<AccountCreationData>) => {
-  if (apiHitInProgress) {
-    return;
-  }
-  try {
-    const response = await axios.post(
-      '/path/to/server/endpoint',
-      request.requestData
-    );
-
-    if (response.data.success) {
-      request.successCB(response.data);
-    } else {
-      request.errorCB(response.data);
-    }
-    apiHitInProgress = false;
-  } catch (error) {
-    apiHitInProgress = false;
-    request.exceptionCB(error);
-  }
-};
-
 const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepOneStore = useAppSelector(selectSignUpStepOneData);
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
@@ -96,7 +73,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
 
       console.log('Response from API:', response.data); // Log the response data
 
-      if (response.data.success === true) {
+      if (response.data) {
         setIsSuccess(true);
         setProgress(100);
         clearInterval(intervalId);
@@ -156,13 +133,13 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   };
   const animateProgress = () => {
     Animated.timing(animatedValue, {
-      toValue: isSuccess ? 99 : 100,
+      toValue: isSuccess ? 100 : 100,
       duration: durationOfLoader * 1000,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start(() => {
       if (!isSuccess) {
-        setProgress(99);
+        setProgress(100);
       }
     });
   };
