@@ -8,8 +8,8 @@ const InsuranceFront: React.FC<PagesProps> = ({ navigation }) => {
       navigation={navigation}
       scanText="Position the FRONT of your Insurance card in the frame to scan it."
       backTo="IDBack"
-      fileName="InsuranceIDFront"
-      imageType="govID-back"
+      fileName="InsuranceIDFront.jpg"
+      imageType="insurance-front"
       type="image/jpeg"
       navigateTo="InsuranceBack"
     />

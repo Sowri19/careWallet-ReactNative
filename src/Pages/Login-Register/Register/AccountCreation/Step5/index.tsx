@@ -57,7 +57,7 @@ const FaceVerification: React.FC<PagesProps> = ({ navigation }) => {
       dispatch(setPictureImageUri(photo.uri));
       handlePictureTaken(
         photo,
-        'UserPhoto',
+        'UserPhoto.jpg',
         'image/jpeg',
         'user-photo',
         'IDFront'

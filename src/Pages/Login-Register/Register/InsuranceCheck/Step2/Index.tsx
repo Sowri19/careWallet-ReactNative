@@ -5,8 +5,9 @@ import {
   FormContainerStyleOne,
   LogoImageTwo,
   ButtonText,
-  Container, LogoImageHolderBottomOne
-} from "../../../../../Shared/Styles/Styles";
+  Container,
+  LogoImageHolderBottomOne,
+} from '../../../../../Shared/Styles/Styles';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
@@ -14,15 +15,20 @@ import {
   setState as setStateAction,
 } from '../../../../../ReduxStore/Slices/InsuranceCheck/stepTwo';
 import {
-  chkEffDateValid,
-  chkGroupValid,
   chkInsTypeValid,
-  chkRelPolicyValid,
+  chkGroupValid,
+  // Commented out effective date validation
+  // chkEffDateValid,
+  // Commented out Relationship to PolicyHolder validation
+  // chkRelPolicyValid,
 } from '../../../../../utilities/ValidationUtils';
-import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
+// Commented out DatePickerTypeOne import
+// import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
 import { formatDate } from '../../../../../utilities/FormatUtils';
-import DropdownTypeOne from '../../../../../Components/Fields/DropdownTypeOne';
-import RelItems from '../../../../../utilities/RelToPolicyValues';
+// Commented out DropdownTypeOne import
+// import DropdownTypeOne from '../../../../../Components/Fields/DropdownTypeOne';
+// Commented out Relationship to PolicyHolder values import
+// import RelItems from '../../../../../utilities/RelToPolicyValues';
 import { PagesProps } from '../../../../../utilities/CommonTypes';
 
 const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
@@ -30,11 +36,13 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
   const [insuranceTypeErr, setInsuranceTypeErr] = useState<string>('');
   const [groupNumber, setGroupNumberLocal] = useState<string>('');
   const [groupNumberErr, setGroupNumberErr] = useState<string>('');
-  const [effectiveDate, setEffectiveDateLocal] = useState<string>('');
-  const [effectiveDateObj, setEffectiveDateObj] = useState<Date>();
-  const [effectiveDateErr, setEffectiveDateErr] = useState<string>('');
-  const [relToPolicyHolder, setRelToPolicyHolderLocal] = useState<string>('');
-  const [relToPolicyHolderErr, setRelToPolicyHolderErr] = useState<string>('');
+  // Commented out effective date related states
+  // const [effectiveDate, setEffectiveDateLocal] = useState<string>('');
+  // const [effectiveDateObj, setEffectiveDateObj] = useState<Date>();
+  // const [effectiveDateErr, setEffectiveDateErr] = useState<string>('');
+  // Commented out Relationship to PolicyHolder related states
+  // const [relToPolicyHolder, setRelToPolicyHolderLocal] = useState<string>('');
+  // const [relToPolicyHolderErr, setRelToPolicyHolderErr] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const updateState = (update: InsStepTwoState) => {
@@ -53,12 +61,6 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
   const blurGroupNumber = () => {
     setGroupNumberErr(chkGroupValid(groupNumber));
   };
-  const setEffectiveDate = (text: string) => {
-    setEffectiveDateLocal(text);
-  };
-  const setRelToPolicyHolder = (text: string) => {
-    setRelToPolicyHolderLocal(text);
-  };
 
   const chkDetails = () => {
     let result = true;
@@ -72,16 +74,18 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
     if (error !== '') {
       result = false;
     }
-    error = chkEffDateValid(effectiveDate);
-    setEffectiveDateErr(error);
-    if (error !== '') {
-      result = false;
-    }
-    error = chkRelPolicyValid(relToPolicyHolder);
-    setRelToPolicyHolderErr(error);
-    if (error !== '') {
-      result = false;
-    }
+    // Commented out effective date validation
+    // error = chkEffDateValid(effectiveDate);
+    // setEffectiveDateErr(error);
+    // if (error !== '') {
+    //   result = false;
+    // }
+    // Commented out Relationship to PolicyHolder validation
+    // error = chkRelPolicyValid(relToPolicyHolder);
+    // setRelToPolicyHolderErr(error);
+    // if (error !== '') {
+    //   result = false;
+    // }
     return result;
   };
 
@@ -92,8 +96,10 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
     updateState({
       insuranceType: insuranceType,
       groupNumber: groupNumber,
-      effectiveDate: effectiveDate,
-      relToPolicyHolder: relToPolicyHolder,
+      // Commented out effective date assignment
+      // effectiveDate: effectiveDate,
+      // Commented out Relationship to PolicyHolder assignment
+      // relToPolicyHolder: relToPolicyHolder,
     });
     navigation.navigate('Verification');
   };
@@ -102,15 +108,12 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
     updateState({
       insuranceType: '',
       groupNumber: '',
-      effectiveDate: '',
-      relToPolicyHolder: '',
+      // Commented out effective date assignment
+      // effectiveDate: '',
+      // Commented out Relationship to PolicyHolder assignment
+      // relToPolicyHolder: '',
     });
     navigation.navigate('InsuranceSignUpOne');
-  };
-
-  const onDropdownValueChange = (value: string, index: number) => {
-    setRelToPolicyHolder(value);
-    setRelToPolicyHolderErr(chkRelPolicyValid(value));
   };
 
   return (
@@ -139,8 +142,8 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
           errorString={groupNumberErr}
           onFocus={() => setGroupNumberErr('')}
         />
-
-        <DatePickerTypeOne
+        {/* Commented out Effective Date field */}
+        {/* <DatePickerTypeOne
           inputName={'Effective Date'}
           inputValue={effectiveDateObj}
           placeHolderValue={`Optional`}
@@ -154,16 +157,15 @@ const InsuranceSignUpTwo: React.FC<PagesProps> = ({ navigation }) => {
             setEffectiveDateObj(date);
           }}
           onCancel={() => {}}
-        />
-
-        <DropdownTypeOne
+        /> */}
+        {/* Commented out Relationship to PolicyHolder field */}
+        {/* <DropdownTypeOne
           onValueChange={onDropdownValueChange}
           items={RelItems}
           placeholder={'Optional'}
           inputName={'Relationship to PolicyHolder'}
           errorString={relToPolicyHolderErr}
-        />
-
+        /> */}
         <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
         </Button>

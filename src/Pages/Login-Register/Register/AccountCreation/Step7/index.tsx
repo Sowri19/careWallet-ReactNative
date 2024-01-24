@@ -8,7 +8,7 @@ const IDBack: React.FC<PagesProps> = ({ navigation }) => {
       navigation={navigation}
       scanText="Position the BACK of your Government Identification card in the frame to scan it."
       backTo="IDFront"
-      fileName="GovernmentIDBack"
+      fileName="GovernmentIDBack.jpg"
       imageType="govID-back"
       type="image/jpeg"
       navigateTo="InsuranceFront"

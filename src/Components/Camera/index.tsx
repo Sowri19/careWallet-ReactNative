@@ -52,6 +52,18 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
     })();
   }, [dispatch]);
 
+  const triggerVerificationApi = async () => {
+    try {
+      const url =
+        'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/onboarding/triggerVerification.ns';
+      const response = await fetch(url);
+      const data = await response.json();
+      console.log('Verification triggered:', data);
+    } catch (error) {
+      console.error('Error triggering verification:', error);
+    }
+  };
+
   const handlePictureTaken = async (
     photo: Photo,
     fileName: string,
@@ -59,14 +71,33 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
     imageType: string,
     navigateTo: string
   ) => {
-    compressorUploader(
+    await compressorUploader(
       photo,
       fileName,
       type,
       imageType,
       navigation,
       navigateTo,
-      () => dispatch(setIsUploading(false))
+      async () => {
+        if (
+          [
+            'insurance-front',
+            'user-photo',
+            'govID-front',
+            'govID-back',
+          ].includes(imageType)
+        ) {
+          dispatch(setIsUploading(false));
+          navigation.navigate(navigateTo);
+        } else if (imageType === 'insurance-back') {
+          await triggerVerificationApi();
+          dispatch(setIsUploading(false));
+          navigation.navigate(navigateTo);
+        } else {
+          dispatch(setIsUploading(false));
+          navigation.navigate(navigateTo);
+        }
+      }
     );
   };
 
