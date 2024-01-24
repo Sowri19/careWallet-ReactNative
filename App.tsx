@@ -44,6 +44,7 @@ export default function App() {
           <Stack.Screen name="IDBack" component={IDBack} />
           <Stack.Screen name="InsuranceFront" component={InsuranceFront} />
           <Stack.Screen name="InsuranceBack" component={InsuranceBack} />
+          <Stack.Screen name="Verification" component={Verification} />
           <Stack.Screen
             name="InsuranceSignUpOne"
             component={InsuranceSignUpOne}
@@ -52,7 +53,6 @@ export default function App() {
             name="InsuranceSignUpTwo"
             component={InsuranceSignUpTwo}
           />
-          <Stack.Screen name="Verification" component={Verification} />
           <Stack.Screen name="Homepage" component={Homepage} />
           <Stack.Screen name="settings" component={SettingsPage} />
         </Stack.Navigator>

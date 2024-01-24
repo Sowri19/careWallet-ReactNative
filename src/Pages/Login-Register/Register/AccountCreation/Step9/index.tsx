@@ -11,7 +11,7 @@ const InsuranceBack: React.FC<PagesProps> = ({ navigation }) => {
       fileName="InsuranceIDBack.jpg"
       imageType="insurance-back"
       type="image/jpeg"
-      navigateTo="InsuranceSignUpOne"
+      navigateTo="Verification"
     />
   );
 };
