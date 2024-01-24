@@ -22,6 +22,7 @@ import { SearchDropdownItem } from '../../utilities/CommonTypes';
 import withBoxShadow from "../HOCs/shadowTypeOne";
 
 type SearchDropdownProps = {
+  searchInputValueCB: (text: string) => void;
   inputValue: SearchDropdownItem | undefined;
   inputErr: string;
   setInputValue: (item: SearchDropdownItem) => void;
@@ -74,6 +75,7 @@ const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
   searchApiProps,
   debounceTime,
   renderInputSearch,
+  searchInputValueCB,
 }) => {
   const [searchList, setSearchlist] = useState<SearchDropdownItem[]>(
     initialList || []
@@ -93,6 +95,7 @@ const SearchDropdownTypeOne: React.FC<SearchDropdownProps> = ({
         debounceTimeLocal
       );
     }
+    searchInputValueCB && searchInputValueCB(text);
   };
   return (
     <>
