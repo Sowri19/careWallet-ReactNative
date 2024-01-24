@@ -2,18 +2,18 @@ import React from 'react';
 import IDScanner from '../../../../../Components/Camera/index';
 import { PagesProps } from '../../../../../utilities/CommonTypes';
 
-const IDBack: React.FC<PagesProps> = ({ navigation }) => {
+const InsuranceBack: React.FC<PagesProps> = ({ navigation }) => {
   return (
     <IDScanner
       navigation={navigation}
-      scanText="Position the BACK of your Government Identification card in the frame to scan it."
-      backTo="IDFront"
-      fileName="GovernmentIDBack"
-      imageType="insurance-front"
+      scanText="Position the BACK of your Insurance card in the frame to scan it."
+      backTo="InsuranceFront"
+      fileName="InsuranceIDBack"
+      imageType="insurance-back"
       type="image/jpeg"
       navigateTo="InsuranceSignUpOne"
     />
   );
 };
 
-export default IDBack;
+export default InsuranceBack;
