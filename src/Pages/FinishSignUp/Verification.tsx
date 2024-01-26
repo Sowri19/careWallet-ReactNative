@@ -21,7 +21,6 @@ import {
 } from '../../Shared/Styles/Styles';
 import { AccountCreationData } from '../../Shared/Interfaces/AccountCreationData';
 import { ApiObject } from '../../Shared/Interfaces/ApiObject';
-import axios from 'axios';
 import axiosInstance from '../../utilities/axiosInstance';
 import { useAppSelector } from '../../ReduxStore/Setup/hooks';
 import { Animated, Easing, View } from 'react-native';
@@ -71,18 +70,16 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       const response = await axiosInstance.get(
         '/patient/onboarding/get-verification-status.ns'
       );
-
-      console.log('Response from API:', response.data); // Log the response data
+      console.log('Response from API:', response.data);
 
       if (response.data.success === true) {
         setIsSuccess(true);
         setProgress(100);
         clearInterval(intervalId);
-      } else {
-        intervalId = setInterval(pollApi, 10000);
       }
     } catch (error) {
       console.log('Error occurred during polling: ', error);
+      clearInterval(intervalId);
     }
   };
 

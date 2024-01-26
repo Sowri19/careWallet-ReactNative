@@ -2,6 +2,7 @@ import { Photo } from '../utilities/CommonTypes';
 import * as ImageManipulator from 'expo-image-manipulator';
 import axios from 'axios';
 import { PagesProps } from '../utilities/CommonTypes';
+import axiosInstance from '../utilities/axiosInstance';
 
 const compressorUploader = async (
   photo: Photo,
@@ -23,6 +24,16 @@ const compressorUploader = async (
     return compressedImage.uri;
   };
 
+  const triggerVerificationApi = async () => {
+    try {
+      const url = '/patient/onboarding/triggerVerification.ns';
+      const response = await axiosInstance.get(url);
+      const data = response.data;
+      console.log('Verification triggered:', data);
+    } catch (error) {
+      console.error('Error triggering verification:', error);
+    }
+  };
   const uploadImage = async (compressedUri: string) => {
     const formData = new FormData();
     formData.append('file-carewallet', {
@@ -41,11 +52,21 @@ const compressorUploader = async (
         }
       );
       console.log('Image uploaded:', response.data);
-      navigation.navigate(navigateTo);
     } catch (error) {
       console.error('Error uploading image:', error);
     } finally {
-      onUploadComplete();
+      if (
+        ['insurance-front', 'user-photo', 'govID-front', 'govID-back'].includes(
+          imageType
+        )
+      ) {
+        onUploadComplete();
+        navigation.navigate(navigateTo);
+      } else if (imageType === 'insurance-back') {
+        triggerVerificationApi();
+        onUploadComplete();
+        navigation.navigate(navigateTo);
+      }
     }
   };
 
