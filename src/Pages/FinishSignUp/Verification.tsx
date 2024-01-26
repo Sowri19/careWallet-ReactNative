@@ -22,6 +22,7 @@ import {
 import { AccountCreationData } from '../../Shared/Interfaces/AccountCreationData';
 import { ApiObject } from '../../Shared/Interfaces/ApiObject';
 import axios from 'axios';
+import axiosInstance from '../../utilities/axiosInstance';
 import { useAppSelector } from '../../ReduxStore/Setup/hooks';
 import { Animated, Easing, View } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -67,13 +68,13 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
 
   const pollApi = async () => {
     try {
-      const response = await axios.get(
-        'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/onboarding/get-verification-status.ns'
+      const response = await axiosInstance.get(
+        '/patient/onboarding/get-verification-status.ns'
       );
 
       console.log('Response from API:', response.data); // Log the response data
 
-      if (response.data) {
+      if (response.data.success === true) {
         setIsSuccess(true);
         setProgress(100);
         clearInterval(intervalId);
@@ -139,7 +140,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       useNativeDriver: false,
     }).start(() => {
       if (!isSuccess) {
-        setProgress(100);
+        setProgress(99);
       }
     });
   };

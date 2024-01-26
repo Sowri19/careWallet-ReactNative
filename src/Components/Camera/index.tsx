@@ -23,6 +23,7 @@ import {
   ButtonText,
 } from './styles';
 import Loader from '../../Components/Loader/index';
+import axiosInstance from '../../utilities/axiosInstance';
 import positioningRectangleImage from '../../Shared/Media/Images/Scan-positioning-rectangle.png';
 import { RootState } from '../../ReduxStore/Setup/store';
 import compressorUploader from '../../utilities/ImageUploader';
@@ -55,9 +56,9 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
   const triggerVerificationApi = async () => {
     try {
       const url =
-        'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/onboarding/triggerVerification.ns';
-      const response = await fetch(url);
-      const data = await response.json();
+        '/patient/onboarding/triggerVerification.ns';
+      const response = await axiosInstance.get(url);
+      const data = response.data;
       console.log('Verification triggered:', data);
     } catch (error) {
       console.error('Error triggering verification:', error);
