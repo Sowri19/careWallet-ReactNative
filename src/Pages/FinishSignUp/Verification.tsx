@@ -47,6 +47,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const isVerified = progress >= 100;
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [timeoutReached, setTimeoutReached] = useState<boolean>(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -65,7 +66,20 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
     navigation.navigate('InsuranceSignUpTwo');
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setTimeoutReached(true);
+    }, 120000);
+    return () => clearTimeout(timeout);
+  }, []);
+
   const pollApi = async () => {
+    if (timeoutReached) {
+      console.error('Verification timeout reached');
+      clearInterval(intervalId);
+      return;
+    }
+
     try {
       const response = await axiosInstance.get(
         '/patient/onboarding/get-verification-status.ns'
