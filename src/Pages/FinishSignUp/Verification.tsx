@@ -33,6 +33,8 @@ import { selectInsStepTwoData } from '../../ReduxStore/Slices/InsuranceCheck/ste
 import { selectSignUpStepTwoData } from '../../ReduxStore/Slices/Register/stepTwo';
 import { PagesProps } from '../../utilities/CommonTypes';
 
+let intervalId: string | number | NodeJS.Timeout | undefined;
+
 const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepOneStore = useAppSelector(selectSignUpStepOneData);
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
@@ -62,8 +64,6 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const handleBack = () => {
     navigation.navigate('InsuranceSignUpTwo');
   };
-
-  let intervalId: string | number | NodeJS.Timeout | undefined;
 
   const pollApi = async () => {
     try {
