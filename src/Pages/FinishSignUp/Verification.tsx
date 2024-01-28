@@ -33,8 +33,6 @@ import { performLogin } from '../../utilities/loginService';
 import { PagesProps } from '../../utilities/CommonTypes';
 import { useAppDispatch } from '../../ReduxStore/Setup/hooks';
 
-let intervalId: string | number | NodeJS.Timeout | undefined;
-
 const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepOneStore = useAppSelector(selectSignUpStepOneData);
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
@@ -47,8 +45,8 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const isVerified = progress >= 100;
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const [timeoutReached, setTimeoutReached] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const intervalIdRef = useRef<NodeJS.Timeout | number | null>(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -68,51 +66,48 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setTimeoutReached(true);
-    }, 120000);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  const pollApi = async () => {
-    if (timeoutReached) {
-      console.error('Verification timeout reached');
-      clearInterval(intervalId);
-      return;
-    }
-
-    try {
-      const response = await axiosInstance.get(
-        '/patient/onboarding/get-verification-status.ns'
-      );
-      console.log('Response from API:', response.data);
-
-      if (response.data.success) {
-        if (response.data.status === 'VERIFICATION_SUCCESS') {
-          const verificationData = { ...response.data.data };
-          dispatch(setAccountCreationData(verificationData));
-          setIsSuccess(true);
-          setProgress(100);
-          clearInterval(intervalId);
-          handleNext();
-        } else if (response.data.status === 'VERIFICATION_FAILED') {
-          console.log('Verification not successful, please re-upload photos.');
-          clearInterval(intervalId);
-        }
+    const pollApi = async () => {
+      if (intervalIdRef.current === null) {
+        console.error('Verification timeout reached');
+        return;
       }
-    } catch (error) {
-      console.log('Error occurred during polling: ', error);
-      clearInterval(intervalId);
-    }
-  };
 
-  useEffect(() => {
-    intervalId = setInterval(pollApi, 10000);
+      try {
+        const response = await axiosInstance.get(
+          '/patient/onboarding/get-verification-status.ns'
+        );
+        console.log('Response from API:', response.data);
+
+        if (response.data.success) {
+          if (response.data.data.status === 'VERIFICATION_SUCCESS') {
+            const verificationData = { ...response.data.data };
+            clearInterval(intervalIdRef.current as number);
+            setIsSuccess(true);
+            setProgress(100);
+            dispatch(setAccountCreationData(verificationData));
+            intervalIdRef.current = null;
+          } else if (response.data.data.status === 'VERIFICATION_FAILED') {
+            clearInterval(intervalIdRef.current as number);
+            intervalIdRef.current = null;
+          }
+        }
+      } catch (error) {
+        console.error('Error occurred during polling:', error);
+        clearInterval(intervalIdRef.current as number);
+        intervalIdRef.current = null;
+      }
+    };
+
+    // Assign the interval ID
+    intervalIdRef.current = setInterval(pollApi, 12000);
 
     return () => {
-      clearInterval(intervalId);
+      // Cleanup on component unmount
+      if (intervalIdRef.current !== null) {
+        clearInterval(intervalIdRef.current as number);
+      }
     };
-  }, []);
+  }, [intervalIdRef.current]); // Add any other dependencies if needed
 
   const handleNext = async () => {
     const requestData = {
@@ -121,7 +116,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       dob: stepTwoStore.dob,
       phoneNumber: stepThreeStore.phoneNumber,
       email: stepThreeStore.email,
-      newPassword: stepThreeStore.newPassword,
+      password: stepThreeStore.newPassword,
       address: stepFourStore.address,
       city: stepFourStore.city,
       state: stepFourStore.state,
@@ -135,7 +130,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       effectiveDate: accountData.effectiveDate, // from scan
       relToPolicyHolder: accountData.relToPolicyHolder, // from scan
     };
-
+    console.log('Request data:', requestData);
     try {
       const response = await axiosInstance.post(
         '/patient/onboarding/createAccount.ns',
@@ -144,7 +139,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       console.log('Account creation successful:', response.data);
       const loginResult = await performLogin(
         requestData.email,
-        requestData.newPassword,
+        requestData.password,
         'email'
       );
       if (loginResult.success) {

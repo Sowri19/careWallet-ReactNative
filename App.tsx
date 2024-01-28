@@ -37,7 +37,7 @@ export default function App() {
           <Stack.Screen name="Sign Up" component={SignUp} />
           <Stack.Screen name="ForgotPassComplete" component={PasswordUpdated} />
           <Stack.Screen name="SignDOB" component={SignDOB} />
-          <Stack.Screen name="Register" component={RegisterPageOne} />
+          <Stack.Screen name="RegisterPageOne" component={RegisterPageOne} />
           <Stack.Screen name="RegisterPageTwo" component={RegisterPageTwo} />
           <Stack.Screen name="FaceVerification" component={FaceVerification} />
           <Stack.Screen name="IDFront" component={IDFront} />

@@ -18,6 +18,7 @@ export const performLogin = async (
     if (response.data.success) {
       return { success: true, data: response.data };
     } else {
+      console.log(response.data);
       console.log('Authentication failed on the server.');
       return { success: false };
     }
