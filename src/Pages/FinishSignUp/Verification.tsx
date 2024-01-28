@@ -16,11 +16,9 @@ import {
   LogoImageHolder,
   BackButtonDummy,
   ButtonDummy,
-  PageContentHolder,
   PageContentHolderCenter,
 } from '../../Shared/Styles/Styles';
-import { AccountCreationData } from '../../Shared/Interfaces/AccountCreationData';
-import { ApiObject } from '../../Shared/Interfaces/ApiObject';
+
 import axiosInstance from '../../utilities/axiosInstance';
 import { useAppSelector } from '../../ReduxStore/Setup/hooks';
 import { Animated, Easing, View } from 'react-native';
@@ -28,10 +26,12 @@ import { useFocusEffect } from '@react-navigation/native';
 import { selectSignUpStepOneData } from '../../ReduxStore/Slices/Register/stepOne';
 import { selectSignUpStepThreeData } from '../../ReduxStore/Slices/Register/stepThree';
 import { selectSignUpStepFourData } from '../../ReduxStore/Slices/Register/stepFour';
-import { selectInsStepOneData } from '../../ReduxStore/Slices/InsuranceCheck/stepOne';
-import { selectInsStepTwoData } from '../../ReduxStore/Slices/InsuranceCheck/stepTwo';
 import { selectSignUpStepTwoData } from '../../ReduxStore/Slices/Register/stepTwo';
+import { setAccountCreationData } from '../../ReduxStore/Slices/AccountCreation/AccountCreation';
+import { selectAccountCreationData } from '../../ReduxStore/Slices/AccountCreation/AccountCreation';
+import { performLogin } from '../../utilities/loginService';
 import { PagesProps } from '../../utilities/CommonTypes';
+import { useAppDispatch } from '../../ReduxStore/Setup/hooks';
 
 let intervalId: string | number | NodeJS.Timeout | undefined;
 
@@ -40,14 +40,15 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
   const stepThreeStore = useAppSelector(selectSignUpStepThreeData);
   const stepFourStore = useAppSelector(selectSignUpStepFourData);
-  const insStepOneStore = useAppSelector(selectInsStepOneData);
-  const insStepTwoStore = useAppSelector(selectInsStepTwoData);
+  const accountData = useAppSelector(selectAccountCreationData);
+
   const [progress, setProgress] = useState<number>(0);
   const durationOfLoader = 5;
   const isVerified = progress >= 100;
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [timeoutReached, setTimeoutReached] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setTimeout(() => {
@@ -86,10 +87,18 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       );
       console.log('Response from API:', response.data);
 
-      if (response.data.success === true) {
-        setIsSuccess(true);
-        setProgress(100);
-        clearInterval(intervalId);
+      if (response.data.success) {
+        if (response.data.status === 'VERIFICATION_SUCCESS') {
+          const verificationData = { ...response.data.data };
+          dispatch(setAccountCreationData(verificationData));
+          setIsSuccess(true);
+          setProgress(100);
+          clearInterval(intervalId);
+          handleNext();
+        } else if (response.data.status === 'VERIFICATION_FAILED') {
+          console.log('Verification not successful, please re-upload photos.');
+          clearInterval(intervalId);
+        }
       }
     } catch (error) {
       console.log('Error occurred during polling: ', error);
@@ -105,38 +114,45 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
     };
   }, []);
 
-  const handleNext = () => {
-    accountCreationApi({
-      requestData: {
-        firstName: stepOneStore.firstName,
-        lastName: stepOneStore.lastName,
-        dob: stepTwoStore.dob,
-        phoneNumber: stepThreeStore.phoneNumber,
-        email: stepThreeStore.email,
-        newPassword: stepThreeStore.newPassword,
-        address: stepFourStore.address,
-        city: stepFourStore.city,
-        state: stepFourStore.state,
-        zipcode: stepFourStore.zipcode,
-        insuranceName: insStepOneStore.insuranceName,
-        policyHolderName: insStepOneStore.policyHolderName,
-        memberId: insStepOneStore.memberId,
-        memberDOB: insStepOneStore.memberDOB,
-        insuranceType: insStepTwoStore.insuranceType,
-        groupNumber: insStepTwoStore.groupNumber,
-        effectiveDate: insStepTwoStore.effectiveDate,
-        relToPolicyHolder: insStepTwoStore.relToPolicyHolder,
-      },
-      successCB: () => {
-        navigation.navigate('Home');
-      },
-      errorCB: () => {
-        console.log('Error occured in account creation');
-      },
-      exceptionCB: () => {
-        console.log('Exception occured in account creation');
-      },
-    });
+  const handleNext = async () => {
+    const requestData = {
+      firstName: stepOneStore.firstName,
+      lastName: stepOneStore.lastName,
+      dob: stepTwoStore.dob,
+      phoneNumber: stepThreeStore.phoneNumber,
+      email: stepThreeStore.email,
+      newPassword: stepThreeStore.newPassword,
+      address: stepFourStore.address,
+      city: stepFourStore.city,
+      state: stepFourStore.state,
+      zipcode: stepFourStore.zipcode,
+      insuranceName: accountData.insuranceName, // from scan
+      policyHolderName: accountData.policyHolderName, // from scan
+      memberId: accountData.memberId, // from scan
+      memberDOB: accountData.memberDOB, // from scan
+      insuranceType: accountData.insuranceType, // from scan
+      groupNumber: accountData.groupNumber, // from scan
+      effectiveDate: accountData.effectiveDate, // from scan
+      relToPolicyHolder: accountData.relToPolicyHolder, // from scan
+    };
+
+    try {
+      const response = await axiosInstance.post(
+        '/patient/onboarding/createAccount.ns',
+        requestData
+      );
+      console.log('Account creation successful:', response.data);
+      const loginResult = await performLogin(
+        requestData.email,
+        requestData.newPassword,
+        'email'
+      );
+      if (loginResult.success) {
+        navigation.navigate('Homepage');
+      }
+    } catch (error) {
+      console.error('Error occurred during account creation:', error);
+    }
   };
 
   const startLoader = () => {
