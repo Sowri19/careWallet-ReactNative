@@ -22,27 +22,32 @@ export interface HomePageState {
 }
 
 const initialState: HomePageState = {
-  email: `yadav.shas@northeastern.edu`,
-  phoneNumber: `8578693748`,
+  email: '',
+  phoneNumber: '',
   isActive: true,
-  validityDate: `08/22/28`,
-  insuranceUrl: `https://northeastern-dump.s3.us-east-2.amazonaws.com/insurance_card.png`,
-  licenseUrl: `https://northeastern-dump.s3.us-east-2.amazonaws.com/license.png`,
-  healthCard1Url: `https://northeastern-dump.s3.us-east-2.amazonaws.com/health-care-1.png`,
-  healthCard2Url: `https://northeastern-dump.s3.us-east-2.amazonaws.com/health-care-2.png`,
-  profilePictureUrl: styleDefaultProfileImage,
-  insuranceName: `BlueCross BlueShield`,
-  insuranceID: `498578945847589`,
+  validityDate: '',
+  insuranceUrl:
+    'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-front',
+  licenseUrl:
+    'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=govtID-front',
+  healthCard1Url:
+    'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-front',
+  healthCard2Url:
+    'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-back',
+  profilePictureUrl:
+    'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=user-photo',
+  insuranceName: '',
+  insuranceID: '',
   address: {
-    state: `MA`,
-    postal_code: `02119`,
-    street_address: `22 Highland Ave`,
-    locality: `Boston`,
-    country: `US`,
+    state: '',
+    postal_code: '',
+    street_address: '',
+    locality: '',
+    country: '',
   },
-  dateOfBirth: `08/22/94`,
-  firstName: `Shashi Bhushan`,
-  lastName: `Yadav`,
+  dateOfBirth: '',
+  firstName: '',
+  lastName: '',
 };
 
 export const homeSlice = createSlice({
@@ -70,27 +75,27 @@ export const homeSlice = createSlice({
       state.address = action.payload;
     },
     clearState: (state) => {
-      state.email = ``;
-      state.phoneNumber = ``;
+      state.email = '';
+      state.phoneNumber = '';
       state.isActive = true;
-      state.validityDate = ``;
-      state.insuranceUrl = ``;
-      state.licenseUrl = ``;
-      state.healthCard1Url = ``;
-      state.healthCard2Url = ``;
+      state.validityDate = '';
+      state.insuranceUrl = '';
+      state.licenseUrl = '';
+      state.healthCard1Url = '';
+      state.healthCard2Url = '';
       state.profilePictureUrl = styleDefaultProfileImage;
-      state.insuranceName = ``;
-      state.insuranceID = ``;
+      state.insuranceName = '';
+      state.insuranceID = '';
       state.address = {
-        state: ``,
-        postal_code: ``,
-        street_address: ``,
-        locality: ``,
-        country: ``,
+        state: '',
+        postal_code: '',
+        street_address: '',
+        locality: '',
+        country: '',
       };
-      state.dateOfBirth = ``;
-      state.firstName = ``;
-      state.lastName = ``;
+      state.dateOfBirth = '';
+      state.firstName = '';
+      state.lastName = '';
     },
   },
 });

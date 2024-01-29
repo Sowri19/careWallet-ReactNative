@@ -18,7 +18,27 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-unused-vars": ["error"],
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "no-undef": ["error"],
+    "no-extra-semi": ["error"],
+    "eqeqeq": ["error"],
+    "curly": ["error"],
+    "camelcase": ["error"],
+    "no-trailing-spaces": ["error"],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "space-infix-ops": ["error"]
   },
-  "ignorePatterns": [".eslintrc.js", "babel.config.js"]
+  "ignorePatterns": [
+    ".eslintrc.js",
+    "babel.config.js",
+    "node_modules",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }

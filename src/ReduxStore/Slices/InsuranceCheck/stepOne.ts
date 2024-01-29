@@ -5,14 +5,14 @@ export interface InsStepOneState {
   insuranceName: string;
   policyHolderName: string;
   memberId: string;
-  memberDOB: string;
+  memberDOB?: string;
 }
 
 const initialState: InsStepOneState = {
   insuranceName: '',
   policyHolderName: '',
   memberId: '',
-  memberDOB: '',
+  // memberDOB?: '',
 };
 
 export const insStepOneSlice = createSlice({
@@ -34,14 +34,14 @@ export const insStepOneSlice = createSlice({
     setMemberId: (state, action: PayloadAction<string>) => {
       state.memberId = action.payload;
     },
-    setMemberDOB: (state, action: PayloadAction<string>) => {
-      state.memberDOB = action.payload;
-    },
+    // setMemberDOB: (state, action: PayloadAction<string>) => {
+    //   state.memberDOB = action.payload;
+    // },
     clearState: (state) => {
       state.insuranceName = '';
       state.policyHolderName = '';
       state.memberId = '';
-      state.memberDOB = '';
+      // state.memberDOB = '';
     },
   },
 });
@@ -51,7 +51,7 @@ export const {
   setInsuranceName,
   setPolicyHolderName,
   setMemberId,
-  setMemberDOB,
+  // setMemberDOB,
   clearState,
 } = insStepOneSlice.actions;
 

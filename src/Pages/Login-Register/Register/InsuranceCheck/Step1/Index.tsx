@@ -4,9 +4,10 @@ import {
   Button,
   ButtonText,
   Container,
-  FormContainerStyleOne, LogoImageHolderBottomOne,
-  LogoImageTwo
-} from "../../../../../Shared/Styles/Styles";
+  FormContainerStyleOne,
+  LogoImageHolderBottomOne,
+  LogoImageTwo,
+} from '../../../../../Shared/Styles/Styles';
 import { useAppDispatch } from '../../../../../ReduxStore/Setup/hooks';
 import {
   setState as setInsuranceOneState,
@@ -14,12 +15,13 @@ import {
 } from '../../../../../ReduxStore/Slices/InsuranceCheck/stepOne';
 import InputTypeOne from '../../../../../Components/Fields/InputTypeOne';
 import {
-  chk18DateValid,
+  // chk18DateValid,
   chkIDValid,
   chkNameValid,
 } from '../../../../../utilities/ValidationUtils';
-import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
-import { formatDate } from '../../../../../utilities/FormatUtils';
+// Import DatePickerTypeOne if needed in the future
+// import DatePickerTypeOne from '../../../../../Components/Fields/DatePickerTypeOne';
+// import { formatDate } from '../../../../../utilities/FormatUtils';
 import { PagesProps } from '../../../../../utilities/CommonTypes';
 
 const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
@@ -29,9 +31,10 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
   const [policyHolderErr, setPolicyHolderErr] = useState<string>('');
   const [memberID, setMemberIDLocal] = useState<string>('');
   const [memberIDErr, setMemberIDErr] = useState('');
-  const [memberDOB, setMemberDOBLocal] = useState<string>('');
-  const [memderDOBDate, setMemberDOBDateLocal] = useState<Date>();
-  const [dobErr, setDOBErr] = useState<string>('');
+  // Commented out DOB related states
+  // const [memberDOB, setMemberDOBLocal] = useState<string>('');
+  // const [memderDOBDate, setMemberDOBDateLocal] = useState<Date>();
+  // const [dobErr, setDOBErr] = useState<string>('');
   const dispatch = useAppDispatch();
 
   const setInsuranceName = (text: string) => {
@@ -60,7 +63,7 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
       insuranceName: '',
       policyHolderName: '',
       memberId: '',
-      memberDOB: '',
+      // memberDOB: '',
     });
     navigation.navigate('RegisterPageTwo');
   };
@@ -82,11 +85,12 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
     if (error !== '') {
       result = false;
     }
-    error = chk18DateValid(memderDOBDate);
-    setDOBErr(error);
-    if (error !== '') {
-      result = false;
-    }
+    // Commented out DOB validation
+    // error = chk18DateValid(memderDOBDate);
+    // setDOBErr(error);
+    // if (error !== '') {
+    //   result = false;
+    // }
     return result;
   };
   const handleNext = () => {
@@ -97,18 +101,20 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
       insuranceName: insuranceName,
       policyHolderName: policyHolderName,
       memberId: memberID,
-      memberDOB: memberDOB,
+      // Commented out DOB assignment
+      // memberDOB: memberDOB,
     });
     navigation.navigate('InsuranceSignUpTwo');
   };
-  const onDateConfirm = (date: Date) => {
-    setMemberDOBDateLocal(date);
-    setMemberDOBLocal(formatDate(date));
-  };
-  const onDateCancel = () => {};
-  const openDatePicker = () => {
-    setDOBErr('');
-  };
+  // Commented out DOB-related functions
+  // const onDateConfirm = (date: Date) => {
+  //   setMemberDOBDateLocal(date);
+  //   setMemberDOBLocal(formatDate(date));
+  // };
+  // const onDateCancel = () => {};
+  // const openDatePicker = () => {
+  //   setDOBErr('');
+  // };
   return (
     <Container>
       <FormContainerStyleOne>
@@ -145,7 +151,8 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
           errorString={memberIDErr}
           onFocus={() => setMemberIDErr('')}
         />
-        <DatePickerTypeOne
+        {/* Commented out DOB field */}
+        {/* <DatePickerTypeOne
           inputName={'Member DOB'}
           inputValue={memderDOBDate}
           placeHolderValue={`MM/DD/YYYY`}
@@ -153,8 +160,7 @@ const InsuranceSignUpOne: React.FC<PagesProps> = ({ navigation }) => {
           onPressIn={openDatePicker}
           onDateConfirm={onDateConfirm}
           onCancel={onDateCancel}
-        />
-
+        /> */}
         <Button onPress={handleNext}>
           <ButtonText>Next</ButtonText>
         </Button>

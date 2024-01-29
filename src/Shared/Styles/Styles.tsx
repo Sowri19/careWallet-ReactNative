@@ -10,11 +10,11 @@ import {
   styleStandardBackButtonHeight,
   styleStandardButtonFontSize,
   styleStandardButtonHeight,
-  styleWhiteColor
-} from "../../Styles/AppWideConstants/Styles";
+  styleWhiteColor,
+} from '../../Styles/AppWideConstants/Styles';
 import withBoxShadow from '../../Components/HOCs/ButtonShadowTypeOne';
-import { Ionicons } from "@expo/vector-icons";
-import { ProfileImageHolderLocal } from "../../Pages/LoggedInPages/Homepage/Style";
+import { Ionicons } from '@expo/vector-icons';
+import { ProfileImageHolderLocal } from '../../Pages/LoggedInPages/Homepage/Style';
 
 export const Container = styled.SafeAreaView`
   background-color: ${styleWhiteColor};
@@ -192,6 +192,7 @@ export const LogoImageHolderBottomThree = styled.View`
   padding-bottom: 6%;
 `;
 export const LogoImageTwo = styled.Image`
+  align-self: center;
   resize-mode: contain;
   width: 154px;
   height: 35px;
@@ -276,11 +277,9 @@ export const PageContentHolderCenter: ViewStyle = {
   justifyContent: 'center',
 };
 
-
 export const GenericIcon = styled(Ionicons)``;
 
 export const GenericShadowIcon = withBoxShadow(GenericIcon);
-
 
 export const SettingsIcon: TextStyle = {
   width: 58,
@@ -295,7 +294,6 @@ export const ImageIcon: TextStyle = {
   fontSize: 58,
   color: styleAcceptColor,
 };
-
 
 export const ProfileImageHolder = withBoxShadow(ProfileImageHolderLocal);
 
