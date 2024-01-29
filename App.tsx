@@ -22,13 +22,17 @@ import InsuranceBack from './src/Pages/Login-Register/Register/AccountCreation/S
 import PasswordUpdated from './src/Pages/Login-Register/ForgotPassword/Step4/PasswordUpdated';
 import Homepage from './src/Pages/LoggedInPages/Homepage/Homepage';
 import SettingsPage from './src/Pages/LoggedInPages/Settings/Settings';
+import SetupApp from './src/Components/Setup/SetupApp';
+import { NavigationContainerRef } from '@react-navigation/core';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const navigationRef = React.createRef<NavigationContainerRef<any>>();
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <SetupApp navigationRef={navigationRef} />
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Log in" component={LogIn} />
           <Stack.Screen name="ForgotStepOne" component={ForgotPassStepOne} />

@@ -43,25 +43,21 @@ import {
   selectProfilePictureUrl,
   selectValidityDate,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
-import { getImageUrlfromBinaryAPI } from "../../../utilities/commonUtilFunctions";
+import { getImageUrlfromBinaryAPI } from '../../../utilities/commonUtilFunctions';
 
 const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
-  const [firstName, setFirstNameLocal] = useState<string>(
-    useAppSelector(selectFirstName)
+  const firstName = useAppSelector(selectFirstName);
+  const lastName = useAppSelector(selectLastName);
+  const activeDate = useAppSelector(selectValidityDate);
+  const [screen, setScreenLocal] = useState<'insurance' | 'license' | 'health'>(
+    'insurance'
   );
-  const [lastName, setLastNameLocal] = useState<string>(
-    useAppSelector(selectLastName)
-  );
-  const [activeDate, setActiveDateLocal] = useState<string>(
-    useAppSelector(selectValidityDate)
-  );
-  const [screen, setScreenLocal] = useState<string>(`insurance`);
   const profileImageUrl = useAppSelector(selectProfilePictureUrl);
   const [profileImage, setProfileImageLocal] = useState<{ uri: string }>({
-    uri: styleDefaultProfileImage,
+    uri: profileImageUrl,
   });
-  const setScreen = (screen: `insurance` | `license` | `health`) => {
+  const setScreen = (screen: 'insurance' | 'license' | 'health') => {
     setScreenLocal(screen);
   };
   const licenseUrl = useAppSelector(selectLicenseUrl);
@@ -69,17 +65,17 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const health2Url = useAppSelector(selectHealthCard2Url);
   const insuranceUrl = useAppSelector(selectInsuranceUrl);
 
-  let imageUrl = ``,
-    imageUrl2 = ``;
-  if (screen == `license`) {
+  let imageUrl = '',
+    imageUrl2 = '';
+  if (screen === 'license') {
     imageUrl = licenseUrl;
-    imageUrl2 = ``;
-  } else if (screen == `health`) {
+    imageUrl2 = '';
+  } else if (screen === 'health') {
     imageUrl = health1Url;
     imageUrl2 = health2Url;
   } else {
     imageUrl = insuranceUrl;
-    imageUrl2 = ``;
+    imageUrl2 = '';
   }
   const isActive = useAppSelector(selectActive);
   console.log(profileImage);
@@ -91,77 +87,29 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   useEffect(() => {
     getAllBlobs();
   }, []);
+
   return (
     <>
       <Container>
         <FormContainerStyleThree>
           <BoldNameHeader>{`${firstName} ${lastName}`}</BoldNameHeader>
-          {screen == `insurance` && (
+          {screen === 'insurance' && (
             <>
               <ActiveDateHolder>
                 {isActive ? (
                   <>
-                    <GenericIcon name={`checkmark-circle`} style={ImageIcon} />
+                    <GenericIcon name="checkmark-circle" style={ImageIcon} />
                     <Text style={ActiveDate}>{`Active: ${activeDate}`}</Text>
                   </>
                 ) : (
                   <>
-                    <GenericIcon name={`checkmark-circle`} style={ImageIcon} />
+                    <GenericIcon name="checkmark-circle" style={ImageIcon} />
                     <Text style={ActiveDate}>{`Active: ${activeDate}`}</Text>
                   </>
                 )}
               </ActiveDateHolder>
               <ImageHolder>
-                <ImageInsurance source={{ url: imageUrl }} />
-              </ImageHolder>
-              <ButtonHolder>
-                <ButtonH
-                  onPress={() => {
-                    setScreen(`license`);
-                  }}
-                >
-                  <ButtonText>View ID</ButtonText>
-                </ButtonH>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('health');
-                  }}
-                >
-                  <ButtonText>View Plan</ButtonText>
-                </ButtonH>
-              </ButtonHolder>
-            </>
-          )}
-          {screen == `license` && (
-            <>
-              <ImageHolder>
-                <ImageID source={{ url: imageUrl }} />
-              </ImageHolder>
-              <ButtonHolder>
-                <ButtonH
-                  onPress={() => {
-                    setScreen(`insurance`);
-                  }}
-                >
-                  <ButtonText>{`< Back`}</ButtonText>
-                </ButtonH>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('health');
-                  }}
-                >
-                  <ButtonText>View Plan</ButtonText>
-                </ButtonH>
-              </ButtonHolder>
-            </>
-          )}
-          {screen == `health` && (
-            <>
-              <ImageHolder>
-                <ImageHealth source={{ url: imageUrl }} />
-              </ImageHolder>
-              <ImageHolder>
-                <ImageHealth source={{ url: imageUrl2 }} />
+                <ImageInsurance source={{ uri: imageUrl }} />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH
@@ -173,10 +121,59 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
                 </ButtonH>
                 <ButtonH
                   onPress={() => {
-                    setScreen(`insurance`);
+                    setScreen('health');
                   }}
                 >
-                  <ButtonText>{`< Back`}</ButtonText>
+                  <ButtonText>View Plan</ButtonText>
+                </ButtonH>
+              </ButtonHolder>
+            </>
+          )}
+          {screen === 'license' && (
+            <>
+              <ImageHolder>
+                <ImageID source={{ uri: imageUrl }} />
+              </ImageHolder>
+              <ButtonHolder>
+                <ButtonH
+                  onPress={() => {
+                    setScreen('insurance');
+                  }}
+                >
+                  <ButtonText>{'< Back'}</ButtonText>
+                </ButtonH>
+                <ButtonH
+                  onPress={() => {
+                    setScreen('health');
+                  }}
+                >
+                  <ButtonText>View Plan</ButtonText>
+                </ButtonH>
+              </ButtonHolder>
+            </>
+          )}
+          {screen === 'health' && (
+            <>
+              <ImageHolder>
+                <ImageHealth source={{ uri: imageUrl }} />
+              </ImageHolder>
+              <ImageHolder>
+                <ImageHealth source={{ uri: imageUrl2 }} />
+              </ImageHolder>
+              <ButtonHolder>
+                <ButtonH
+                  onPress={() => {
+                    setScreen('license');
+                  }}
+                >
+                  <ButtonText>View ID</ButtonText>
+                </ButtonH>
+                <ButtonH
+                  onPress={() => {
+                    setScreen('insurance');
+                  }}
+                >
+                  <ButtonText>{'< Back'}</ButtonText>
                 </ButtonH>
               </ButtonHolder>
             </>
@@ -185,9 +182,9 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
             <LowerBarContainer>
               <GenericShadowIcon
                 onPress={() => {
-                  navigation.navigate(`settings`);
+                  navigation.navigate('settings');
                 }}
-                name={`settings`}
+                name="settings"
                 style={SettingsIcon}
               />
             </LowerBarContainer>
