@@ -23,7 +23,6 @@ import {
   ButtonText,
 } from './styles';
 import Loader from '../../Components/Loader/index';
-import axiosInstance from '../../utilities/axiosInstance';
 import positioningRectangleImage from '../../Shared/Media/Images/Scan-positioning-rectangle.png';
 import { RootState } from '../../ReduxStore/Setup/store';
 import compressorUploader from '../../utilities/ImageUploader';
@@ -53,18 +52,6 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
     })();
   }, [dispatch]);
 
-  const triggerVerificationApi = async () => {
-    try {
-      const url =
-        '/patient/onboarding/triggerVerification.ns';
-      const response = await axiosInstance.get(url);
-      const data = response.data;
-      console.log('Verification triggered:', data);
-    } catch (error) {
-      console.error('Error triggering verification:', error);
-    }
-  };
-
   const handlePictureTaken = async (
     photo: Photo,
     fileName: string,
@@ -79,25 +66,8 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
       imageType,
       navigation,
       navigateTo,
-      async () => {
-        if (
-          [
-            'insurance-front',
-            'user-photo',
-            'govID-front',
-            'govID-back',
-          ].includes(imageType)
-        ) {
-          dispatch(setIsUploading(false));
-          navigation.navigate(navigateTo);
-        } else if (imageType === 'insurance-back') {
-          await triggerVerificationApi();
-          dispatch(setIsUploading(false));
-          navigation.navigate(navigateTo);
-        } else {
-          dispatch(setIsUploading(false));
-          navigation.navigate(navigateTo);
-        }
+      () => {
+        dispatch(setIsUploading(false));
       }
     );
   };

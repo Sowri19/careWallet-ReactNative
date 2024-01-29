@@ -10,13 +10,15 @@ import {
 } from '../../Styles/AppWideConstants/Styles';
 import { Button } from '../../Shared/Styles/Styles';
 import { Camera } from 'expo-camera';
-
+import { Dimensions } from 'react-native';
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 export const ContainerStyle = styled(Container)`
   align-items: stretch;
 `;
 
 export const Logo = styled.Image`
-  top: 15%;
+  top: ${screenWidth * 0.18}px;
   left: 32%;
   z-index: 1;
   width: 153px;
@@ -41,17 +43,15 @@ export const ButtonText = styled.Text`
 export const CameraStyled = styled(Camera)`
   flex: 1;
 `;
-
 export const OverlayImage1 = styled.Image`
   position: absolute;
-  top: 15%;
-  left: 9%;
+  top: ${screenWidth * 0.085}px;
+  left: ${screenWidth * 0.05}px;
   z-index: 1;
 `;
-
 export const FrontID = styled.View`
   width: 100%;
-  height: 300px;
+  height: ${screenHeight * 0.34}px;
   background-color: ${styleWhiteColor};
   overflow: hidden;
 `;
@@ -90,7 +90,7 @@ export const TopBorder = styled(BorderView)`
   top: 0;
   left: 0;
   right: 0;
-  height: 45px;
+  height: ${screenHeight * 0.06}px;
 `;
 
 export const BottomBorder = styled(BorderView)`
