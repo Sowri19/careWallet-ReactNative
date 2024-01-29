@@ -27,7 +27,6 @@ import {
   LowerBarHolder,
 } from './Style';
 import { Text } from 'react-native';
-import { styleDefaultProfileImage } from '../../../Styles/AppWideConstants/Styles';
 import {
   useAppDispatch,
   useAppSelector,
@@ -43,10 +42,10 @@ import {
   selectProfilePictureUrl,
   selectValidityDate,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
-import { getImageUrlfromBinaryAPI } from '../../../utilities/commonUtilFunctions';
+
+import Loader from '../../../Components/Loader/index';
 
 const Homepage: React.FC<PagesProps> = ({ navigation }) => {
-  const dispatch = useAppDispatch();
   const firstName = useAppSelector(selectFirstName);
   const lastName = useAppSelector(selectLastName);
   const activeDate = useAppSelector(selectValidityDate);
@@ -57,7 +56,20 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const [profileImage, setProfileImageLocal] = useState<{ uri: string }>({
     uri: profileImageUrl,
   });
+
+  const [isInsuranceImageLoading, setIsInsuranceImageLoading] = useState(true);
+  const [isLicenseImageLoading, setIsLicenseImageLoading] = useState(true);
+  const [isHealthImageLoading, setIsHealthImageLoading] = useState(true);
+
+  // Function to reset image loading states
+  const resetImageLoadingStates = () => {
+    setIsInsuranceImageLoading(true);
+    setIsLicenseImageLoading(true);
+    setIsHealthImageLoading(true);
+  };
+
   const setScreen = (screen: 'insurance' | 'license' | 'health') => {
+    resetImageLoadingStates();
     setScreenLocal(screen);
   };
   const licenseUrl = useAppSelector(selectLicenseUrl);
@@ -99,7 +111,14 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
                 {isActive ? (
                   <>
                     <GenericIcon name="checkmark-circle" style={ImageIcon} />
-                    <Text style={ActiveDate}>{`Active: ${activeDate}`}</Text>
+                    <Text
+                      style={ActiveDate}
+                    >{`Active: ${new Date().getFullYear()}-${(
+                      '0' +
+                      (new Date().getMonth() + 1)
+                    ).slice(-2)}-${('0' + new Date().getDate()).slice(
+                      -2
+                    )}`}</Text>
                   </>
                 ) : (
                   <>
@@ -109,7 +128,11 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
                 )}
               </ActiveDateHolder>
               <ImageHolder>
-                <ImageInsurance source={{ uri: imageUrl }} />
+                {isInsuranceImageLoading && <Loader />}
+                <ImageInsurance
+                  source={{ uri: imageUrl }}
+                  onLoad={() => setIsInsuranceImageLoading(false)}
+                />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH
@@ -132,7 +155,11 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
           {screen === 'license' && (
             <>
               <ImageHolder>
-                <ImageID source={{ uri: imageUrl }} />
+                {isLicenseImageLoading && <Loader />}
+                <ImageID
+                  source={{ uri: imageUrl }}
+                  onLoad={() => setIsLicenseImageLoading(false)}
+                />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH
@@ -154,11 +181,18 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
           )}
           {screen === 'health' && (
             <>
+              {isHealthImageLoading && <Loader />}
               <ImageHolder>
-                <ImageHealth source={{ uri: imageUrl }} />
+                <ImageHealth
+                  source={{ uri: imageUrl }}
+                  onLoad={() => setIsHealthImageLoading(false)}
+                />
               </ImageHolder>
               <ImageHolder>
-                <ImageHealth source={{ uri: imageUrl2 }} />
+                <ImageHealth
+                  source={{ uri: imageUrl2 }}
+                  onLoad={() => setIsHealthImageLoading(false)}
+                />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH

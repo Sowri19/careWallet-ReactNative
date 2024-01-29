@@ -11,6 +11,12 @@ import {
 import { ViewStyle } from 'react-native';
 import withBoxShadow from '../../../../../Components/HOCs/ButtonShadowTypeOne';
 import { Camera } from 'expo-camera';
+import { Dimensions } from 'react-native';
+const { width } = Dimensions.get('window');
+const overlaySize = width * 0.75; // Example: 75% of screen width
+const screenHeight = Dimensions.get('window').height;
+const cameraViewWidth = Math.min(400, width * 0.95); // Use 95% of screen width or 400, whichever is smaller
+const cameraViewHeight = cameraViewWidth * 1.7; // Maintain aspect ratio, adjust as needed
 
 export const ContainerStyle = styled(Container)`
   align-items: stretch;
@@ -19,28 +25,24 @@ export const ContainerStyle = styled(Container)`
 export const CameraStyled = styled(Camera)`
   flex: 1;
 `;
-
-export const OverlayImage = styled.Image`
-  position: absolute;
-  align-self: center;
-  top: 30%;
-  left: 22.5%;
-  height: 300px;
-  margin-left: -35px;
-  margin-top: -0px;
-  z-index: 1;
-  width: 300px;
-`;
-
 export const CameraView = styled.View`
   align-self: center;
-  margin: 30px 0 0 0;
-  width: 400px;
-  height: 720px;
+  margin-top: ${screenHeight * 0.03}px;
+  width: ${cameraViewWidth}px;
+  height: ${cameraViewHeight}px;
   background-color: ${styleWhiteColor};
   border-radius: 26px;
   border: 5px solid ${stylePrimaryColor};
   overflow: hidden;
+`;
+
+export const OverlayImage = styled.Image`
+  position: absolute;
+  align-self: center;
+  top: 27%;
+  width: ${overlaySize}px;
+  height: ${overlaySize}px;
+  z-index: 1;
 `;
 
 export const SubHeaderBoldLoading = styled.Text`

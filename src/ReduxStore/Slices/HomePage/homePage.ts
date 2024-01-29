@@ -75,27 +75,27 @@ export const homeSlice = createSlice({
       state.address = action.payload;
     },
     clearState: (state) => {
-      state.email = ``;
-      state.phoneNumber = ``;
+      state.email = '';
+      state.phoneNumber = '';
       state.isActive = true;
-      state.validityDate = ``;
-      state.insuranceUrl = ``;
-      state.licenseUrl = ``;
-      state.healthCard1Url = ``;
-      state.healthCard2Url = ``;
+      state.validityDate = '';
+      state.insuranceUrl = '';
+      state.licenseUrl = '';
+      state.healthCard1Url = '';
+      state.healthCard2Url = '';
       state.profilePictureUrl = styleDefaultProfileImage;
-      state.insuranceName = ``;
-      state.insuranceID = ``;
+      state.insuranceName = '';
+      state.insuranceID = '';
       state.address = {
-        state: ``,
-        postal_code: ``,
-        street_address: ``,
-        locality: ``,
-        country: ``,
+        state: '',
+        postal_code: '',
+        street_address: '',
+        locality: '',
+        country: '',
       };
-      state.dateOfBirth = ``;
-      state.firstName = ``;
-      state.lastName = ``;
+      state.dateOfBirth = '';
+      state.firstName = '';
+      state.lastName = '';
     },
   },
 });

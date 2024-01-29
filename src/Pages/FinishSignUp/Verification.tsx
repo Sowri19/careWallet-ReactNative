@@ -181,7 +181,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       <FormContainerStyleOne>
         {isVerified ? (
           <BackButton onPress={handleBack}>
-            <ButtonText>{`< Back`}</ButtonText>
+            <ButtonText>{'< Back'}</ButtonText>
           </BackButton>
         ) : (
           <BackButtonDummy />
@@ -209,7 +209,7 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
                 <TickIcon name="checkcircleo" />
               </TickHolder>
               <Button onPress={handleNext}>
-                <ButtonText>{`Finish >`}</ButtonText>
+                <ButtonText>{'Finish >'}</ButtonText>
               </Button>
             </>
           )}

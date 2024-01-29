@@ -11,7 +11,7 @@ import {
 const Loader: React.FC = () => (
   <Indicator>
     <View style={LoadingContainer}>
-      <SubHeaderBoldLoading>Verifying</SubHeaderBoldLoading>
+      <SubHeaderBoldLoading>Processing</SubHeaderBoldLoading>
       <ActivityIndicator
         style={ActivityIndicatorStyle}
         color={stylePrimaryColor}
