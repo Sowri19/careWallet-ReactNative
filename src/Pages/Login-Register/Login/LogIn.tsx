@@ -236,6 +236,11 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
         <Button onPress={loginUser}>
           <ButtonText>Login</ButtonText>
         </Button>
+        <Button onPress={() => {
+          axiosInstance.get(`/patient/authentication/logout.ns`);
+        }}>
+          <ButtonText>Logout</ButtonText>
+        </Button>
 
         <RegisterSection>
           <BelowInputText onPress={() => navigation.navigate('Sign Up')}>

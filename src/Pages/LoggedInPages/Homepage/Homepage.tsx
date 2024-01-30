@@ -34,18 +34,27 @@ import {
 import {
   selectActive,
   selectFirstName,
+  selectHealthCard1Blob,
   selectHealthCard1Url,
+  selectHealthCard2Blob,
   selectHealthCard2Url,
+  selectInsuranceBlob,
   selectInsuranceUrl,
   selectLastName,
+  selectLicenseBlob,
   selectLicenseUrl,
+  selectProfilePictureBlob,
   selectProfilePictureUrl,
   selectValidityDate,
+  setAllBlobs as setImageBlobs,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
+import { useFocusEffect } from '@react-navigation/native';
 
 import Loader from '../../../Components/Loader/index';
+import { loadAllImages } from '../../../utilities/commonUtilFunctions';
 
 const Homepage: React.FC<PagesProps> = ({ navigation }) => {
+  const dispatch = useAppDispatch();
   const firstName = useAppSelector(selectFirstName);
   const lastName = useAppSelector(selectLastName);
   const activeDate = useAppSelector(selectValidityDate);
@@ -68,6 +77,13 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
     setIsHealthImageLoading(true);
   };
 
+  const [isLoadingImages, setLoadingImages] = useState<boolean>(true);
+  const licenseImg = useAppSelector(selectLicenseBlob);
+  const insuranceImg = useAppSelector(selectInsuranceBlob);
+  const profilePictureImg = useAppSelector(selectProfilePictureBlob);
+  const healthCardFrontImg = useAppSelector(selectHealthCard1Blob);
+  const healthCardBackImg = useAppSelector(selectHealthCard2Blob);
+
   const setScreen = (screen: 'insurance' | 'license' | 'health') => {
     resetImageLoadingStates();
     setScreenLocal(screen);
@@ -76,6 +92,49 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const health1Url = useAppSelector(selectHealthCard1Url);
   const health2Url = useAppSelector(selectHealthCard2Url);
   const insuranceUrl = useAppSelector(selectInsuranceUrl);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const params: { [key: string]: string } = {};
+      if (!licenseImg) {
+        params['licenseBlob'] = licenseUrl;
+      }
+      if (!insuranceImg) {
+        params['insuranceBlob'] = insuranceUrl;
+      }
+      if (!profilePictureImg) {
+        params['profilePictureBlob'] = profileImageUrl;
+      }
+      if (!healthCardFrontImg) {
+        params['healthCard1Blob'] = health1Url;
+      }
+      if (!healthCardBackImg) {
+        params['healthCard2Blob'] = health2Url;
+      }
+      if (Object.keys(params).length > 0) {
+        setTimeout(async () => {
+          const allBlobs = await loadAllImages({
+            licenseBlob: licenseUrl,
+            insuranceBlob: insuranceUrl,
+            profilePictureBlob: profileImageUrl,
+            healthCard1Blob: health1Url,
+            healthCard2Blob: health2Url,
+          });
+          setLoadingImages(false);
+          dispatch(
+            setImageBlobs({
+              licenseBlob: allBlobs.licenseBlob,
+              insuranceBlob: allBlobs.insuranceBlob,
+              healthCard1Blob: allBlobs.healthCard1Blob,
+              healthCard2Blob: allBlobs.healthCard2Blob,
+              profilePictureBlob: allBlobs.profilePictureBlob,
+            })
+          );
+        });
+      }
+      return () => {};
+    }, [])
+  );
 
   let imageUrl = '',
     imageUrl2 = '';
@@ -90,7 +149,7 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
     imageUrl2 = '';
   }
   const isActive = useAppSelector(selectActive);
-  console.log(profileImage);
+  console.log(imageUrl, imageUrl2);
   const getAllBlobs = async () => {
     setProfileImageLocal({
       uri: profileImageUrl,
@@ -99,7 +158,6 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   useEffect(() => {
     getAllBlobs();
   }, []);
-
   return (
     <>
       <Container>
@@ -128,11 +186,8 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
                 )}
               </ActiveDateHolder>
               <ImageHolder>
-                {isInsuranceImageLoading && <Loader />}
-                <ImageInsurance
-                  source={{ uri: imageUrl }}
-                  onLoad={() => setIsInsuranceImageLoading(false)}
-                />
+                {isLoadingImages && <Loader />}
+                <ImageInsurance source={{ uri: insuranceImg }} onLoad={() => console.log('loaded')} onError={(err) => {console.log(err);}} />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH
@@ -155,11 +210,8 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
           {screen === 'license' && (
             <>
               <ImageHolder>
-                {isLicenseImageLoading && <Loader />}
-                <ImageID
-                  source={{ uri: imageUrl }}
-                  onLoad={() => setIsLicenseImageLoading(false)}
-                />
+                {isLoadingImages && <Loader />}
+                <ImageID source={{ uri: licenseImg }} />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH
@@ -181,18 +233,12 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
           )}
           {screen === 'health' && (
             <>
-              {isHealthImageLoading && <Loader />}
+              {isLoadingImages && <Loader />}
               <ImageHolder>
-                <ImageHealth
-                  source={{ uri: imageUrl }}
-                  onLoad={() => setIsHealthImageLoading(false)}
-                />
+                <ImageHealth source={{ uri: healthCardFrontImg }} />
               </ImageHolder>
               <ImageHolder>
-                <ImageHealth
-                  source={{ uri: imageUrl2 }}
-                  onLoad={() => setIsHealthImageLoading(false)}
-                />
+                <ImageHealth source={{ uri: healthCardBackImg }} />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH

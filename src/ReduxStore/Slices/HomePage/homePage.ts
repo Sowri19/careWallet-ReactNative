@@ -19,6 +19,11 @@ export interface HomePageState {
   dateOfBirth: string;
   firstName: string;
   lastName: string;
+  insuranceBlob: string;
+  licenseBlob: string;
+  healthCard1Blob: string;
+  healthCard2Blob: string;
+  profilePictureBlob: string;
 }
 
 const initialState: HomePageState = {
@@ -36,6 +41,11 @@ const initialState: HomePageState = {
     'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-back',
   profilePictureUrl:
     'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=user-photo',
+  insuranceBlob: '',
+  licenseBlob: '',
+  healthCard1Blob: '',
+  healthCard2Blob: '',
+  profilePictureBlob: '',
   insuranceName: '',
   insuranceID: '',
   address: {
@@ -70,6 +80,18 @@ export const homeSlice = createSlice({
       state.dateOfBirth = action.payload.dateOfBirth;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
+      state.licenseBlob = action.payload.licenseBlob;
+      state.insuranceBlob = action.payload.insuranceBlob;
+      state.healthCard1Blob = action.payload.healthCard1Blob;
+      state.healthCard2Blob = action.payload.healthCard2Blob;
+      state.profilePictureBlob = action.payload.profilePictureBlob;
+    },
+    setAllBlobs: (state, action) => {
+      state.licenseBlob = action.payload.licenseBlob;
+      state.insuranceBlob = action.payload.insuranceBlob;
+      state.healthCard1Blob = action.payload.healthCard1Blob;
+      state.healthCard2Blob = action.payload.healthCard2Blob;
+      state.profilePictureBlob = action.payload.profilePictureBlob;
     },
     setAddress: (state, action: PayloadAction<Address>) => {
       state.address = action.payload;
@@ -96,11 +118,16 @@ export const homeSlice = createSlice({
       state.dateOfBirth = '';
       state.firstName = '';
       state.lastName = '';
+      state.licenseBlob = '';
+      state.insuranceBlob = '';
+      state.healthCard1Blob = '';
+      state.healthCard2Blob = '';
+      state.profilePictureBlob = '';
     },
   },
 });
 
-export const { setState } = homeSlice.actions;
+export const { setState, setAllBlobs } = homeSlice.actions;
 
 export const selectState = (state: RootState) => state.homeState;
 export const selectAddressState = (state: RootState) =>
@@ -138,4 +165,15 @@ export const selectDateOfBirth = (state: RootState) =>
   state.homeState.dateOfBirth;
 export const selectPhoneNumber = (state: RootState) =>
   state.homeState.phoneNumber;
+export const selectLicenseBlob = (state: RootState) =>
+  state.homeState.licenseBlob;
+export const selectInsuranceBlob = (state: RootState) =>
+  state.homeState.insuranceBlob;
+export const selectHealthCard1Blob = (state: RootState) =>
+  state.homeState.healthCard1Blob;
+export const selectHealthCard2Blob = (state: RootState) =>
+  state.homeState.healthCard2Blob;
+export const selectProfilePictureBlob = (state: RootState) =>
+  state.homeState.profilePictureBlob;
+
 export default homeSlice.reducer;
