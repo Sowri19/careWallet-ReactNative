@@ -33,6 +33,7 @@ import { performLogin } from '../../utilities/loginService';
 import { PagesProps } from '../../utilities/CommonTypes';
 import { useAppDispatch } from '../../ReduxStore/Setup/hooks';
 
+let timeoutId:any = -1;
 const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepOneStore = useAppSelector(selectSignUpStepOneData);
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
@@ -46,68 +47,47 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const intervalIdRef = useRef<NodeJS.Timeout | number | null>(null);
 
-  useEffect(() => {
-    setTimeout(() => {
-      startLoader();
-      setProgress(0);
-    });
-  }, []);
   useFocusEffect(
     React.useCallback(() => {
+      pollApi();
       startLoader();
       setProgress(0);
-      return () => {};
+      setIsSuccess(false);
+      return () => {
+        // setProgress(0);
+        // setIsSuccess(false);
+        clearTimeout(timeoutId);
+      };
     }, [])
   );
+
   const handleBack = () => {
-    navigation.navigate('InsuranceSignUpTwo');
+    // navigation.navigate('InsuranceSignUpTwo');
+    navigation.navigate('InsuranceBack');
   };
 
-  useEffect(() => {
-    const pollApi = async () => {
-      if (intervalIdRef.current === null) {
-        console.error('Verification timeout reached');
-        return;
-      }
-
-      try {
-        const response = await axiosInstance.get(
-          '/patient/onboarding/get-verification-status.ns'
-        );
-        console.log('Response from API:', response.data);
-
-        if (response.data.success) {
-          if (response.data.data.status === 'VERIFICATION_SUCCESS') {
-            const verificationData = { ...response.data.data };
-            clearInterval(intervalIdRef.current as number);
-            setIsSuccess(true);
-            setProgress(100);
-            dispatch(setAccountCreationData(verificationData));
-            intervalIdRef.current = null;
-          } else if (response.data.data.status === 'VERIFICATION_FAILED') {
-            clearInterval(intervalIdRef.current as number);
-            intervalIdRef.current = null;
-          }
+  const pollApi = async () => {
+    try {
+      const response = await axiosInstance.get(
+        '/patient/onboarding/get-verification-status.ns'
+      );
+      if (response.data.success) {
+        if (response.data.data.status === 'VERIFICATION_SUCCESS') {
+          setIsSuccess(true);
+          setProgress(100);
+          dispatch(setAccountCreationData(response.data.data));
+          console.log('Verification successful', response.data.data);
+        } else if (response.data.data.status === 'VERIFICATION_FAILED') {
+          console.log('Verification failed', response.data.data);
         }
-      } catch (error) {
-        console.error('Error occurred during polling:', error);
-        clearInterval(intervalIdRef.current as number);
-        intervalIdRef.current = null;
+      } else {
+        timeoutId = setTimeout(pollApi, 12000);
       }
-    };
-
-    // Assign the interval ID
-    intervalIdRef.current = setInterval(pollApi, 12000);
-
-    return () => {
-      // Cleanup on component unmount
-      if (intervalIdRef.current !== null) {
-        clearInterval(intervalIdRef.current as number);
-      }
-    };
-  }, [intervalIdRef.current]); // Add any other dependencies if needed
+    } catch (error) {
+      console.error('Error occurred during polling:', error);
+    }
+  };
 
   const handleNext = async () => {
     const requestData = {

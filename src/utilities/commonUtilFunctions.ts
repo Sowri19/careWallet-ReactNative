@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance';
+import { Camera } from 'expo-camera';
 
 export const getImageUrlfromBinaryAPI = async (params: { url: string }) => {
   try {
@@ -13,4 +14,9 @@ export const getImageUrlfromBinaryAPI = async (params: { url: string }) => {
   } catch (error) {
     return ``;
   }
+};
+
+export const getCameraPermission = async () => {
+  const cameraStatus = await Camera.requestCameraPermissionsAsync();
+  return cameraStatus;
 };
