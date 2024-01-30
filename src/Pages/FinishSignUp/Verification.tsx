@@ -33,6 +33,7 @@ import { performLogin } from '../../utilities/loginService';
 import { PagesProps } from '../../utilities/CommonTypes';
 import { useAppDispatch } from '../../ReduxStore/Setup/hooks';
 
+let timeoutId:any = -1;
 const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const stepOneStore = useAppSelector(selectSignUpStepOneData);
   const stepTwoStore = useAppSelector(selectSignUpStepTwoData);
@@ -51,15 +52,19 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
     React.useCallback(() => {
       pollApi();
       startLoader();
+      setProgress(0);
+      setIsSuccess(false);
       return () => {
-        setProgress(0);
-        setIsSuccess(false);
+        // setProgress(0);
+        // setIsSuccess(false);
+        clearTimeout(timeoutId);
       };
     }, [])
   );
 
   const handleBack = () => {
-    navigation.navigate('InsuranceSignUpTwo');
+    // navigation.navigate('InsuranceSignUpTwo');
+    navigation.navigate('InsuranceBack');
   };
 
   const pollApi = async () => {
@@ -67,23 +72,21 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
       const response = await axiosInstance.get(
         '/patient/onboarding/get-verification-status.ns'
       );
-      if (response.data.data) {
+      if (response.data.success) {
         if (response.data.data.status === 'VERIFICATION_SUCCESS') {
           setIsSuccess(true);
           setProgress(100);
           dispatch(setAccountCreationData(response.data.data));
           console.log('Verification successful', response.data.data);
-          return;
         } else if (response.data.data.status === 'VERIFICATION_FAILED') {
           console.log('Verification failed', response.data.data);
         }
       } else {
-        console.log('API call in Progress:', response.data);
+        timeoutId = setTimeout(pollApi, 12000);
       }
     } catch (error) {
       console.error('Error occurred during polling:', error);
     }
-    setTimeout(pollApi, 12000);
   };
 
   const handleNext = async () => {
