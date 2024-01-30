@@ -46,68 +46,45 @@ const Verification: React.FC<PagesProps> = ({ navigation }) => {
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const intervalIdRef = useRef<NodeJS.Timeout | number | null>(null);
 
-  useEffect(() => {
-    setTimeout(() => {
-      startLoader();
-      setProgress(0);
-    });
-  }, []);
   useFocusEffect(
     React.useCallback(() => {
+      pollApi();
       startLoader();
-      setProgress(0);
-      return () => {};
+      return () => {
+        setProgress(0);
+        setIsSuccess(false);
+      };
     }, [])
   );
+
   const handleBack = () => {
     navigation.navigate('InsuranceSignUpTwo');
   };
 
-  useEffect(() => {
-    const pollApi = async () => {
-      if (intervalIdRef.current === null) {
-        console.error('Verification timeout reached');
-        return;
-      }
-
-      try {
-        const response = await axiosInstance.get(
-          '/patient/onboarding/get-verification-status.ns'
-        );
-        console.log('Response from API:', response.data);
-
-        if (response.data.success) {
-          if (response.data.data.status === 'VERIFICATION_SUCCESS') {
-            const verificationData = { ...response.data.data };
-            clearInterval(intervalIdRef.current as number);
-            setIsSuccess(true);
-            setProgress(100);
-            dispatch(setAccountCreationData(verificationData));
-            intervalIdRef.current = null;
-          } else if (response.data.data.status === 'VERIFICATION_FAILED') {
-            clearInterval(intervalIdRef.current as number);
-            intervalIdRef.current = null;
-          }
+  const pollApi = async () => {
+    try {
+      const response = await axiosInstance.get(
+        '/patient/onboarding/get-verification-status.ns'
+      );
+      if (response.data.data) {
+        if (response.data.data.status === 'VERIFICATION_SUCCESS') {
+          setIsSuccess(true);
+          setProgress(100);
+          dispatch(setAccountCreationData(response.data.data));
+          console.log('Verification successful', response.data.data);
+          return;
+        } else if (response.data.data.status === 'VERIFICATION_FAILED') {
+          console.log('Verification failed', response.data.data);
         }
-      } catch (error) {
-        console.error('Error occurred during polling:', error);
-        clearInterval(intervalIdRef.current as number);
-        intervalIdRef.current = null;
+      } else {
+        console.log('API call in Progress:', response.data);
       }
-    };
-
-    // Assign the interval ID
-    intervalIdRef.current = setInterval(pollApi, 12000);
-
-    return () => {
-      // Cleanup on component unmount
-      if (intervalIdRef.current !== null) {
-        clearInterval(intervalIdRef.current as number);
-      }
-    };
-  }, [intervalIdRef.current]); // Add any other dependencies if needed
+    } catch (error) {
+      console.error('Error occurred during polling:', error);
+    }
+    setTimeout(pollApi, 12000);
+  };
 
   const handleNext = async () => {
     const requestData = {
