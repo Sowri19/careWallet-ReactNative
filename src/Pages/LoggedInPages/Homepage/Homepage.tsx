@@ -50,7 +50,7 @@ import {
   setAllBlobs as setImageBlobs,
   setState as setHomepageState,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import Loader from '../../../Components/Loader/index';
 import {
@@ -60,9 +60,9 @@ import {
 
 const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
+  const isFocused = useIsFocused();
   const firstName = useAppSelector(selectFirstName);
   const lastName = useAppSelector(selectLastName);
-  const activeDate = useAppSelector(selectValidityDate);
   const [screen, setScreenLocal] = useState<'insurance' | 'license' | 'health'>(
     'insurance'
   );
@@ -73,6 +73,27 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const profilePictureImg = useAppSelector(selectProfilePictureBlob);
   const healthCardFrontImg = useAppSelector(selectHealthCard1Blob);
   const healthCardBackImg = useAppSelector(selectHealthCard2Blob);
+  const validityDate = useAppSelector(selectValidityDate);
+  const licenseUrl = useAppSelector(selectLicenseUrl);
+  const health1Url = useAppSelector(selectHealthCard1Url);
+  const health2Url = useAppSelector(selectHealthCard2Url);
+  const insuranceUrl = useAppSelector(selectInsuranceUrl);
+  const [accountDataLoaded, setAccountDataLoaded] = useState<boolean>(false);
+  const [profileImageLoaded, setProfileImageLoaded] = useState<boolean>(false);
+  const [idFrontImageLoaded, setIdFrontImageLoaded] = useState<boolean>(false);
+  const [idBackImageLoaded, setIdBackImageLoaded] = useState<boolean>(false);
+  const [healthFrontImageLoaded, setHealthFrontImageLoaded] =
+    useState<boolean>(false);
+  const [healthBackImageLoaded, setHealthBackImageLoaded] =
+    useState<boolean>(false);
+  const [activeDate, setActiveDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (validityDate) {
+      setActiveDate(new Date(validityDate));
+    }
+  }, [validityDate]);
+
   const [profileImage, setProfileImageLocal] = useState<{ uri: string }>({
     uri: profilePictureImg,
   });
@@ -89,10 +110,6 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const setScreen = (screen: 'insurance' | 'license' | 'health') => {
     setScreenLocal(screen);
   };
-  const licenseUrl = useAppSelector(selectLicenseUrl);
-  const health1Url = useAppSelector(selectHealthCard1Url);
-  const health2Url = useAppSelector(selectHealthCard2Url);
-  const insuranceUrl = useAppSelector(selectInsuranceUrl);
 
   useEffect(() => {
     if (!isLoadingImages) {
@@ -138,15 +155,21 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
         uri: params['healthCard2Blob'],
       });
     }
+    setProfileImageLoaded(true);
+    setIdBackImageLoaded(true);
+    setIdFrontImageLoaded(true);
+    setHealthFrontImageLoaded(true);
+    setHealthBackImageLoaded(true);
   };
 
-  useFocusEffect(
-    React.useCallback(() => {
-      const params: { [key: string]: string } = {};
+  useEffect(() => {
+    if (isFocused) {
       if (isLoadingImages) {
         setTimeout(async () => {
+          const params: { [key: string]: string } = {};
           const accountData = await loadAccountData();
           updateHomePageState(accountData);
+          setAccountDataLoaded(true);
           if (!licenseImg) {
             params['licenseBlob'] = accountData.licenseUrl;
           }
@@ -184,133 +207,182 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
           setScreen('insurance');
         });
       }
-      return () => {};
-    }, [])
-  );
+    } else {
+
+    }
+  }, [isFocused]);
+
   const isActive = useAppSelector(selectActive);
   return (
     <>
       <Container>
         <FormContainerStyleThree>
-          <BoldNameHeader>{`${firstName} ${lastName}`}</BoldNameHeader>
-          {screen === 'insurance' && (
+          {accountDataLoaded ? (
             <>
-              <ActiveDateHolder>
-                {isActive ? (
-                  <>
-                    <GenericIcon name="checkmark-circle" style={ImageIcon} />
-                    <Text
-                      style={ActiveDate}
-                    >{`Active: ${new Date().getFullYear()}-${(
-                      '0' +
-                      (new Date().getMonth() + 1)
-                    ).slice(-2)}-${('0' + new Date().getDate()).slice(
-                      -2
-                    )}`}</Text>
-                  </>
-                ) : (
-                  <>
-                    <GenericIcon name="checkmark-circle" style={ImageIcon} />
-                    <Text style={ActiveDate}>{`Active: ${activeDate}`}</Text>
-                  </>
-                )}
-              </ActiveDateHolder>
-              <ImageHolder>
-                {isLoadingImages && <Loader />}
-                <ImageInsurance
-                  source={source1}
-                  onLoad={() => console.log('loaded')}
-                  onError={(err) => {
-                    console.log(err);
-                  }}
-                />
-              </ImageHolder>
-              <ButtonHolder>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('license');
-                  }}
-                >
-                  <ButtonText>View ID</ButtonText>
-                </ButtonH>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('health');
-                  }}
-                >
-                  <ButtonText>View Plan</ButtonText>
-                </ButtonH>
-              </ButtonHolder>
+              <BoldNameHeader>{`${firstName} ${lastName}`}</BoldNameHeader>
+              {screen === 'insurance' && (
+                <>
+                  <ActiveDateHolder>
+                    {isActive && activeDate ? (
+                      <>
+                        <GenericIcon
+                          name="checkmark-circle"
+                          style={ImageIcon}
+                        />
+                        <Text
+                          style={ActiveDate}
+                        >{`Active: ${activeDate.getFullYear()}-${(
+                            '0' +
+                          (activeDate.getMonth() + 1)
+                          ).slice(-2)}-${('0' + activeDate.getDate()).slice(
+                            -2
+                          )}`}</Text>
+                      </>
+                    ) : (
+                      <>
+                        <GenericIcon
+                          name="checkmark-circle"
+                          style={ImageIcon}
+                        />
+                        <Text
+                          style={ActiveDate}
+                        >{`Active: ${activeDate}`}</Text>
+                      </>
+                    )}
+                  </ActiveDateHolder>
+                  <ImageHolder>
+                    {healthFrontImageLoaded ? (
+                      <>
+                        <ImageInsurance source={source1} />
+                      </>
+                    ) : (
+                      <>
+                        <Loader />
+                      </>
+                    )}
+                  </ImageHolder>
+                  <ButtonHolder>
+                    <ButtonH
+                      onPress={() => {
+                        setScreen('license');
+                      }}
+                    >
+                      <ButtonText>View ID</ButtonText>
+                    </ButtonH>
+                    <ButtonH
+                      onPress={() => {
+                        setScreen('health');
+                      }}
+                    >
+                      <ButtonText>View Plan</ButtonText>
+                    </ButtonH>
+                  </ButtonHolder>
+                </>
+              )}
+              {screen === 'license' && (
+                <>
+                  <ImageHolder>
+                    {idFrontImageLoaded ? (
+                      <>
+                        <ImageID source={source1} />
+                      </>
+                    ) : (
+                      <>
+                        <Loader />
+                      </>
+                    )}
+                  </ImageHolder>
+                  <ButtonHolder>
+                    <ButtonH
+                      onPress={() => {
+                        setScreen('insurance');
+                      }}
+                    >
+                      <ButtonText>{'< Back'}</ButtonText>
+                    </ButtonH>
+                    <ButtonH
+                      onPress={() => {
+                        setScreen('health');
+                      }}
+                    >
+                      <ButtonText>View Plan</ButtonText>
+                    </ButtonH>
+                  </ButtonHolder>
+                </>
+              )}
+              {screen === 'health' && (
+                <>
+                  <ImageHolder>
+                    {healthFrontImageLoaded ? (
+                      <>
+                        <ImageHealth source={source1} />
+                      </>
+                    ) : (
+                      <>
+                        <Loader />
+                      </>
+                    )}
+                  </ImageHolder>
+                  <ImageHolder>
+                    {healthBackImageLoaded ? (
+                      <>
+                        <ImageHealth source={source2} />
+                      </>
+                    ) : (
+                      <>
+                        <Loader />
+                      </>
+                    )}
+                  </ImageHolder>
+                  <ButtonHolder>
+                    <ButtonH
+                      onPress={() => {
+                        setScreen('license');
+                      }}
+                    >
+                      <ButtonText>View ID</ButtonText>
+                    </ButtonH>
+                    <ButtonH
+                      onPress={() => {
+                        setScreen('insurance');
+                      }}
+                    >
+                      <ButtonText>{'< Back'}</ButtonText>
+                    </ButtonH>
+                  </ButtonHolder>
+                </>
+              )}
+              <LowerBarHolder>
+                <LowerBarContainer>
+                  <GenericShadowIcon
+                    onPress={() => {
+                      navigation.navigate('settings');
+                    }}
+                    name="settings"
+                    style={SettingsIcon}
+                  />
+                </LowerBarContainer>
+                <LowerBarContainer>
+                  <ProfileImageHolder>
+                    {profileImageLoaded ? (
+                      <>
+                        <ImageProfile source={profileImage} />
+                      </>
+                    ) : (
+                      <>
+                        <Loader />
+                      </>
+                    )}
+                  </ProfileImageHolder>
+                </LowerBarContainer>
+                <LowerBarContainer></LowerBarContainer>
+              </LowerBarHolder>
+            </>
+          ) : (
+            <>
+              <Loader />
             </>
           )}
-          {screen === 'license' && (
-            <>
-              <ImageHolder>
-                {isLoadingImages && <Loader />}
-                <ImageID source={source1} />
-              </ImageHolder>
-              <ButtonHolder>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('insurance');
-                  }}
-                >
-                  <ButtonText>{'< Back'}</ButtonText>
-                </ButtonH>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('health');
-                  }}
-                >
-                  <ButtonText>View Plan</ButtonText>
-                </ButtonH>
-              </ButtonHolder>
-            </>
-          )}
-          {screen === 'health' && (
-            <>
-              {isLoadingImages && <Loader />}
-              <ImageHolder>
-                <ImageHealth source={source1} />
-              </ImageHolder>
-              <ImageHolder>
-                <ImageHealth source={source2} />
-              </ImageHolder>
-              <ButtonHolder>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('license');
-                  }}
-                >
-                  <ButtonText>View ID</ButtonText>
-                </ButtonH>
-                <ButtonH
-                  onPress={() => {
-                    setScreen('insurance');
-                  }}
-                >
-                  <ButtonText>{'< Back'}</ButtonText>
-                </ButtonH>
-              </ButtonHolder>
-            </>
-          )}
-          <LowerBarHolder>
-            <LowerBarContainer>
-              <GenericShadowIcon
-                onPress={() => {
-                  navigation.navigate('settings');
-                }}
-                name="settings"
-                style={SettingsIcon}
-              />
-            </LowerBarContainer>
-            <LowerBarContainer>
-              <ProfileImageHolder>
-                <ImageProfile source={profileImage} />
-              </ProfileImageHolder>
-            </LowerBarContainer>
-            <LowerBarContainer></LowerBarContainer>
-          </LowerBarHolder>
         </FormContainerStyleThree>
         <LogoImageHolderBottomThree>
           <LogoImageTwo

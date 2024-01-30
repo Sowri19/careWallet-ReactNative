@@ -19,7 +19,6 @@ import {
   AccountDetails,
 } from './Styles';
 import { Text } from 'react-native';
-import { styleDefaultProfileImage } from '../../../Styles/AppWideConstants/Styles';
 import { useAppSelector } from '../../../ReduxStore/Setup/hooks';
 import {
   selectAddressLocality,
@@ -31,21 +30,22 @@ import {
   selectInsuranceID,
   selectInsuranceName,
   selectLastName,
-  selectProfilePictureUrl,
   selectValidityDate,
   selectEmail,
   selectPhoneNumber,
+  selectProfilePictureBlob,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
 import { formatPhoneNumberString } from '../../../utilities/FormatUtils';
-import axiosInstance from '../../../utilities/axiosInstance';
+import { useFocusEffect } from '@react-navigation/native';
+import { logout } from '../../../Shared/AppWideTasks/AppWideTask';
 
 const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
   const [activeDate, setActiveDateLocal] = useState<string>(
     useAppSelector(selectValidityDate)
   );
-  const profileImageUrl = useAppSelector(selectProfilePictureUrl);
+  const profilePictureBlob = useAppSelector(selectProfilePictureBlob);
   const [profileImage, setProfileImageLocal] = useState<{ uri: string }>({
-    uri: styleDefaultProfileImage,
+    uri: profilePictureBlob,
   });
   const [dob, setDOBLocal] = useState<string>(
     useAppSelector(selectDateOfBirth)
@@ -70,17 +70,14 @@ const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
   const [phoneNumber, setPhoneNumberLocal] = useState<string>(
     formatPhoneNumberString(useAppSelector(selectPhoneNumber))
   );
-  useEffect(() => {
-    setProfileImageLocal({
-      uri: profileImageUrl,
-    });
-  }, []);
-  const logout = async () => {
-    const response = await axiosInstance.get(
-      `https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/authentication/logout.ns`
-    );
-    navigation.navigate(`Log in`);
-  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setProfileImageLocal({
+        uri: profilePictureBlob,
+      });
+    }, [profilePictureBlob])
+  );
   return (
     <Container>
       <FormContainerStyleTwo>
@@ -88,9 +85,9 @@ const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
           <UpperBarContainer>
             <GenericShadowIcon
               onPress={() => {
-                navigation.navigate(`settings`);
+                navigation.navigate('settings');
               }}
-              name={`settings`}
+              name={'settings'}
               style={SettingsIcon}
             />
           </UpperBarContainer>
@@ -98,7 +95,7 @@ const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
             <Text style={ActiveDate}>{`Active: ${activeDate}`}</Text>
           </UpperBarContainer>
           <UpperBarContainer>
-            <GenericIcon name={`checkmark-circle`} style={ImageIcon} />
+            <GenericIcon name={'checkmark-circle'} style={ImageIcon} />
           </UpperBarContainer>
         </UpperBarHolder>
         <UpperBarHolder>
@@ -112,26 +109,30 @@ const SettingsPage: React.FC<PagesProps> = ({ navigation }) => {
           </UpperBarContainer>
         </UpperBarHolder>
         <AccountDetails>
-          <Text>{`Name: ${username}`}</Text>
-          <Text>{`Insurance Name: ${insuranceName}`}</Text>
-          <Text>{`Insurance ID: ${insuranceID}`}</Text>
-          <Text>{`Address: ${address}`}</Text>
-          <Text>{`Email: ${email}`}</Text>
-          <Text>{`Phone: ${phoneNumber}`}</Text>
+          <Text>{`Name: ${username || ''}`}</Text>
+          <Text>{`Insurance Name: ${insuranceName || ''}`}</Text>
+          <Text>{`Insurance ID: ${insuranceID || ''}`}</Text>
+          <Text>{`Address: ${address || ''}`}</Text>
+          <Text>{`Email: ${email || ''}`}</Text>
+          <Text>{`Phone: ${phoneNumber || ''}`}</Text>
         </AccountDetails>
         <Button
           onPress={() => {
-            navigation.navigate(`Homepage`);
+            navigation.navigate('Homepage');
           }}
         >
-          <ButtonText>{`< Back`}</ButtonText>
+          <ButtonText>{'< Back'}</ButtonText>
         </Button>
         <Button
           onPress={() => {
-            logout();
+            logout({
+              successCB: () => {
+                navigation.navigate('Log in');
+              }
+            });
           }}
         >
-          <ButtonText>{`Logout`}</ButtonText>
+          <ButtonText>{'Logout'}</ButtonText>
         </Button>
       </FormContainerStyleTwo>
     </Container>
