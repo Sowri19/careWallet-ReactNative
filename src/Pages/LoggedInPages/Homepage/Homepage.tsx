@@ -32,6 +32,7 @@ import {
   useAppSelector,
 } from '../../../ReduxStore/Setup/hooks';
 import {
+  HomePageState,
   selectActive,
   selectFirstName,
   selectHealthCard1Blob,
@@ -47,11 +48,15 @@ import {
   selectProfilePictureUrl,
   selectValidityDate,
   setAllBlobs as setImageBlobs,
+  setState as setHomepageState,
 } from '../../../ReduxStore/Slices/HomePage/homePage';
 import { useFocusEffect } from '@react-navigation/native';
 
 import Loader from '../../../Components/Loader/index';
-import { loadAllImages } from '../../../utilities/commonUtilFunctions';
+import {
+  loadAccountData,
+  loadAllImagesSync,
+} from '../../../utilities/commonUtilFunctions';
 
 const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const dispatch = useAppDispatch();
@@ -61,31 +66,27 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const [screen, setScreenLocal] = useState<'insurance' | 'license' | 'health'>(
     'insurance'
   );
-  const profileImageUrl = useAppSelector(selectProfilePictureUrl);
-  const [profileImage, setProfileImageLocal] = useState<{ uri: string }>({
-    uri: profileImageUrl,
-  });
-
-  const [isInsuranceImageLoading, setIsInsuranceImageLoading] = useState(true);
-  const [isLicenseImageLoading, setIsLicenseImageLoading] = useState(true);
-  const [isHealthImageLoading, setIsHealthImageLoading] = useState(true);
-
-  // Function to reset image loading states
-  const resetImageLoadingStates = () => {
-    setIsInsuranceImageLoading(true);
-    setIsLicenseImageLoading(true);
-    setIsHealthImageLoading(true);
-  };
-
   const [isLoadingImages, setLoadingImages] = useState<boolean>(true);
+  const profileImageUrl = useAppSelector(selectProfilePictureUrl);
   const licenseImg = useAppSelector(selectLicenseBlob);
   const insuranceImg = useAppSelector(selectInsuranceBlob);
   const profilePictureImg = useAppSelector(selectProfilePictureBlob);
   const healthCardFrontImg = useAppSelector(selectHealthCard1Blob);
   const healthCardBackImg = useAppSelector(selectHealthCard2Blob);
+  const [profileImage, setProfileImageLocal] = useState<{ uri: string }>({
+    uri: profilePictureImg,
+  });
+  const [source1, setSource1] = useState<{ uri: string }>({
+    uri: insuranceImg,
+  });
+  const [source2, setSource2] = useState<{ uri: string }>({
+    uri: healthCardBackImg,
+  });
+  const updateHomePageState = (update: HomePageState) => {
+    dispatch(setHomepageState(update));
+  };
 
   const setScreen = (screen: 'insurance' | 'license' | 'health') => {
-    resetImageLoadingStates();
     setScreenLocal(screen);
   };
   const licenseUrl = useAppSelector(selectLicenseUrl);
@@ -93,71 +94,100 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
   const health2Url = useAppSelector(selectHealthCard2Url);
   const insuranceUrl = useAppSelector(selectInsuranceUrl);
 
+  useEffect(() => {
+    if (!isLoadingImages) {
+      setProfileImageLocal({
+        uri: profilePictureImg,
+      });
+      if (screen === 'insurance') {
+        setSource1({
+          uri: insuranceImg,
+        });
+      } else if (screen === 'license') {
+        setSource1({
+          uri: licenseImg,
+        });
+      } else if (screen === 'health') {
+        setSource1({
+          uri: healthCardFrontImg,
+        });
+        setSource2({
+          uri: healthCardBackImg,
+        });
+      }
+    }
+  }, [isLoadingImages, screen]);
+
+  const setImages = (params: { [key: string]: string } = {}) => {
+    setProfileImageLocal({
+      uri: params['profilePictureBlob'],
+    });
+    if (screen === 'insurance') {
+      setSource1({
+        uri: params['insuranceBlob'],
+      });
+    } else if (screen === 'license') {
+      setSource1({
+        uri: params['licenseBlob'],
+      });
+    } else if (screen === 'health') {
+      setSource1({
+        uri: params['healthCard1Blob'],
+      });
+      setSource2({
+        uri: params['healthCard2Blob'],
+      });
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
       const params: { [key: string]: string } = {};
-      if (!licenseImg) {
-        params['licenseBlob'] = licenseUrl;
-      }
-      if (!insuranceImg) {
-        params['insuranceBlob'] = insuranceUrl;
-      }
-      if (!profilePictureImg) {
-        params['profilePictureBlob'] = profileImageUrl;
-      }
-      if (!healthCardFrontImg) {
-        params['healthCard1Blob'] = health1Url;
-      }
-      if (!healthCardBackImg) {
-        params['healthCard2Blob'] = health2Url;
-      }
-      if (Object.keys(params).length > 0) {
+      if (isLoadingImages) {
         setTimeout(async () => {
-          const allBlobs = await loadAllImages({
-            licenseBlob: licenseUrl,
-            insuranceBlob: insuranceUrl,
-            profilePictureBlob: profileImageUrl,
-            healthCard1Blob: health1Url,
-            healthCard2Blob: health2Url,
-          });
-          setLoadingImages(false);
-          dispatch(
-            setImageBlobs({
+          const accountData = await loadAccountData();
+          updateHomePageState(accountData);
+          if (!licenseImg) {
+            params['licenseBlob'] = accountData.licenseUrl;
+          }
+          if (!insuranceImg) {
+            params['insuranceBlob'] = accountData.insuranceUrl;
+          }
+          if (!profilePictureImg) {
+            params['profilePictureBlob'] = accountData.profilePictureUrl;
+          }
+          if (!healthCardFrontImg) {
+            params['healthCard1Blob'] = accountData.healthCard1Url;
+          }
+          if (!healthCardBackImg) {
+            params['healthCard2Blob'] = accountData.healthCard2Url;
+          }
+          if (Object.keys(params).length > 0) {
+            const allBlobs = await loadAllImagesSync({
+              licenseBlob: licenseUrl,
+              insuranceBlob: insuranceUrl,
+              profilePictureBlob: profileImageUrl,
+              healthCard1Blob: health1Url,
+              healthCard2Blob: health2Url,
+            });
+            setLoadingImages(false);
+            const newState = {
               licenseBlob: allBlobs.licenseBlob,
               insuranceBlob: allBlobs.insuranceBlob,
               healthCard1Blob: allBlobs.healthCard1Blob,
               healthCard2Blob: allBlobs.healthCard2Blob,
               profilePictureBlob: allBlobs.profilePictureBlob,
-            })
-          );
+            };
+            setImages(newState);
+            dispatch(setImageBlobs(newState));
+          }
+          setScreen('insurance');
         });
       }
       return () => {};
     }, [])
   );
-
-  let imageUrl = '',
-    imageUrl2 = '';
-  if (screen === 'license') {
-    imageUrl = licenseUrl;
-    imageUrl2 = '';
-  } else if (screen === 'health') {
-    imageUrl = health1Url;
-    imageUrl2 = health2Url;
-  } else {
-    imageUrl = insuranceUrl;
-    imageUrl2 = '';
-  }
   const isActive = useAppSelector(selectActive);
-  console.log(imageUrl, imageUrl2);
-  const getAllBlobs = async () => {
-    setProfileImageLocal({
-      uri: profileImageUrl,
-    });
-  };
-  useEffect(() => {
-    getAllBlobs();
-  }, []);
   return (
     <>
       <Container>
@@ -187,7 +217,13 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
               </ActiveDateHolder>
               <ImageHolder>
                 {isLoadingImages && <Loader />}
-                <ImageInsurance source={{ uri: insuranceImg }} onLoad={() => console.log('loaded')} onError={(err) => {console.log(err);}} />
+                <ImageInsurance
+                  source={source1}
+                  onLoad={() => console.log('loaded')}
+                  onError={(err) => {
+                    console.log(err);
+                  }}
+                />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH
@@ -211,7 +247,7 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
             <>
               <ImageHolder>
                 {isLoadingImages && <Loader />}
-                <ImageID source={{ uri: licenseImg }} />
+                <ImageID source={source1} />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH
@@ -235,10 +271,10 @@ const Homepage: React.FC<PagesProps> = ({ navigation }) => {
             <>
               {isLoadingImages && <Loader />}
               <ImageHolder>
-                <ImageHealth source={{ uri: healthCardFrontImg }} />
+                <ImageHealth source={source1} />
               </ImageHolder>
               <ImageHolder>
-                <ImageHealth source={{ uri: healthCardBackImg }} />
+                <ImageHealth source={source2} />
               </ImageHolder>
               <ButtonHolder>
                 <ButtonH

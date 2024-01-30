@@ -34,7 +34,7 @@ const initialState: HomePageState = {
   insuranceUrl:
     'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-front',
   licenseUrl:
-    'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=govtID-front',
+    'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=govID-front',
   healthCard1Url:
     'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-front',
   healthCard2Url:
@@ -80,11 +80,11 @@ export const homeSlice = createSlice({
       state.dateOfBirth = action.payload.dateOfBirth;
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
-      state.licenseBlob = action.payload.licenseBlob;
-      state.insuranceBlob = action.payload.insuranceBlob;
-      state.healthCard1Blob = action.payload.healthCard1Blob;
-      state.healthCard2Blob = action.payload.healthCard2Blob;
-      state.profilePictureBlob = action.payload.profilePictureBlob;
+      // state.licenseBlob = action.payload.licenseBlob;
+      // state.insuranceBlob = action.payload.insuranceBlob;
+      // state.healthCard1Blob = action.payload.healthCard1Blob;
+      // state.healthCard2Blob = action.payload.healthCard2Blob;
+      // state.profilePictureBlob = action.payload.profilePictureBlob;
     },
     setAllBlobs: (state, action) => {
       state.licenseBlob = action.payload.licenseBlob;

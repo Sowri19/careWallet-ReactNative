@@ -75,10 +75,6 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
     setPasswordErr(chkPassValid(password));
   };
 
-  const updateHomePageState = (update: HomePageState) => {
-    dispatch(setHomepageState(update));
-  };
-
   const chkDetails = () => {
     let result = true;
     let error = chkLoginIDValid(loginID);
@@ -133,41 +129,7 @@ const LogIn: React.FC<PagesProps> = ({ navigation }) => {
       );
       console.log(response.data);
       if (response.data.success) {
-        const responseAcc = await axiosInstance.get(
-          `/patient/dashboard/account-home.ns`
-        );
-        if (responseAcc.data.success) {
-          const accountData = responseAcc.data.data;
-          updateHomePageState({
-            healthCard1Url: '',
-            healthCard2Url: '',
-            insuranceUrl:
-              'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=insurance-front',
-            isActive: true,
-            licenseUrl:
-              'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=govID-front',
-            profilePictureUrl:
-              'https://0pqjojts5c.execute-api.us-east-1.amazonaws.com/dev/patient/dashboard/account-media.ns?type=user-photo',
-            validityDate: '',
-            email: accountData.email,
-            phoneNumber: accountData.phoneNumber,
-            dateOfBirth: accountData.dob,
-            firstName: accountData.firstName,
-            lastName: accountData.lastName,
-            address: {
-              state: accountData.state,
-              postal_code: accountData.zipcode,
-              street_address: accountData.address,
-              locality: accountData.city,
-              country: `US`,
-            },
-            insuranceID: accountData.insuranceID,
-            insuranceName: accountData.insuranceName,
-          });
-          navigation.navigate('Homepage');
-        } else {
-          console.log('Authentication failed on the server.');
-        }
+        navigation.navigate('Homepage');
       } else {
         console.log('Authentication failed on the server.');
       }
