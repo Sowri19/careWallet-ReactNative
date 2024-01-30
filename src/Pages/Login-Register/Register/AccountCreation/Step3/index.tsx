@@ -116,7 +116,7 @@ const RegisterPageOne: React.FC<PagesProps> = ({ navigation }) => {
       return;
     }
     updateStepThreeState({
-      phoneNumber: phoneNumber,
+      phoneNumber: `${extractNumbersFromString(phoneNumber)}`,
       email: email,
       newPassword: newPassword,
     });
