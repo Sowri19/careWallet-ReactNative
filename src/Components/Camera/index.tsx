@@ -1,5 +1,5 @@
 // IDScanner.js
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Camera } from 'expo-camera';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -44,6 +44,7 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
     (state: RootState) => state.camera.isUploading
   );
   const cameraRef = useRef<Camera | null>(null);
+  const [cameraReady, setCameraReady] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -73,6 +74,9 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
   };
 
   const takePicture = async () => {
+    if (!cameraReady) {
+      return;
+    }
     if (cameraRef.current) {
       dispatch(setIsUploading(true));
       const photo = await cameraRef.current.takePictureAsync();
@@ -92,7 +96,7 @@ const IDScanner: React.FC<PagesProps & CustomCameraProps> = ({
         <ButtonText>{'< Back'}</ButtonText>
       </BackButton>
       <FrontID>
-        <CameraStyled ref={cameraRef} type={1} ratio="4:3" />
+        <CameraStyled ref={cameraRef} type={1} ratio="4:3" onCameraReady={() => setCameraReady(true)} />
         <TopBorder />
         <BottomBorder />
         <LeftBorder />

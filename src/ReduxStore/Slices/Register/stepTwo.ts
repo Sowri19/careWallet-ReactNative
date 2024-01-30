@@ -6,7 +6,7 @@ export interface SignUpStepTwoState {
 }
 
 const initialState: SignUpStepTwoState = {
-  dob: new Date().toString(),
+  dob: new Date().toISOString(),
 };
 
 export const signUpStepTwoSlice = createSlice({
